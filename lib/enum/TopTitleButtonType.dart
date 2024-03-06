@@ -1,0 +1,5 @@
+enum TopTitleButtonType
+{
+  BACK,
+  CLOSE
+}

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1075452238451",
+    "project_id": "foxschool-4bb9b",
+    "storage_bucket": "foxschool-4bb9b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075452238451:android:155dde9dd31fd257956806",
+        "android_client_info": {
+          "package_name": "com.littlefox.app.foxschool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075452238451-ug32440sjof30hv8oi6iu6afo2ketut0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASTrYBOVMEbkM4t9-ozySd4HbCTmss6oY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075452238451-ug32440sjof30hv8oi6iu6afo2ketut0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1075452238451-1arpkdut8rctlsm1ct8kpu7sjp4j464e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.littlefox.FoxSchool"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
