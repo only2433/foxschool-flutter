@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foxschool/view/widget/RobotoBoldText.dart';
 
 import '../../common/CommonUtils.dart';
 import '../../enum/TopTitleButtonType.dart';
@@ -44,13 +45,10 @@ class TopTitleWidget extends StatelessWidget {
             ),
           ),
           Center(
-            child: Text(title,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: CommonUtils.getInstance(context).getWidth(18),
-                  fontFamily: 'Roboto'
-              ),),
+            child: RobotoBoldText(
+              text: title,
+              fontSize: CommonUtils.getInstance(context).getWidth(18),
+            ),
           ),
 
         ],

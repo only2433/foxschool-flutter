@@ -6,8 +6,9 @@ import 'package:foxschool/bloc/intro/event/GetSchoolDataEvent.dart';
 import 'package:foxschool/bloc/intro/event/GetVersionEvent.dart';
 import 'package:foxschool/bloc/intro/state/SchoolDataLoadedState.dart';
 import 'package:foxschool/bloc/intro/state/VersionLoadedState.dart';
-import 'package:foxschool/common/AppLocalizations.dart';
 import 'package:foxschool/common/CommonUtils.dart';
+import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/route/RouteHelper.dart';
 import 'package:foxschool/view/screen/webview/FoxschoolIntroduceScreen.dart';
 import 'package:foxschool/view/widget/BlueOutlinedTextButton.dart';
@@ -145,7 +146,6 @@ class _IntroScreenState extends State<IntroScreen>
 
   Widget _ItemSelectLayout(BuildContext context)
   {
-    String messageSignedFoxSchool = AppLocalizations.of(context)!.getText("message_intro_foxschool");
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(200),
@@ -156,7 +156,7 @@ class _IntroScreenState extends State<IntroScreen>
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(5),
           ),
-          Text(messageSignedFoxSchool,
+          Text(getIt<FoxschoolLocalization>().data['message_intro_foxschool'],
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: CommonUtils.getInstance(context).getWidth(15),
@@ -170,8 +170,9 @@ class _IntroScreenState extends State<IntroScreen>
           BlueOutlinedTextButton(
               width: CommonUtils.getInstance(context).getWidth(300),
               height: CommonUtils.getInstance(context).getHeight(50),
-              text: AppLocalizations.of(context)!.getText("text_login"),
+              text: getIt<FoxschoolLocalization>().data['text_login'],
               onPressed: (){
+                Navigator.of(context).pushNamed(RouteHelper.getLogin());
               }),
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(20),
@@ -179,20 +180,18 @@ class _IntroScreenState extends State<IntroScreen>
           BlueTextButton(
               width: CommonUtils.getInstance(context).getWidth(300),
               height: CommonUtils.getInstance(context).getHeight(50),
-              text: AppLocalizations.of(context)!.getText("text_foxschool_introduce"),
+              text: getIt<FoxschoolLocalization>().data['text_foxschool_introduce'],
               onPressed: () async{
-                //Navigator.of(context).pushNamed(RouteHelper.getFoxschoolIntroduce());
-                String deviceID = await _mobileDeviceIdentifierPlugin.getDeviceId() ?? '0';
-                Logger.d("deviceID : ${deviceID}");
+                Navigator.of(context).pushNamed(RouteHelper.getFoxschoolIntroduce());
                /* context.read<IntroBloc>().add(
                     GetVersionEvent(
                         deviceType: deviceID,
                         pushAddress: "",
                         pushOn: 'Y')
-                );*/
+                );
                 context.read<IntroBloc>().add(
                   GetSchoolDataEvent()
-                );
+                );*/
               }),
           BlocListener<IntroBloc, BlocState>(listener: (context, state) {
               if(state is VersionLoadedState)

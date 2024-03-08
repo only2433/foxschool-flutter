@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/common/CommonUtils.dart';
+import 'package:foxschool/view/widget/RobotoNormalText.dart';
 
 class PercentLineProgressBar extends StatefulWidget {
   final double percent;
@@ -94,15 +95,11 @@ class _PercentLineProgressBarState extends State<PercentLineProgressBar> with Ti
 
               Positioned(
                   right: 10,
-                  child: Text(
-                    '${_percent.toStringAsFixed(0)}%',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Roboto',
-                      fontSize: CommonUtils.getInstance(context).getWidth(16),
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ))
+                  child: RobotoNormalText(
+                    text: '${_percent.toStringAsFixed(0)}%',
+                    fontSize: CommonUtils.getInstance(context).getWidth(15),
+                  )
+              )
             ],
           );
         },

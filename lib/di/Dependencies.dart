@@ -2,6 +2,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:foxschool/api/remote_intro/IntroRepository.dart';
 import 'package:foxschool/bloc/intro/IntroBloc.dart';
+import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/ApiClient.dart';
@@ -12,6 +13,9 @@ import '../common/Common.dart';
 final getIt = GetIt.instance;
 Future<void> init() async
 {
+  final FoxschoolLocalization foxschoolLocalization = FoxschoolLocalization(filePath: 'asset/json/string_kr.json');
+  await foxschoolLocalization.onSetting();
+  getIt.registerSingleton(foxschoolLocalization);
 
   final dio = Dio();
   String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);

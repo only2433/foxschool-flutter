@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/enum/TopTitleButtonType.dart';
 import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/view/widget/TopTitleWidget.dart';
 import 'package:simple_loading_dialog/simple_loading_dialog.dart';
 
-import '../../../common/AppLocalizations.dart';
 import '../../../common/Common.dart';
+import '../../../di/Dependencies.dart';
 
 
 class FoxschoolIntroduceScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _FoxschoolIntroduceScreenState extends State<FoxschoolIntroduceScreen> {
           child: Column(
             children: [
               TopTitleWidget(
-                  title: AppLocalizations.of(context)!.getText("text_foxschool_introduce"),
+                  title: getIt<FoxschoolLocalization>().data['text_foxschool_introduce'],
                   type: TopTitleButtonType.BACK,
                   onPressed: () {
                     Navigator.of(context).pop();

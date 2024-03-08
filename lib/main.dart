@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxschool/api/remote_intro/IntroRepository.dart';
 import 'package:foxschool/bloc/intro/IntroBloc.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
-import 'package:foxschool/common/AppLocalizations.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/route/RouteHelper.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
+import 'package:foxschool/view/screen/LoginScreen.dart';
 import 'package:foxschool/view/screen/webview/FoxschoolIntroduceScreen.dart';
 import 'package:foxschool/di/Dependencies.dart' as Dependencies;
 
@@ -34,19 +34,7 @@ class MyApp extends StatelessWidget {
           )
         ],
         child: MaterialApp(
-          title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
-          locale: Locale('kr'),
-          localizationsDelegates: [
-            DefaultMaterialLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-            DefaultWidgetsLocalizations.delegate,
-            const AppLocalizationsDelegate()],
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('us', ''),
-            Locale('kr', ''),
-          ],
           onGenerateRoute: RouteHelper.getGenerateRoute,
           initialRoute: RouteHelper.getIntro(),
         )

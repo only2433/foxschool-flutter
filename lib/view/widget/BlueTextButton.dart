@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foxschool/view/widget/RobotoRegularText.dart';
 
 import '../../common/CommonUtils.dart';
 import '../../values/AppColors.dart';
@@ -29,14 +30,9 @@ class BlueTextButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: CommonUtils.getInstance(context).getWidth(15),
-              fontWeight: FontWeight.w200,
-              fontFamily: 'Roboto',
-              color: Colors.white,
-            ),
+          child: RobotoRegularText(
+            text: text,
+            fontSize: CommonUtils.getInstance(context).getWidth(15),
           ),
         ),
       ),
