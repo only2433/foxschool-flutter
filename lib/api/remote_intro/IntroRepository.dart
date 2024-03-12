@@ -28,4 +28,11 @@ class IntroRepository extends IntroDataSource
     return apiClient.schoolListAsync();
   }
 
+  @override
+  Future<BaseResponse> login(String userID, String password, String schoolCode) {
+    return apiClient.loginAsync(userID, password, schoolCode);
+  }
+
+
+
 }

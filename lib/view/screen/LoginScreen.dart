@@ -11,12 +11,15 @@ import 'package:foxschool/view/widget/BlueTextButton.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:foxschool/view/widget/RobotoRegularText.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_loading_dialog/simple_loading_dialog.dart';
 
 import '../../bloc/intro/IntroBloc.dart';
 import '../../bloc/intro/event/GetSchoolDataEvent.dart';
+import '../../common/Common.dart';
 import '../../common/CommonUtils.dart';
 import '../../common/FoxschoolLocalization.dart';
+import '../../common/Preference.dart' as Preference;
 import '../../data/school_data/SchoolData.dart';
 import '../../di/Dependencies.dart';
 import '../../enum/TopTitleButtonType.dart';
@@ -45,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _userID = "";
   String _userPassword = "";
   List<String> _currentSearchSchoolList = [];
+  bool isSchoolListItemSelected = false;
 
   @override
   void initState() {
@@ -71,9 +75,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void settingFocusNode() {
     _focusNodeList = List.generate(MAX_TEXT_FIELD_COUNT, (index) => FocusNode());
-    for (var focusNode in _focusNodeList) {
-      focusNode.addListener(() {
-        setState(() {});
+    for (var focus in _focusNodeList) {
+      focus.addListener(() {
+        setState(() {
+        });
       });
     }
   }
@@ -165,6 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             setState(() {
                                               _isAutoLoginCheck = !_isAutoLoginCheck;
                                             });
+                                            Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, _isAutoLoginCheck);
                                           },
                                           child: _isAutoLoginCheck == false ?
                                           Image.asset('asset/image/radio_off.png',
@@ -229,44 +235,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 )
                             ),
-                            if(_schoolName.length > 0)
-                            Positioned(
-                              top: CommonUtils.getInstance(context).getHeight(65),
-                              left: 0,
-                              right: 0,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(16)),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: CommonUtils.getInstance(context).getHeight(200),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: AppColors.color_999999,
-                                      width: CommonUtils.getInstance(context).getWidth(1)
-                                    ),
-                                  ),
-                                  child: ListView.builder(
-                                    itemCount: _currentSearchSchoolList.length,
-                                    itemBuilder: (context, index) {
-                                      Logger.d("index : ${index}, data : ${_currentSearchSchoolList[index]}");
-                                    return Container(
-                                      height: CommonUtils.getInstance(context).getWidth(50),
-                                      padding: EdgeInsets.only(
-                                        left: CommonUtils.getInstance(context).getWidth(30)
-                                      ),
-                                      child: ListTile(
-                                        title: RobotoRegularText(
-                                          text: _currentSearchSchoolList[index],
-                                          fontSize: CommonUtils.getInstance(context).getWidth(15),
-                                          color: AppColors.color_333333,
-                                        ),
-                                      ),
-                                    );
-                                  },),
-                                ),
-                              ),
-                            ),
+                            if(_schoolName.length > 0 && _focusNodeList[0].hasFocus)
+                              _SchoolListView(),
                             _bottomInfoLayout()
                           ],
                         ),
@@ -297,6 +267,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: const ValueKey(1),
                 focusNode: _focusNodeList[0],
                 controller: _schoolNameTextController,
+                onTap: () {
+                  _schoolNameTextController.text = "";
+                  _currentSearchSchoolList = [];
+                  _schoolName = "";
+                  isSchoolListItemSelected = false;
+                },
                 onSaved: (newValue) {
                   _schoolName = newValue!;
                 },
@@ -318,9 +294,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: _focusNodeList[0].hasFocus ? AppColors.color_26d0df : AppColors.color_cccccc,
                       ),
                     ),
-                    suffixIcon: _schoolName.length > 0 ?  GestureDetector(
+                    suffixIcon: _schoolName.length > 0 && _focusNodeList[0].hasFocus ?  GestureDetector(
                       onTap: () {
                         _schoolNameTextController.clear();
+
                         setState(() {
                           _schoolName = "";
                         });
@@ -335,7 +312,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ) : null,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: _schoolName.length > 0 ? BorderRadius.only(
+                        borderRadius: _schoolName.length > 0  && _focusNodeList[0].hasFocus ? BorderRadius.only(
                               topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)),
                               topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10))
                             ) :
@@ -347,7 +324,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         )
                     ),
                     focusedBorder: OutlineInputBorder(
-                        borderRadius: _schoolName.length > 0 ? BorderRadius.only(
+                        borderRadius: _schoolName.length > 0  && _focusNodeList[0].hasFocus ? BorderRadius.only(
                             topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)),
                             topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10))
                         ) :BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
@@ -481,6 +458,54 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _SchoolListView()
+  {
+    return Positioned(
+      top: CommonUtils.getInstance(context).getHeight(65),
+      left: 0,
+      right: 0,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(16)),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: CommonUtils.getInstance(context).getHeight(200),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+                color: AppColors.color_999999,
+                width: CommonUtils.getInstance(context).getWidth(1)
+            ),
+          ),
+          child: ListView.builder(
+            itemCount: _currentSearchSchoolList.length,
+            itemBuilder: (context, index) {
+              Logger.d("index : ${index}, data : ${_currentSearchSchoolList[index]}");
+              return Container(
+                height: CommonUtils.getInstance(context).getWidth(50),
+                padding: EdgeInsets.only(
+                    left: CommonUtils.getInstance(context).getWidth(30)
+                ),
+                child: ListTile(
+                  onTap: () {
+                    setState(() {
+                      _schoolName = _currentSearchSchoolList[index];
+                      _schoolNameTextController.text = _schoolName;
+                    });
+                    _focusNodeList[0].unfocus();
+                  },
+                  title: RobotoRegularText(
+                    text: _currentSearchSchoolList[index],
+                    fontSize: CommonUtils.getInstance(context).getWidth(15),
+                    color: AppColors.color_333333,
+                  ),
+                ),
+              );
+            },),
         ),
       ),
     );

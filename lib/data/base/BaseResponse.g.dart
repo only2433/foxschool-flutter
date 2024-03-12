@@ -12,7 +12,7 @@ _$BaseResponseImpl<T> _$$BaseResponseImplFromJson<T>(
       status: json['status'] as int,
       message: json['message'] as String? ?? "",
       access_token: json['access_token'] as String? ?? "",
-      data: json['data'] ?? null,
+      data: json['data'],
     );
 
 Map<String, dynamic> _$$BaseResponseImplToJson<T>(

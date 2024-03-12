@@ -21,8 +21,7 @@ class BaseResponse<T> with _$BaseResponse
     @Default("")
     String access_token,
 
-    @Default(null)
-    dynamic data
+    dynamic? data
   }) = _BaseResponse;
 
   factory BaseResponse.fromJson(Map<String, dynamic> json) => _$BaseResponseFromJson(json);

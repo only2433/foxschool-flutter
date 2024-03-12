@@ -23,7 +23,7 @@ mixin _$BaseResponse<T> {
   int get status => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
   String get access_token => throw _privateConstructorUsedError;
-  dynamic get data => throw _privateConstructorUsedError;
+  dynamic? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +37,7 @@ abstract class $BaseResponseCopyWith<T, $Res> {
           BaseResponse<T> value, $Res Function(BaseResponse<T>) then) =
       _$BaseResponseCopyWithImpl<T, $Res, BaseResponse<T>>;
   @useResult
-  $Res call({int status, String message, String access_token, dynamic data});
+  $Res call({int status, String message, String access_token, dynamic? data});
 }
 
 /// @nodoc
@@ -74,7 +74,7 @@ class _$BaseResponseCopyWithImpl<T, $Res, $Val extends BaseResponse<T>>
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as dynamic?,
     ) as $Val);
   }
 }
@@ -87,7 +87,7 @@ abstract class _$$BaseResponseImplCopyWith<T, $Res>
       __$$BaseResponseImplCopyWithImpl<T, $Res>;
   @override
   @useResult
-  $Res call({int status, String message, String access_token, dynamic data});
+  $Res call({int status, String message, String access_token, dynamic? data});
 }
 
 /// @nodoc
@@ -122,7 +122,7 @@ class __$$BaseResponseImplCopyWithImpl<T, $Res>
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as dynamic?,
     ));
   }
 }
@@ -135,7 +135,7 @@ class _$BaseResponseImpl<T> extends _BaseResponse<T>
       {required this.status,
       this.message = "",
       this.access_token = "",
-      this.data = null})
+      this.data})
       : super._();
 
   factory _$BaseResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -150,8 +150,7 @@ class _$BaseResponseImpl<T> extends _BaseResponse<T>
   @JsonKey()
   final String access_token;
   @override
-  @JsonKey()
-  final dynamic data;
+  final dynamic? data;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -189,7 +188,7 @@ abstract class _BaseResponse<T> extends BaseResponse<T> {
       {required final int status,
       final String message,
       final String access_token,
-      final dynamic data}) = _$BaseResponseImpl<T>;
+      final dynamic? data}) = _$BaseResponseImpl<T>;
   _BaseResponse._() : super._();
 
   factory _BaseResponse.fromJson(Map<String, dynamic> json) =
@@ -202,7 +201,7 @@ abstract class _BaseResponse<T> extends BaseResponse<T> {
   @override
   String get access_token;
   @override
-  dynamic get data;
+  dynamic? get data;
   @override
   @JsonKey(ignore: true)
   _$$BaseResponseImplCopyWith<T, _$BaseResponseImpl<T>> get copyWith =>

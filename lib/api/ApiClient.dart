@@ -22,4 +22,19 @@ abstract class ApiClient
 
   @GET("users/school")
   Future<BaseResponse> schoolListAsync();
+
+  @GET('auth/me')
+  Future<BaseResponse> authMeAsync();
+
+  @GET('app/main')
+  Future<BaseResponse> mainAsync();
+
+  @FormUrlEncoded()
+  @POST('auth/login')
+  Future<BaseResponse> loginAsync(
+      @Field('login_id') String id,
+      @Field('password') String password,
+      @Field('school_id') String schoolCode
+      );
+
 }
