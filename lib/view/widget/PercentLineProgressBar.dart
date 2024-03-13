@@ -97,7 +97,7 @@ class _PercentLineProgressBarState extends State<PercentLineProgressBar> with Ti
                   right: 10,
                   child: RobotoNormalText(
                     text: '${_percent.toStringAsFixed(0)}%',
-                    fontSize: CommonUtils.getInstance(context).getWidth(15),
+                    fontSize: CommonUtils.getInstance(context).getWidth(30),
                   )
               )
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:foxschool/view/widget/RobotoRegularText.dart';
 
 import '../../common/CommonUtils.dart';
@@ -34,9 +35,9 @@ class BlueOutlinedTextButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         child: Center(
-          child: RobotoRegularText(
+          child: RobotoNormalText(
             text: text,
-            fontSize: CommonUtils.getInstance(context).getWidth(15),
+            fontSize: CommonUtils.getInstance(context).getWidth(42),
             color: AppColors.color_3370de,
           ),
         ),

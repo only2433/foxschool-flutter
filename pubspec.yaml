@@ -47,7 +47,7 @@ dependencies:
   firebase_core: ^2.7.0
   firebase_database: ^10.0.15
   firebase_in_app_messaging: ^0.7.0+16
-  firebase_messaging: ^14.3.0
+  firebase_messaging: ^14.7.20
   http: ^0.13.5
   intl:
   flutter_inappwebview: ^5.7.2+3
@@ -61,6 +61,8 @@ dependencies:
   mobile_device_identifier: ^0.0.2
   get_it: ^7.6.7
   device_info_plus: ^9.1.2
+  persistent_bottom_nav_bar: any
+  android_id:
 
 
 dev_dependencies:

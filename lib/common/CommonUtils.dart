@@ -65,14 +65,14 @@ class CommonUtils
 
   double getWidth(dynamic size)
   {
-    double tempSize = MediaQuery.of(_context).size.width/size;
-    return MediaQuery.of(_context).size.width/tempSize;
+    double displayFactor = MediaQuery.of(_context).size.width/1080;
+    return size * displayFactor;
   }
 
   double getHeight(dynamic size)
   {
-    double tempSize = MediaQuery.of(_context).size.height/size;
-    return MediaQuery.of(_context).size.height/tempSize;
+    double displayFactor = MediaQuery.of(_context).size.height/1920;
+    return size * displayFactor;
   }
 
 

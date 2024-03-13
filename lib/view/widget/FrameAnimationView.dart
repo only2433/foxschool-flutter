@@ -32,13 +32,27 @@ class _FrameAnimationViewState extends State<FrameAnimationView> with SingleTick
   late bool isStart;
   int _animationIndex = 0;
 
+  void _settingAnimation()
+  {
+    _animationIndex = 0;
+
+    _controller = AnimationController(vsync: this, duration: widget.duration * ANIMATION_PATH.length);
+    _animation = StepTween(begin: 0, end: ANIMATION_PATH.length - 1).animate(_controller);
+    _animation.addListener(() {
+      _animationIndex = _animation.value;
+    });
+
+    if(widget.isStart)
+    {
+      _controller.repeat();
+    }
+  }
+
 
   @override
   void initState() {
     super.initState();
     _settingAnimation();
-    isStart = false;
-    _animationIndex = 0;
   }
 
 
@@ -60,13 +74,11 @@ class _FrameAnimationViewState extends State<FrameAnimationView> with SingleTick
     }
   }
 
-  void _settingAnimation()
-  {
-    _controller = AnimationController(vsync: this, duration: widget.duration * ANIMATION_PATH.length);
-    _animation = StepTween(begin: 0, end: ANIMATION_PATH.length - 1).animate(_controller);
-    _animation.addListener(() {
-      _animationIndex = _animation.value;
-    });
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

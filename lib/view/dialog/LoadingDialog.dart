@@ -9,11 +9,15 @@ void show(BuildContext context)
     builder: (context) {
       return _showLoading();
     },);
+
 }
 
 void dismiss(BuildContext context)
 {
-  Navigator.of(context).pop();
+  if (Navigator.of(context).canPop())
+  {
+    Navigator.of(context).pop();
+  }
 }
 
 Widget _showLoading()

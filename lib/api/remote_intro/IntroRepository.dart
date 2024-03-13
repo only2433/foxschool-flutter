@@ -29,8 +29,19 @@ class IntroRepository extends IntroDataSource
   }
 
   @override
-  Future<BaseResponse> login(String userID, String password, String schoolCode) {
+  Future<BaseResponse> login(String userID, String password, String schoolCode) async{
     return apiClient.loginAsync(userID, password, schoolCode);
+  }
+
+  @override
+  Future<BaseResponse> authMe() async{
+    return apiClient.authMeAsync();
+
+  }
+
+  @override
+  Future<BaseResponse> mainInformation() async{
+    return apiClient.mainAsync();
   }
 
 

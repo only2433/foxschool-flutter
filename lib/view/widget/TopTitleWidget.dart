@@ -31,23 +31,24 @@ class TopTitleWidget extends StatelessWidget {
   {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: CommonUtils.getInstance(context).getHeight(50),
+      height: CommonUtils.getInstance(context).getHeight(145),
       color: AppColors.color_23cc8a,
       child: Stack(
         children: [
           Positioned(
-            top: CommonUtils.getInstance(context).getWidth(8),
-            left: CommonUtils.getInstance(context).getWidth(10),
+            top: CommonUtils.getInstance(context).getWidth(45),
+            left: CommonUtils.getInstance(context).getWidth(40),
             child: GestureDetector(
                 onTap: onPressed,
                 child: Icon(Icons.arrow_back, color: Colors.white,
-                  size: CommonUtils.getInstance(context).getWidth(35),)
+                  size: CommonUtils.getInstance(context).getWidth(80),
+                )
             ),
           ),
           Center(
             child: RobotoBoldText(
               text: title,
-              fontSize: CommonUtils.getInstance(context).getWidth(18),
+              fontSize: CommonUtils.getInstance(context).getWidth(50),
             ),
           ),
 

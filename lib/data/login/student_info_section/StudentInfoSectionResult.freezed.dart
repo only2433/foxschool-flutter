@@ -23,12 +23,12 @@ StudentInfoSectionResult _$StudentInfoSectionResultFromJson(
 mixin _$StudentInfoSectionResult {
   @JsonKey(name: 'school_id')
   String get schoolID => throw _privateConstructorUsedError;
-  int get grade => throw _privateConstructorUsedError;
   @JsonKey(name: 'hasclass')
   String get hasClass => throw _privateConstructorUsedError;
   @JsonKey(name: 'class_name')
   String get className => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get grade => throw _privateConstructorUsedError;
   @JsonKey(name: 'type_name')
   String get typeName => throw _privateConstructorUsedError;
   @JsonKey(name: 'teacher_count')
@@ -57,10 +57,10 @@ abstract class $StudentInfoSectionResultCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'school_id') String schoolID,
-      int grade,
       @JsonKey(name: 'hasclass') String hasClass,
       @JsonKey(name: 'class_name') String className,
       String name,
+      String grade,
       @JsonKey(name: 'type_name') String typeName,
       @JsonKey(name: 'teacher_count') int teacherCount,
       @JsonKey(name: 'student_count') int studentCount,
@@ -85,10 +85,10 @@ class _$StudentInfoSectionResultCopyWithImpl<$Res,
   @override
   $Res call({
     Object? schoolID = null,
-    Object? grade = null,
     Object? hasClass = null,
     Object? className = null,
     Object? name = null,
+    Object? grade = null,
     Object? typeName = null,
     Object? teacherCount = null,
     Object? studentCount = null,
@@ -102,10 +102,6 @@ class _$StudentInfoSectionResultCopyWithImpl<$Res,
           ? _value.schoolID
           : schoolID // ignore: cast_nullable_to_non_nullable
               as String,
-      grade: null == grade
-          ? _value.grade
-          : grade // ignore: cast_nullable_to_non_nullable
-              as int,
       hasClass: null == hasClass
           ? _value.hasClass
           : hasClass // ignore: cast_nullable_to_non_nullable
@@ -117,6 +113,10 @@ class _$StudentInfoSectionResultCopyWithImpl<$Res,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      grade: null == grade
+          ? _value.grade
+          : grade // ignore: cast_nullable_to_non_nullable
               as String,
       typeName: null == typeName
           ? _value.typeName
@@ -161,10 +161,10 @@ abstract class _$$StudentInfoSectionResultImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'school_id') String schoolID,
-      int grade,
       @JsonKey(name: 'hasclass') String hasClass,
       @JsonKey(name: 'class_name') String className,
       String name,
+      String grade,
       @JsonKey(name: 'type_name') String typeName,
       @JsonKey(name: 'teacher_count') int teacherCount,
       @JsonKey(name: 'student_count') int studentCount,
@@ -188,10 +188,10 @@ class __$$StudentInfoSectionResultImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? schoolID = null,
-    Object? grade = null,
     Object? hasClass = null,
     Object? className = null,
     Object? name = null,
+    Object? grade = null,
     Object? typeName = null,
     Object? teacherCount = null,
     Object? studentCount = null,
@@ -205,10 +205,6 @@ class __$$StudentInfoSectionResultImplCopyWithImpl<$Res>
           ? _value.schoolID
           : schoolID // ignore: cast_nullable_to_non_nullable
               as String,
-      grade: null == grade
-          ? _value.grade
-          : grade // ignore: cast_nullable_to_non_nullable
-              as int,
       hasClass: null == hasClass
           ? _value.hasClass
           : hasClass // ignore: cast_nullable_to_non_nullable
@@ -220,6 +216,10 @@ class __$$StudentInfoSectionResultImplCopyWithImpl<$Res>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      grade: null == grade
+          ? _value.grade
+          : grade // ignore: cast_nullable_to_non_nullable
               as String,
       typeName: null == typeName
           ? _value.typeName
@@ -258,10 +258,10 @@ class __$$StudentInfoSectionResultImplCopyWithImpl<$Res>
 class _$StudentInfoSectionResultImpl extends _StudentInfoSectionResult {
   _$StudentInfoSectionResultImpl(
       {@JsonKey(name: 'school_id') this.schoolID = "",
-      this.grade = 0,
       @JsonKey(name: 'hasclass') this.hasClass = "",
       @JsonKey(name: 'class_name') this.className = "",
       this.name = "",
+      this.grade = "",
       @JsonKey(name: 'type_name') this.typeName = "",
       @JsonKey(name: 'teacher_count') this.teacherCount = 0,
       @JsonKey(name: 'student_count') this.studentCount = 0,
@@ -278,9 +278,6 @@ class _$StudentInfoSectionResultImpl extends _StudentInfoSectionResult {
   @JsonKey(name: 'school_id')
   final String schoolID;
   @override
-  @JsonKey()
-  final int grade;
-  @override
   @JsonKey(name: 'hasclass')
   final String hasClass;
   @override
@@ -289,6 +286,9 @@ class _$StudentInfoSectionResultImpl extends _StudentInfoSectionResult {
   @override
   @JsonKey()
   final String name;
+  @override
+  @JsonKey()
+  final String grade;
   @override
   @JsonKey(name: 'type_name')
   final String typeName;
@@ -313,7 +313,7 @@ class _$StudentInfoSectionResultImpl extends _StudentInfoSectionResult {
 
   @override
   String toString() {
-    return 'StudentInfoSectionResult(schoolID: $schoolID, grade: $grade, hasClass: $hasClass, className: $className, name: $name, typeName: $typeName, teacherCount: $teacherCount, studentCount: $studentCount, classCount: $classCount, address: $address, addressDetail: $addressDetail, packageName: $packageName)';
+    return 'StudentInfoSectionResult(schoolID: $schoolID, hasClass: $hasClass, className: $className, name: $name, grade: $grade, typeName: $typeName, teacherCount: $teacherCount, studentCount: $studentCount, classCount: $classCount, address: $address, addressDetail: $addressDetail, packageName: $packageName)';
   }
 
   @override
@@ -323,12 +323,12 @@ class _$StudentInfoSectionResultImpl extends _StudentInfoSectionResult {
             other is _$StudentInfoSectionResultImpl &&
             (identical(other.schoolID, schoolID) ||
                 other.schoolID == schoolID) &&
-            (identical(other.grade, grade) || other.grade == grade) &&
             (identical(other.hasClass, hasClass) ||
                 other.hasClass == hasClass) &&
             (identical(other.className, className) ||
                 other.className == className) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.grade, grade) || other.grade == grade) &&
             (identical(other.typeName, typeName) ||
                 other.typeName == typeName) &&
             (identical(other.teacherCount, teacherCount) ||
@@ -349,10 +349,10 @@ class _$StudentInfoSectionResultImpl extends _StudentInfoSectionResult {
   int get hashCode => Object.hash(
       runtimeType,
       schoolID,
-      grade,
       hasClass,
       className,
       name,
+      grade,
       typeName,
       teacherCount,
       studentCount,
@@ -379,10 +379,10 @@ class _$StudentInfoSectionResultImpl extends _StudentInfoSectionResult {
 abstract class _StudentInfoSectionResult extends StudentInfoSectionResult {
   factory _StudentInfoSectionResult(
           {@JsonKey(name: 'school_id') final String schoolID,
-          final int grade,
           @JsonKey(name: 'hasclass') final String hasClass,
           @JsonKey(name: 'class_name') final String className,
           final String name,
+          final String grade,
           @JsonKey(name: 'type_name') final String typeName,
           @JsonKey(name: 'teacher_count') final int teacherCount,
           @JsonKey(name: 'student_count') final int studentCount,
@@ -400,8 +400,6 @@ abstract class _StudentInfoSectionResult extends StudentInfoSectionResult {
   @JsonKey(name: 'school_id')
   String get schoolID;
   @override
-  int get grade;
-  @override
   @JsonKey(name: 'hasclass')
   String get hasClass;
   @override
@@ -409,6 +407,8 @@ abstract class _StudentInfoSectionResult extends StudentInfoSectionResult {
   String get className;
   @override
   String get name;
+  @override
+  String get grade;
   @override
   @JsonKey(name: 'type_name')
   String get typeName;

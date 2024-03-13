@@ -13,9 +13,6 @@ class StudentInfoSectionResult with _$StudentInfoSectionResult
     @Default("")
     String schoolID,
 
-    @Default(0)
-    int grade,
-
     @JsonKey(name: 'hasclass')
     @Default("")
     String hasClass,
@@ -26,6 +23,9 @@ class StudentInfoSectionResult with _$StudentInfoSectionResult
 
     @Default("")
     String name,
+
+    @Default("")
+    String grade,
 
     @JsonKey(name: 'type_name')
     @Default("")

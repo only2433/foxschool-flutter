@@ -1,9 +1,13 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/intro/event/GetSchoolDataEvent.dart';
 import 'package:foxschool/bloc/intro/event/GetVersionEvent.dart';
+import 'package:foxschool/bloc/intro/state/AuthMeLoadedState.dart';
+import 'package:foxschool/bloc/intro/state/MainInformationLoadedState.dart';
 import 'package:foxschool/bloc/intro/state/SchoolDataLoadedState.dart';
 import 'package:foxschool/bloc/intro/state/VersionLoadedState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
@@ -15,7 +19,9 @@ import 'package:foxschool/view/widget/BlueOutlinedTextButton.dart';
 import 'package:foxschool/view/widget/BlueTextButton.dart';
 import 'package:foxschool/view/widget/FrameAnimationView.dart';
 import 'package:foxschool/view/widget/PercentLineProgressBar.dart';
+import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
+import '../dialog/LoadingDialog.dart' as LoadingDialog;
 
 import '../../bloc/base/BlocState.dart';
 import '../../bloc/intro/IntroBloc.dart';
@@ -30,16 +36,46 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen>
 {
-  final _mobileDeviceIdentifierPlugin = MobileDeviceIdentifier();
+  late StreamSubscription _subscription;
   double _percent = 0;
-  bool _isFrameAnimation = false;
   bool _isLogin = false;
   @override
   void initState()
   {
     super.initState();
     _percent = 0;
-    _isFrameAnimation = false;
+
+  }
+
+  void settingSubscriptions()
+  {
+    var blocState;
+    _subscription = context.read<IntroBloc>().stream.listen((state) {
+      switch(state.runtimeType)
+      {
+        case LoadingState:
+          LoadingDialog.show(context);
+          break;
+        case VersionLoadedState:
+          blocState = state as VersionLoadedState;
+          Logger.d("LoadedState : ${blocState.data.toString()}");
+          break;
+        case AuthMeLoadedState:
+          blocState = state as AuthMeLoadedState;
+          Logger.d("LoadedState : ${blocState.data.toString()}");
+          break;
+        case MainInformationLoadedState:
+          blocState = state as MainInformationLoadedState;
+          Logger.d("LoadedState : ${blocState.data.toString()}");
+          break;
+        case ErrorState:
+          blocState = state as ErrorState;
+          LoadingDialog.dismiss(context);
+          CommonUtils.getInstance(context).showErrorMessage(blocState.message);
+          break;
+      }
+
+    });
   }
 
   @override
@@ -65,22 +101,22 @@ class _IntroScreenState extends State<IntroScreen>
             child: Stack(
               children: [
                 Positioned(
-                  top: CommonUtils.getInstance(context).getHeight(200),
+                  top: CommonUtils.getInstance(context).getHeight(552),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: CommonUtils.getInstance(context).getHeight(300),
                     child: Column(
                       children: [
                         Image.asset('asset/image/intro_logo.png',
-                          width: CommonUtils.getInstance(context).getWidth(80),
-                          height: CommonUtils.getInstance(context).getHeight(40),
+                          width: CommonUtils.getInstance(context).getWidth(194),
+                          height: CommonUtils.getInstance(context).getHeight(100),
                         ),
                         SizedBox(
-                          height: CommonUtils.getInstance(context).getHeight(10),
+                          height: CommonUtils.getInstance(context).getHeight(20),
                         ),
                         Image.asset('asset/image/foxschool_logo.png',
-                          width: CommonUtils.getInstance(context).getWidth(230),
-                          height: CommonUtils.getInstance(context).getHeight(50),
+                          width: CommonUtils.getInstance(context).getWidth(620),
+                          height: CommonUtils.getInstance(context).getHeight(100),
                         ),
                       ],
                     ),
@@ -106,25 +142,17 @@ class _IntroScreenState extends State<IntroScreen>
   {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: CommonUtils.getInstance(context).getHeight(130),
+      height: CommonUtils.getInstance(context).getHeight(300),
       child: Column(
         children: [
 
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _isFrameAnimation = !_isFrameAnimation;
-                Logger.d("isFrameAnimation : ${_isFrameAnimation}");
-              });
-            },
-            child: FrameAnimationView(
-                width: CommonUtils.getInstance(context).getWidth(80),
-                height: CommonUtils.getInstance(context).getWidth(80),
-                duration: Duration(
+          FrameAnimationView(
+              width: CommonUtils.getInstance(context).getWidth(160),
+              height: CommonUtils.getInstance(context).getWidth(160),
+              duration: Duration(
                   milliseconds: 70
-                ),
-                isStart: _isFrameAnimation
-            ),
+              ),
+              isStart: true
           ),
           GestureDetector(
             onTap: () {
@@ -135,8 +163,8 @@ class _IntroScreenState extends State<IntroScreen>
             },
             child: PercentLineProgressBar(
                 percent: _percent,
-                width: CommonUtils.getInstance(context).getWidth(300),
-                height: CommonUtils.getInstance(context).getWidth(25),
+                width: CommonUtils.getInstance(context).getWidth(888),
+                height: CommonUtils.getInstance(context).getWidth(50),
                 progressColor: AppColors.color_alpha_white),
           ),
         ],
@@ -148,71 +176,53 @@ class _IntroScreenState extends State<IntroScreen>
   {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: CommonUtils.getInstance(context).getHeight(200),
-
+      height: CommonUtils.getInstance(context).getHeight(524),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(5),
           ),
-          Text(getIt<FoxschoolLocalization>().data['message_intro_foxschool'],
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: CommonUtils.getInstance(context).getWidth(15),
-              fontFamily: 'Roboto',
-              color: Colors.white
-            ),
+          RobotoNormalText(
+              text: getIt<FoxschoolLocalization>().data['message_intro_foxschool'],
+              fontSize: CommonUtils.getInstance(context).getWidth(34),
+              align: TextAlign.center
           ),
           SizedBox(
-            height: CommonUtils.getInstance(context).getHeight(15),
+            height: CommonUtils.getInstance(context).getHeight(30),
           ),
           BlueOutlinedTextButton(
-              width: CommonUtils.getInstance(context).getWidth(300),
-              height: CommonUtils.getInstance(context).getHeight(50),
+              width: CommonUtils.getInstance(context).getWidth(788),
+              height: CommonUtils.getInstance(context).getHeight(120),
               text: getIt<FoxschoolLocalization>().data['text_login'],
-              onPressed: (){
-                Navigator.of(context).pushNamed(RouteHelper.getLogin());
+              onPressed: () async{
+                var result = await Navigator.of(context).pushNamed(RouteHelper.getLogin());
+
+                if(result as bool)
+                  {
+                    Logger.d("result : true");
+                    setState(() {
+                      _isLogin = true;
+                    });
+                    //context.read<IntroBloc>().add(
+                        //GetVersionEvent(
+                       //     deviceType: deviceType,
+                       //     pushAddress: pushAddress,
+                       //     pushOn: pushOn)
+                    //);
+                  }
+
               }),
           SizedBox(
-            height: CommonUtils.getInstance(context).getHeight(20),
+            height: CommonUtils.getInstance(context).getHeight(60),
           ),
           BlueTextButton(
-              width: CommonUtils.getInstance(context).getWidth(300),
-              height: CommonUtils.getInstance(context).getHeight(50),
+              width: CommonUtils.getInstance(context).getWidth(788),
+              height: CommonUtils.getInstance(context).getHeight(120),
               text: getIt<FoxschoolLocalization>().data['text_foxschool_introduce'],
-              onPressed: () async{
+              onPressed: () {
                 Navigator.of(context).pushNamed(RouteHelper.getFoxschoolIntroduce());
-               /* context.read<IntroBloc>().add(
-                    GetVersionEvent(
-                        deviceType: deviceID,
-                        pushAddress: "",
-                        pushOn: 'Y')
-                );
-                context.read<IntroBloc>().add(
-                  GetSchoolDataEvent()
-                );*/
               }),
-          BlocListener<IntroBloc, BlocState>(listener: (context, state) {
-              if(state is VersionLoadedState)
-                {
-                  Logger.d("VersionLoadedState Loaded : ${state.data.toString()}");
-                }
-              else if(state is SchoolDataLoadedState)
-                {
-                  Logger.d("SchoolDataLoadedState Loaded : ${state.data.toString()}");
-                }
-              else if(state is LoadingState)
-                {
-                  Logger.d("Loading....");
-                }
-              else if(state is ErrorState)
-                {
-                  Logger.d("Error : ${state.message}");
-                }
-            },
-            child: Container(),
-          )
         ],
       ),
     );
