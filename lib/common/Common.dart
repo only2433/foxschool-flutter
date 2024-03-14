@@ -85,6 +85,7 @@ class Common
   static const String PARAMS_CHECK_TABLET = "check_tablet";
   static const String PARAMS_CHECK_PHONE_DEVICE_RADIO = "check_phone_device_radio";
   static const String PARAMS_CHECK_TABLET_DEVICE_RADIO = "check_tablet_device_radio";
+  static const String PARAMS_SECURE_ANDROID_ID = "secure_android_id";
 
   static const String INTENT_IS_LOGIN_FROM_MAIN = "init_intro_login";
   static const String INTENT_PLAYER_DATA_PARAMS = "player_data_params";
@@ -236,4 +237,6 @@ class Common
   static const int SUCCESS_CODE_OK = 200;
 
   static const int PAGE_LOAD_COUNT = 20;
+
+  static const String TEST_USER_AGENT = "LF_APP_AOS:phone/1.0.0/SM-N981N/Android:13";
 }

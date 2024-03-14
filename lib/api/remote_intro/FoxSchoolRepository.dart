@@ -2,16 +2,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:foxschool/api/ApiClient.dart';
-import 'package:foxschool/api/remote_intro/IntroDataSource.dart';
+import 'package:foxschool/api/remote_intro/FoxSchoolDataSource.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/data/version_data_result/VersionDataResult.dart';
 
-class IntroRepository extends IntroDataSource
+class FoxSchoolRepository extends FoxSchoolDataSource
 {
   final Dio dio;
   final ApiClient apiClient;
 
-  IntroRepository({
+  FoxSchoolRepository({
     required this.dio,
     required this.apiClient
   });

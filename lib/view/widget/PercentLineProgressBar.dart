@@ -3,6 +3,8 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 
+import '../../common/Common.dart';
+
 class PercentLineProgressBar extends StatefulWidget {
   final double percent;
   final double width;
@@ -22,7 +24,8 @@ class PercentLineProgressBar extends StatefulWidget {
 
 class _PercentLineProgressBarState extends State<PercentLineProgressBar> with TickerProviderStateMixin {
 
-  late double _percent;
+  double _percent = 0;
+  double _oldPercent = 0;
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -44,12 +47,17 @@ class _PercentLineProgressBarState extends State<PercentLineProgressBar> with Ti
 
   void settingAnimation()
   {
-    _controller = AnimationController(vsync: this, duration: Duration(seconds: 1));
-    _animation = Tween<double>(begin: 0, end: widget.percent).animate(_controller)
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: Common.DURATION_NORMAL));
+    _animation = Tween<double>(begin: _oldPercent, end: widget.percent).animate(_controller)
       ..addListener(() {
         setState(() {
           _percent = _animation.value;
         });
+
+        if(widget.percent == _animation.value)
+          {
+            _oldPercent = _percent;
+          }
       });
     _controller.forward();
   }
@@ -63,7 +71,6 @@ class _PercentLineProgressBarState extends State<PercentLineProgressBar> with Ti
 
   @override
   Widget build(BuildContext context) {
-    Logger.d("onDraw : ${_percent}");
     return _ProgressBar();
   }
 

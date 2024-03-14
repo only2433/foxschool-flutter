@@ -6,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:foxschool/api/remote_intro/IntroRepository.dart';
+import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
 import 'package:foxschool/bloc/intro/IntroBloc.dart';
+import 'package:foxschool/bloc/login/LoginBloc.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/route/RouteHelper.dart';
@@ -34,7 +35,8 @@ void main() async {
 
 
   const _androidIdPlugin = AndroidId();
-  final String? androidId = await _androidIdPlugin.getId();
+  final String androidId = await _androidIdPlugin.getId() ?? "";
+  await Preference.setString(Common.PARAMS_SECURE_ANDROID_ID, androidId);
   Logger.d("secureID : ${androidId}");
 
   Bloc.observer = FoxschoolBlocObserver();
@@ -52,6 +54,9 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(
               create: (context) => getIt<IntroBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => getIt<LoginBloc>(),
           )
         ],
         child: MaterialApp(

@@ -6,9 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
-import 'package:foxschool/bloc/intro/event/LoginEvent.dart';
-import 'package:foxschool/bloc/intro/state/LoginLoadedState.dart';
-import 'package:foxschool/bloc/intro/state/SchoolDataLoadedState.dart';
+import 'package:foxschool/bloc/login/LoginBloc.dart';
+import 'package:foxschool/bloc/login/state/LoginLoadedState.dart';
 import 'package:foxschool/view/widget/BlueTextButton.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
@@ -17,7 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_loading_dialog/simple_loading_dialog.dart';
 
 import '../../bloc/intro/IntroBloc.dart';
-import '../../bloc/intro/event/GetSchoolDataEvent.dart';
+import '../../bloc/login/event/GetSchoolDataEvent.dart';
+import '../../bloc/login/event/LoginEvent.dart';
+import '../../bloc/login/state/SchoolDataLoadedState.dart';
 import '../../common/Common.dart';
 import '../../common/CommonUtils.dart';
 import '../../common/FoxschoolLocalization.dart';
@@ -63,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp)
     {
 
-      context.read<IntroBloc>().add(
+      context.read<LoginBloc>().add(
           GetSchoolDataEvent()
       );
     });
@@ -75,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
   {
 
     var blocState;
-    _subscription = context.read<IntroBloc>().stream.listen((state) {
+    _subscription = context.read<LoginBloc>().stream.listen((state) {
 
       switch (state.runtimeType) {
         case LoadingState:
@@ -108,25 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
             break;
           }
       }
-      /*if(state is LoadingState) {
-        LoadingDialog.show(context);
-      }
-      if (state is SchoolDataLoadedState) {
-        Logger.d("LoadedState : ${state.data.toString()}");
-        LoadingDialog.dismiss(context);// 다이얼로그 닫기
-        _schoolDataList = state.data;
-      }
-      else if(state is LoginLoadedState) {
-        Logger.d("LoadedState : ${state.data.toString()}");
-        LoadingDialog.dismiss(context);// 다이얼로그 닫기
-        isLoginSuccess = true;
-        Navigator.of(context).pop(isLoginSuccess);
-      }
-      else if(state is ErrorState) {
-        LoadingDialog.dismiss(context);
-        CommonUtils.getInstance(context).showErrorMessage(state.message);
-      }*/
-
     });
   }
 
@@ -191,10 +173,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     else
     {
-      context.read<IntroBloc>().add(
+      context.read<LoginBloc>().add(
           LoginEvent(
-              loginID: _userID,
-              password: _userPassword,
+              loginID: _userID.trim().toString(),
+              password: _userPassword.trim().toString(),
               schoolCode: _selectSchoolID)
       );
     }

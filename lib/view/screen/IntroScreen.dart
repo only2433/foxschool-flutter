@@ -4,11 +4,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:foxschool/bloc/intro/event/GetSchoolDataEvent.dart';
+import 'package:foxschool/bloc/intro/event/AuthMeEvent.dart';
+import 'package:foxschool/bloc/login/event/GetSchoolDataEvent.dart';
 import 'package:foxschool/bloc/intro/event/GetVersionEvent.dart';
+import 'package:foxschool/bloc/intro/event/MainInformationEvent.dart';
 import 'package:foxschool/bloc/intro/state/AuthMeLoadedState.dart';
 import 'package:foxschool/bloc/intro/state/MainInformationLoadedState.dart';
-import 'package:foxschool/bloc/intro/state/SchoolDataLoadedState.dart';
 import 'package:foxschool/bloc/intro/state/VersionLoadedState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -21,8 +22,9 @@ import 'package:foxschool/view/widget/FrameAnimationView.dart';
 import 'package:foxschool/view/widget/PercentLineProgressBar.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
+import '../../common/Common.dart';
 import '../dialog/LoadingDialog.dart' as LoadingDialog;
-
+import '../../common/Preference.dart' as Preference;
 import '../../bloc/base/BlocState.dart';
 import '../../bloc/intro/IntroBloc.dart';
 import '../../values/AppColors.dart';
@@ -36,41 +38,67 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen>
 {
+  final List<double> _PROGRESS_PERCENT = [0, 30, 60, 100];
   late StreamSubscription _subscription;
-  double _percent = 0;
+  double? _percent;
   bool _isLogin = false;
   @override
   void initState()
   {
     super.initState();
     _percent = 0;
+    settingSubscriptions();
 
   }
 
   void settingSubscriptions()
   {
     var blocState;
-    _subscription = context.read<IntroBloc>().stream.listen((state) {
+    _subscription = context.read<IntroBloc>().stream.listen((state) async {
       switch(state.runtimeType)
       {
-        case LoadingState:
-          LoadingDialog.show(context);
-          break;
         case VersionLoadedState:
           blocState = state as VersionLoadedState;
-          Logger.d("LoadedState : ${blocState.data.toString()}");
+          await Preference.setObject(Common.PARAMS_VERSION_INFORMATION, blocState.data);
+          Logger.d("VersionLoadedState : ${blocState.data.toString()}");
+          setState(() {
+            _percent = _PROGRESS_PERCENT[1];
+          });
+          await Future.delayed(const Duration(
+              milliseconds: Common.DURATION_LONGEST
+          ));
+          context.read<IntroBloc>().add(
+            AuthMeEvent()
+          );
           break;
         case AuthMeLoadedState:
           blocState = state as AuthMeLoadedState;
-          Logger.d("LoadedState : ${blocState.data.toString()}");
+          await Preference.setObject(Common.PARAMS_USER_API_INFORMATION, blocState.data);
+          Logger.d("AuthMeLoadedState : ${blocState.data.toString()}");
+          setState(() {
+            _percent = _PROGRESS_PERCENT[2];
+          });
+          await Future.delayed(const Duration(
+              milliseconds: Common.DURATION_LONGEST
+          ));
+          context.read<IntroBloc>().add(
+              MainInformationEvent()
+          );
           break;
         case MainInformationLoadedState:
           blocState = state as MainInformationLoadedState;
-          Logger.d("LoadedState : ${blocState.data.toString()}");
+          await Preference.setObject(Common.PARAMS_FILE_MAIN_INFO, blocState.data);
+          Logger.d("MainInformationLoadedState : ${blocState.data.toString()}");
+          setState(() {
+            _percent = _PROGRESS_PERCENT[3];
+          });
+          await Future.delayed(const Duration(
+              milliseconds: Common.DURATION_LONGEST
+          ));
+          Navigator.of(context).pushReplacementNamed(RouteHelper.getMain());
           break;
         case ErrorState:
           blocState = state as ErrorState;
-          LoadingDialog.dismiss(context);
           CommonUtils.getInstance(context).showErrorMessage(blocState.message);
           break;
       }
@@ -154,18 +182,11 @@ class _IntroScreenState extends State<IntroScreen>
               ),
               isStart: true
           ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _percent = 50;
-                Logger.d("_percent : ${_percent}");
-              });
-            },
-            child: PercentLineProgressBar(
-                percent: _percent,
+          PercentLineProgressBar(
+                percent: _percent ?? 0,
                 width: CommonUtils.getInstance(context).getWidth(888),
                 height: CommonUtils.getInstance(context).getWidth(50),
-                progressColor: AppColors.color_alpha_white),
+                progressColor: AppColors.color_alpha_white
           ),
         ],
       ),
@@ -197,19 +218,22 @@ class _IntroScreenState extends State<IntroScreen>
               text: getIt<FoxschoolLocalization>().data['text_login'],
               onPressed: () async{
                 var result = await Navigator.of(context).pushNamed(RouteHelper.getLogin());
-
+                _percent = _PROGRESS_PERCENT[0];
                 if(result as bool)
                   {
                     Logger.d("result : true");
                     setState(() {
+
                       _isLogin = true;
                     });
-                    //context.read<IntroBloc>().add(
-                        //GetVersionEvent(
-                       //     deviceType: deviceType,
-                       //     pushAddress: pushAddress,
-                       //     pushOn: pushOn)
-                    //);
+                    String androidID = await Preference.getString(Common.PARAMS_SECURE_ANDROID_ID);
+                    String token = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
+                    context.read<IntroBloc>().add(
+                        GetVersionEvent(
+                            deviceType: androidID,
+                            pushAddress: token,
+                            pushOn: "Y")
+                    );
                   }
 
               }),
