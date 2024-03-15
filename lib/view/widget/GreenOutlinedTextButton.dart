@@ -5,13 +5,13 @@ import 'package:foxschool/view/widget/RobotoRegularText.dart';
 import '../../common/CommonUtils.dart';
 import '../../values/AppColors.dart';
 
-class BlueOutlinedTextButton extends StatelessWidget {
+class GreenOutlinedTextButton extends StatelessWidget {
   final double width;
   final double height;
   final String text;
   final VoidCallback onPressed;
 
-  const BlueOutlinedTextButton({
+  const GreenOutlinedTextButton({
     Key? key,
     required this.width,
     required this.height,
@@ -26,7 +26,7 @@ class BlueOutlinedTextButton extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
           border: Border.all(
-              color: AppColors.color_3370de,
+              color: AppColors.color_23cc8a,
               width: CommonUtils.getInstance(context).getWidth(2)
           ),
           color: Colors.white,
@@ -38,7 +38,7 @@ class BlueOutlinedTextButton extends StatelessWidget {
           child: RobotoNormalText(
             text: text,
             fontSize: CommonUtils.getInstance(context).getWidth(42),
-            color: AppColors.color_3370de,
+            color: AppColors.color_23cc8a,
           ),
         ),
       ),

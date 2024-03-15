@@ -42,13 +42,15 @@ class _IntroScreenState extends State<IntroScreen>
   late StreamSubscription _subscription;
   double? _percent;
   bool _isLogin = false;
+
+
   @override
   void initState()
   {
     super.initState();
     _percent = 0;
     settingSubscriptions();
-
+    checkAutoLogin();
   }
 
   void settingSubscriptions()
@@ -104,6 +106,33 @@ class _IntroScreenState extends State<IntroScreen>
       }
 
     });
+  }
+
+  void checkAutoLogin() async
+  {
+    bool isAutoLogin = await Preference.getBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA);
+    if(isAutoLogin)
+      {
+        executeMain();
+      }
+  }
+
+  Future<void> executeMain() async
+  {
+    setState(() {
+      _isLogin = true;
+    });
+    await Future.delayed(Duration(
+        milliseconds: Common.DURATION_LONG
+    ));
+    String androidID = await Preference.getString(Common.PARAMS_SECURE_ANDROID_ID);
+    String token = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
+    context.read<IntroBloc>().add(
+        GetVersionEvent(
+            deviceType: androidID,
+            pushAddress: token,
+            pushOn: "Y")
+    );
   }
 
   @override
@@ -222,20 +251,9 @@ class _IntroScreenState extends State<IntroScreen>
                 if(result as bool)
                   {
                     Logger.d("result : true");
-                    setState(() {
 
-                      _isLogin = true;
-                    });
-                    String androidID = await Preference.getString(Common.PARAMS_SECURE_ANDROID_ID);
-                    String token = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
-                    context.read<IntroBloc>().add(
-                        GetVersionEvent(
-                            deviceType: androidID,
-                            pushAddress: token,
-                            pushOn: "Y")
-                    );
+                    executeMain();
                   }
-
               }),
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(60),

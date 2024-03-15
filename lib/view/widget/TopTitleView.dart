@@ -5,11 +5,11 @@ import '../../common/CommonUtils.dart';
 import '../../enum/TopTitleButtonType.dart';
 import '../../values/AppColors.dart';
 
-class TopTitleWidget extends StatelessWidget {
+class TopTitleView extends StatelessWidget {
   final String title;
   final TopTitleButtonType type;
   final VoidCallback onPressed;
-  const TopTitleWidget({super.key,
+  const TopTitleView({super.key,
     required this.title,
     required this.type,
     required this.onPressed});

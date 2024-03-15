@@ -3,21 +3,20 @@ import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:foxschool/view/screen/LoginScreen.dart';
 import 'package:foxschool/view/screen/MainScreen.dart';
 import 'package:foxschool/view/screen/webview/FoxschoolIntroduceScreen.dart';
-import 'package:page_animation_transition/animations/left_to_right_faded_transition.dart';
-import 'package:page_animation_transition/animations/right_to_left_faded_transition.dart';
-import 'package:page_animation_transition/animations/right_to_left_transition.dart';
-import 'package:page_animation_transition/page_animation_transition.dart';
+import 'package:page_transition/page_transition.dart';
 
 class RouteHelper
 {
   static const String _INTRO  = "/app/screen/intro";
   static const String _LOGIN  = "/app/screen/login";
+  static const String _LOGOUT = "/app/screen/logout";
   static const String _MAIN   = "/app/screen/main";
   static const String _WEBVIEW_FOXSCHOOL_INTRODUCE = "/app/screen/webview/foxschool_introduce";
 
 
   static String getIntro() => '$_INTRO';
   static String getLogin() => '$_LOGIN';
+  static String getLogout() => '$_LOGOUT';
   static String getMain() => '$_MAIN';
   static String getFoxschoolIntroduce() =>'$_WEBVIEW_FOXSCHOOL_INTRODUCE';
 
@@ -27,21 +26,28 @@ class RouteHelper
     switch(settings.name)
     {
       case _INTRO:
-        return PageAnimationTransition(
-            page: const IntroScreen(),
-            pageAnimationType: RightToLeftTransition());
+        return PageTransition(
+            child: const IntroScreen(),
+            type: PageTransitionType.rightToLeft,
+            settings: settings);
       case _LOGIN:
-        return PageAnimationTransition(
-            page: const LoginScreen(),
-            pageAnimationType: RightToLeftTransition());
+        return PageTransition(
+            child: const LoginScreen(),
+            type: PageTransitionType.rightToLeft);
+      case _LOGOUT:
+        return PageTransition(
+            child: const IntroScreen(),
+            type: PageTransitionType.leftToRight);
       case _MAIN:
-        return PageAnimationTransition(
-            page: const MainScreen(),
-            pageAnimationType: RightToLeftTransition());
+        return PageTransition(
+            child: const MainScreen(),
+            type: PageTransitionType.rightToLeft);
       case _WEBVIEW_FOXSCHOOL_INTRODUCE:
-        return PageAnimationTransition(
-            page: const FoxschoolIntroduceScreen(),
-            pageAnimationType: RightToLeftTransition());
+        return PageTransition(
+            childCurrent: const IntroScreen(),
+            child: const FoxschoolIntroduceScreen(),
+            type: PageTransitionType.rightToLeft,
+            settings: settings);
       default:
        return null;
     }

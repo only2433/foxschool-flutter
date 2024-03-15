@@ -3,7 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/enum/TopTitleButtonType.dart';
 import 'package:foxschool/values/AppColors.dart';
-import 'package:foxschool/view/widget/TopTitleWidget.dart';
+import 'package:foxschool/view/widget/TopTitleView.dart';
 import 'package:simple_loading_dialog/simple_loading_dialog.dart';
 
 import '../../../common/Common.dart';
@@ -37,7 +37,7 @@ class _FoxschoolIntroduceScreenState extends State<FoxschoolIntroduceScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              TopTitleWidget(
+              TopTitleView(
                   title: getIt<FoxschoolLocalization>().data['text_foxschool_introduce'],
                   type: TopTitleButtonType.BACK,
                   onPressed: () {

@@ -1,5 +1,7 @@
 enum TopTitleButtonType
 {
   BACK,
-  CLOSE
+  CLOSE,
+  MENU,
+  SEARCH
 }

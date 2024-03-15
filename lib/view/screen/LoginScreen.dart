@@ -28,7 +28,7 @@ import '../../di/Dependencies.dart';
 import '../../enum/TopTitleButtonType.dart';
 import '../../values/AppColors.dart';
 import '../widget/LightBlueTextButton.dart';
-import '../widget/TopTitleWidget.dart';
+import '../widget/TopTitleView.dart';
 import '../dialog/LoadingDialog.dart' as LoadingDialog;
 
 class LoginScreen extends StatefulWidget {
@@ -38,8 +38,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-
+class _LoginScreenState extends State<LoginScreen>
+{
   TextEditingController _schoolNameTextController = TextEditingController();
   final int MAX_TEXT_FIELD_COUNT = 3;
   final _formKey = GlobalKey<FormState>();
@@ -55,29 +55,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isSchoolListItemSelected = false;
   bool isLoginSuccess = false;
 
-  @override
-  void initState() {
-    super.initState();
-    Logger.d("initState");
-    isLoginSuccess = false;
-    settingFocusNode();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp)
-    {
 
-      context.read<LoginBloc>().add(
-          GetSchoolDataEvent()
-      );
-    });
-    settingSubscriptions();
-
-  }
-
-  void settingSubscriptions()
-  {
-
+  void _settingSubscriptions() {
     var blocState;
     _subscription = context.read<LoginBloc>().stream.listen((state) {
-
       switch (state.runtimeType) {
         case LoadingState:
           {
@@ -112,35 +93,28 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void settingFocusNode() {
+  void _settingFocusNode() {
     _focusNodeList = List.generate(MAX_TEXT_FIELD_COUNT, (index) => FocusNode());
     for (var focus in _focusNodeList) {
       focus.addListener(() {
-        setState(() {
-        });
+        setState(() {});
       });
     }
   }
 
-  void settingCurrentSearchSchoolList()
-  {
+  void _settingCurrentSearchSchoolList() {
     _currentSearchSchoolList = [];
-    for(int i = 0; i < _schoolDataList.length; i++)
-      {
-        if(_schoolDataList[i].name.contains(_schoolName))
-          {
-            _currentSearchSchoolList.add(_schoolDataList[i]);
-          }
+    for (int i = 0; i < _schoolDataList.length; i++) {
+      if (_schoolDataList[i].name.contains(_schoolName)) {
+        _currentSearchSchoolList.add(_schoolDataList[i]);
       }
+    }
   }
 
-  String getSchoolID(String selectSchoolName)
-  {
+  String _getSchoolID(String selectSchoolName) {
     String result = "";
-    for(var data in _schoolDataList)
-    {
-      if(data.name == selectSchoolName)
-      {
+    for (var data in _schoolDataList) {
+      if (data.name == selectSchoolName) {
         result = data.id;
         break;
       }
@@ -148,44 +122,36 @@ class _LoginScreenState extends State<LoginScreen> {
     return result;
   }
 
-  void submitLogin()
-  {
-    if(_selectSchoolID == "" || _userID == "" || _userPassword == "")
-    {
-      if(_selectSchoolID == "")
-        {
-          CommonUtils.getInstance(context).showErrorMessage(
-            getIt<FoxschoolLocalization>().data['message_warning_empty_school']
-          );
-        }
-      else if(_userID == "")
-        {
-          CommonUtils.getInstance(context).showErrorMessage(
-              getIt<FoxschoolLocalization>().data['message_warning_empty_id']
-          );
-        }
-      else if(_userPassword == "")
-        {
-          CommonUtils.getInstance(context).showErrorMessage(
-              getIt<FoxschoolLocalization>().data['message_warning_empty_password']
-          );
-        }
-    }
-    else
-    {
-      context.read<LoginBloc>().add(
-          LoginEvent(
-              loginID: _userID.trim().toString(),
-              password: _userPassword.trim().toString(),
-              schoolCode: _selectSchoolID)
-      );
+  void _submitLogin() {
+    if (_selectSchoolID == "" || _userID == "" || _userPassword == "") {
+      if (_selectSchoolID == "") {
+        CommonUtils.getInstance(context).showErrorMessage(getIt<FoxschoolLocalization>().data['message_warning_empty_school']);
+      } else if (_userID == "") {
+        CommonUtils.getInstance(context).showErrorMessage(getIt<FoxschoolLocalization>().data['message_warning_empty_id']);
+      } else if (_userPassword == "") {
+        CommonUtils.getInstance(context).showErrorMessage(getIt<FoxschoolLocalization>().data['message_warning_empty_password']);
+      }
+    } else {
+      context.read<LoginBloc>().add(LoginEvent(loginID: _userID.trim().toString(), password: _userPassword.trim().toString(), schoolCode: _selectSchoolID));
     }
   }
 
-  void disposeFocusNode() {
+  void _disposeFocusNode() {
     for (var focusNode in _focusNodeList) {
       focusNode.dispose();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Logger.d("initState");
+    isLoginSuccess = false;
+    _settingFocusNode();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      context.read<LoginBloc>().add(GetSchoolDataEvent());
+    });
+    _settingSubscriptions();
   }
 
   @override
@@ -194,34 +160,30 @@ class _LoginScreenState extends State<LoginScreen> {
     Logger.d("activate");
   }
 
-
   @override
   void dispose() {
     _subscription.cancel();
     _schoolNameTextController.dispose();
-    disposeFocusNode();
+    _disposeFocusNode();
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: AppColors.color_47e1ad,
-        child: SafeArea(
-            child: Column(
-                children: [
-                  TopTitleWidget(
-                      title: getIt<FoxschoolLocalization>().data['text_login'],
-                      type: TopTitleButtonType.BACK,
-                      onPressed: () {
-                        Navigator.of(context).pop(isLoginSuccess);
-                      },
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: AppColors.color_47e1ad,
+            child: SafeArea(
+                child: Column(children: [
+                  TopTitleView(
+                    title: getIt<FoxschoolLocalization>().data['text_login'],
+                    type: TopTitleButtonType.BACK,
+                    onPressed: () {
+                      Navigator.of(context).pop(isLoginSuccess);
+                    },
                   ),
                   Expanded(
                     child: Container(
@@ -236,12 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: CommonUtils.getInstance(context).getHeight(1000),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    border: Border.all(
-                                        color: AppColors.color_999999,
-                                        width: CommonUtils.getInstance(context).getWidth(2)
-                                    ),
-                                    borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10))
-                                ),
+                                    border: Border.all(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2)),
+                                    borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10))),
                                 child: Column(
                                   children: [
                                     _InputTextField(),
@@ -252,17 +210,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         GestureDetector(
-                                          onTap: (){
+                                          onTap: () {
                                             setState(() {
                                               _isAutoLoginCheck = !_isAutoLoginCheck;
                                             });
                                             Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, _isAutoLoginCheck);
                                           },
-                                          child: _isAutoLoginCheck == false ?
-                                          Image.asset('asset/image/radio_off.png',
-                                            width: CommonUtils.getInstance(context).getWidth(60),
-                                            height: CommonUtils.getInstance(context).getWidth(60)) :
-                                          Image.asset('asset/image/radio_on.png',
+                                          child: _isAutoLoginCheck == false
+                                              ? Image.asset('asset/image/radio_off.png', width: CommonUtils.getInstance(context).getWidth(60), height: CommonUtils.getInstance(context).getWidth(60))
+                                              : Image.asset(
+                                            'asset/image/radio_on.png',
                                             width: CommonUtils.getInstance(context).getWidth(60),
                                             height: CommonUtils.getInstance(context).getWidth(60),
                                           ),
@@ -270,25 +227,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                         SizedBox(
                                           width: CommonUtils.getInstance(context).getWidth(20),
                                         ),
-                                        Text(getIt<FoxschoolLocalization>().data['text_auto_login'],
-                                        style: TextStyle(
-                                          color: AppColors.color_444444,
-                                          fontFamily: 'Roboto',
-                                          fontSize: CommonUtils.getInstance(context).getWidth(40),
-                                          fontWeight: FontWeight.normal
-                                        ),),
+                                        Text(
+                                          getIt<FoxschoolLocalization>().data['text_auto_login'],
+                                          style: TextStyle(color: AppColors.color_444444, fontFamily: 'Roboto', fontSize: CommonUtils.getInstance(context).getWidth(40), fontWeight: FontWeight.normal),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(
                                       height: CommonUtils.getInstance(context).getHeight(35),
                                     ),
                                     LightBlueTextButton(
-                                        width: CommonUtils.getInstance(context).getWidth(880),
-                                        height: CommonUtils.getInstance(context).getWidth(120),
-                                        text: getIt<FoxschoolLocalization>().data['text_login'],
-                                        onPressed: () {
-                                          submitLogin();
-                                        },),
+                                      width: CommonUtils.getInstance(context).getWidth(880),
+                                      height: CommonUtils.getInstance(context).getWidth(120),
+                                      text: getIt<FoxschoolLocalization>().data['text_login'],
+                                      onPressed: () {
+                                        _submitLogin();
+                                      },
+                                    ),
                                     SizedBox(
                                       height: CommonUtils.getInstance(context).getHeight(88),
                                     ),
@@ -296,9 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         RobotoNormalText(
-                                            text: getIt<FoxschoolLocalization>().data['text_find_login'],
-                                            fontSize: CommonUtils.getInstance(context).getWidth(38),
-                                            color: AppColors.color_444444),
+                                            text: getIt<FoxschoolLocalization>().data['text_find_login'], fontSize: CommonUtils.getInstance(context).getWidth(38), color: AppColors.color_444444),
                                         SizedBox(
                                           width: CommonUtils.getInstance(context).getWidth(40),
                                         ),
@@ -313,30 +266,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                           width: CommonUtils.getInstance(context).getWidth(40),
                                         ),
                                         RobotoNormalText(
-                                            text: getIt<FoxschoolLocalization>().data['text_find_password'],
-                                            fontSize: CommonUtils.getInstance(context).getWidth(40),
-                                            color: AppColors.color_444444),
+                                            text: getIt<FoxschoolLocalization>().data['text_find_password'], fontSize: CommonUtils.getInstance(context).getWidth(40), color: AppColors.color_444444),
                                       ],
                                     )
                                   ],
-                                )
-                            ),
-                            if(_schoolName.length > 0 && _focusNodeList[0].hasFocus)
-                              _SchoolListView(),
+                                )),
+                            if (_schoolName.length > 0 && _focusNodeList[0].hasFocus) _SchoolListView(),
                             _bottomInfoLayout()
                           ],
                         ),
                       ),
                     ),
                   )
-                ])
-            )
-        )
-    );
+                ]))));
   }
 
-  Widget _InputTextField()
-  {
+  Widget _InputTextField() {
     return Form(
       key: _formKey,
       child: Padding(
@@ -366,23 +311,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 onFieldSubmitted: (value) {
                   Logger.d("onSaved : ${value}");
-                  String schoolID = getSchoolID(value);
-                  if(schoolID == "")
-                  {
+                  String schoolID = _getSchoolID(value);
+                  if (schoolID == "") {
                     _schoolNameTextController.clear();
-                      setState(() {
-                        _schoolName = "";
-                      });
-                  }
-                  else
-                  {
+                    setState(() {
+                      _schoolName = "";
+                    });
+                  } else {
                     _selectSchoolID = schoolID;
                   }
                 },
                 onChanged: (value) {
                   setState(() {
                     _schoolName = value;
-                    settingCurrentSearchSchoolList();
+                    _settingCurrentSearchSchoolList();
                   });
                 },
                 decoration: InputDecoration(
@@ -390,14 +332,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     fillColor: Colors.white,
                     prefixIcon: Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Image.asset('asset/image/icon_search_2.png',
+                      child: Image.asset(
+                        'asset/image/icon_search_2.png',
                         width: CommonUtils.getInstance(context).getWidth(45),
                         height: CommonUtils.getInstance(context).getHeight(53),
                         fit: BoxFit.contain,
                         color: _focusNodeList[0].hasFocus ? AppColors.color_26d0df : AppColors.color_cccccc,
                       ),
                     ),
-                    suffixIcon: _schoolName.length > 0 && _focusNodeList[0].hasFocus ?  GestureDetector(
+                    suffixIcon: _schoolName.length > 0 && _focusNodeList[0].hasFocus
+                        ? GestureDetector(
                       onTap: () {
                         _schoolNameTextController.clear();
 
@@ -407,44 +351,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(14.0),
-                        child: Image.asset('asset/image/btn_tex_del.png',
+                        child: Image.asset(
+                          'asset/image/btn_tex_del.png',
                           width: CommonUtils.getInstance(context).getWidth(60),
                           height: CommonUtils.getInstance(context).getWidth(60),
                           fit: BoxFit.contain,
                         ),
                       ),
-                    ) : null,
+                    )
+                        : null,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: _schoolName.length > 0  && _focusNodeList[0].hasFocus ? BorderRadius.only(
-                              topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)),
-                              topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10))
-                            ) :
-                             BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)
-                        ),
-                        borderSide: BorderSide(
-                            color: AppColors.color_999999,
-                            width: CommonUtils.getInstance(context).getWidth(2)
-                        )
-                    ),
+                        borderRadius: _schoolName.length > 0 && _focusNodeList[0].hasFocus
+                            ? BorderRadius.only(topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)), topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10)))
+                            : BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
+                        borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     focusedBorder: OutlineInputBorder(
-                        borderRadius: _schoolName.length > 0  && _focusNodeList[0].hasFocus ? BorderRadius.only(
-                            topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)),
-                            topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10))
-                        ) :BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
-                        borderSide: BorderSide(
-                            color: AppColors.color_999999,
-                            width: CommonUtils.getInstance(context).getWidth(2)
-                        )
-                    ),
+                        borderRadius: _schoolName.length > 0 && _focusNodeList[0].hasFocus
+                            ? BorderRadius.only(topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)), topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10)))
+                            : BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
+                        borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     contentPadding: EdgeInsets.only(top: CommonUtils.getInstance(context).getHeight(2)),
                     hintText: getIt<FoxschoolLocalization>().data['text_school_search'],
-                    hintStyle: TextStyle(
-                        color: AppColors.color_cccccc,
-                        fontWeight: FontWeight.normal,
-                        fontSize: CommonUtils.getInstance(context).getWidth(40),
-                        fontFamily: 'Roboto'
-                    )
-                ),
+                    hintStyle: TextStyle(color: AppColors.color_cccccc, fontWeight: FontWeight.normal, fontSize: CommonUtils.getInstance(context).getWidth(40), fontFamily: 'Roboto')),
               ),
             ),
             SizedBox(
@@ -468,43 +396,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     filled: true,
                     fillColor: Colors.white,
                     prefixIcon: Padding(
-                      padding:  EdgeInsets.only(
-                          left: CommonUtils.getInstance(context).getWidth(34) ,
+                      padding: EdgeInsets.only(
+                          left: CommonUtils.getInstance(context).getWidth(34),
                           top: CommonUtils.getInstance(context).getWidth(32),
                           right: CommonUtils.getInstance(context).getWidth(34),
-                          bottom: CommonUtils.getInstance(context).getWidth(32)
-                      ),
-                      child: Image.asset('asset/image/icon_id.png',
+                          bottom: CommonUtils.getInstance(context).getWidth(32)),
+                      child: Image.asset(
+                        'asset/image/icon_id.png',
                         width: CommonUtils.getInstance(context).getWidth(50),
                         height: CommonUtils.getInstance(context).getWidth(52),
                         fit: BoxFit.contain,
-                        color: _focusNodeList[1].hasFocus? AppColors.color_26d0df : AppColors.color_cccccc,
+                        color: _focusNodeList[1].hasFocus ? AppColors.color_26d0df : AppColors.color_cccccc,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)
-                        ),
-                        borderSide: BorderSide(
-                            color: AppColors.color_999999,
-                            width: CommonUtils.getInstance(context).getWidth(2)
-                        )
-                    ),
+                        borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
+                        borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
-                        borderSide: BorderSide(
-                            color: AppColors.color_999999,
-                            width: CommonUtils.getInstance(context).getWidth(2)
-                        )
-                    ),
+                        borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     contentPadding: EdgeInsets.only(top: CommonUtils.getInstance(context).getHeight(2)),
                     hintText: getIt<FoxschoolLocalization>().data['text_id_input'],
-                    hintStyle: TextStyle(
-                        color: AppColors.color_cccccc,
-                        fontWeight: FontWeight.normal,
-                        fontSize: CommonUtils.getInstance(context).getWidth(42),
-                        fontFamily: 'Roboto'
-                    )
-                ),
+                    hintStyle: TextStyle(color: AppColors.color_cccccc, fontWeight: FontWeight.normal, fontSize: CommonUtils.getInstance(context).getWidth(42), fontFamily: 'Roboto')),
               ),
             ),
             SizedBox(
@@ -528,43 +441,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     filled: true,
                     fillColor: Colors.white,
                     prefixIcon: Padding(
-                      padding:  EdgeInsets.only(
-                          left: CommonUtils.getInstance(context).getWidth(34) ,
+                      padding: EdgeInsets.only(
+                          left: CommonUtils.getInstance(context).getWidth(34),
                           top: CommonUtils.getInstance(context).getWidth(32),
                           right: CommonUtils.getInstance(context).getWidth(34),
-                          bottom: CommonUtils.getInstance(context).getWidth(32)
-                      ),
-                      child: Image.asset('asset/image/icon_lock.png',
+                          bottom: CommonUtils.getInstance(context).getWidth(32)),
+                      child: Image.asset(
+                        'asset/image/icon_lock.png',
                         width: CommonUtils.getInstance(context).getWidth(50),
                         height: CommonUtils.getInstance(context).getWidth(57),
                         fit: BoxFit.contain,
-                        color: _focusNodeList[2].hasFocus? AppColors.color_26d0df : AppColors.color_cccccc,
+                        color: _focusNodeList[2].hasFocus ? AppColors.color_26d0df : AppColors.color_cccccc,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)
-                        ),
-                        borderSide: BorderSide(
-                            color: AppColors.color_999999,
-                            width: CommonUtils.getInstance(context).getWidth(2)
-                        )
-                    ),
+                        borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
+                        borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
-                        borderSide: BorderSide(
-                            color: AppColors.color_999999,
-                            width: CommonUtils.getInstance(context).getWidth(2)
-                        )
-                    ),
+                        borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     contentPadding: EdgeInsets.only(top: CommonUtils.getInstance(context).getHeight(2)),
                     hintText: getIt<FoxschoolLocalization>().data['text_password_input'],
-                    hintStyle: TextStyle(
-                        color: AppColors.color_cccccc,
-                        fontWeight: FontWeight.normal,
-                        fontSize: CommonUtils.getInstance(context).getWidth(42),
-                        fontFamily: 'Roboto'
-                    )
-                ),
+                    hintStyle: TextStyle(color: AppColors.color_cccccc, fontWeight: FontWeight.normal, fontSize: CommonUtils.getInstance(context).getWidth(42), fontFamily: 'Roboto')),
               ),
             )
           ],
@@ -573,8 +471,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _SchoolListView()
-  {
+  Widget _SchoolListView() {
     return Positioned(
       top: CommonUtils.getInstance(context).getHeight(195),
       left: 0,
@@ -586,10 +483,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: CommonUtils.getInstance(context).getHeight(400),
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(
-                color: AppColors.color_999999,
-                width: CommonUtils.getInstance(context).getWidth(2)
-            ),
+            border: Border.all(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2)),
           ),
           child: ListView.builder(
             itemCount: _currentSearchSchoolList.length,
@@ -597,9 +491,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Logger.d("index : ${index}, data : ${_currentSearchSchoolList[index]}");
               return Container(
                 height: CommonUtils.getInstance(context).getWidth(100),
-                padding: EdgeInsets.only(
-                    left: CommonUtils.getInstance(context).getWidth(100)
-                ),
+                padding: EdgeInsets.only(left: CommonUtils.getInstance(context).getWidth(100)),
                 child: ListTile(
                   onTap: () {
                     _selectSchoolID = _currentSearchSchoolList[index].id;
@@ -616,14 +508,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               );
-            },),
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget _bottomInfoLayout()
-  {
+  Widget _bottomInfoLayout() {
     return Positioned(
         left: 0,
         right: 0,
@@ -631,11 +523,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            RobotoBoldText(
-                text: getIt<FoxschoolLocalization>().data['message_sign_only_web'],
-                fontSize: CommonUtils.getInstance(context).getWidth(40),
-                color: AppColors.color_444444
-            ),
+            RobotoBoldText(text: getIt<FoxschoolLocalization>().data['message_sign_only_web'], fontSize: CommonUtils.getInstance(context).getWidth(40), color: AppColors.color_444444),
             SizedBox(
               height: CommonUtils.getInstance(context).getHeight(20),
             ),
@@ -645,9 +533,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: AppColors.color_444444,
                 align: TextAlign.center)
           ],
-        )
-    );
+        ));
   }
-
-
 }

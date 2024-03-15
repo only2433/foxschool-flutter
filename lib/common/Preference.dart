@@ -16,7 +16,7 @@ Future<bool> getBoolean(String key) async
   return result ?? false;
 }
 
-Future<Object?> getPreferenceObject(String key) async {
+Future<Object?> getObject(String key) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String result = prefs.getString(key) ?? '';
   if (result.isNotEmpty) {
@@ -37,11 +37,15 @@ Future<void> setBoolean(String key, bool value) async
   await preferences.setBool(key, value);
 }
 
-Future<void> setObject(String key, Object data) async
+Future<void> setObject(String key, Object? data) async
 {
   final SharedPreferences preferences = await SharedPreferences.getInstance();
-  String result = json.encode(data);
-  await preferences.setString(key, result);
+  String? result = null;
+  if(data != null)
+    {
+      result = json.encode(data);
+    }
+  await preferences.setString(key, result ?? "");
 }
 
 
