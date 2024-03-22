@@ -2,8 +2,6 @@
 import 'package:foxschool/bloc/base/BlocState.dart';
 import 'package:foxschool/data/login/LoginInformationResult.dart';
 
-import '../../../data/login/LoginInformationResult.dart';
-
 class LoginLoadedState extends BlocState
 {
   final LoginInformationResult data;

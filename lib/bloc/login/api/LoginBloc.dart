@@ -3,17 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
-import 'package:foxschool/bloc/login/state/LoginLoadedState.dart';
-import 'package:foxschool/bloc/login/state/SchoolDataLoadedState.dart';
+import 'package:foxschool/bloc/login/api/state/LoginLoadedState.dart';
+import 'package:foxschool/bloc/login/api/state/SchoolDataLoadedState.dart';
 
-import '../../api/remote_intro/FoxSchoolRepository.dart';
-import '../../common/Common.dart';
-import '../../data/base/BaseResponse.dart';
-import '../../data/login/LoginInformationResult.dart';
-import '../../data/school_data/SchoolData.dart';
+import '../../../api/remote_intro/FoxSchoolRepository.dart';
+import '../../../common/Common.dart';
+import '../../../data/base/BaseResponse.dart';
+import '../../../data/login/LoginInformationResult.dart';
+import '../../../data/school_data/SchoolData.dart';
+
+import 'package:foxschool/common/Preference.dart' as Preference;
+
 import 'event/GetSchoolDataEvent.dart';
 import 'event/LoginEvent.dart';
-import 'package:foxschool/common/Preference.dart' as Preference;
 
 class LoginBloc extends Bloc<BlocEvent, BlocState>
 {

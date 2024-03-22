@@ -2,7 +2,8 @@
 
 import 'package:foxschool/bloc/base/BlocState.dart';
 
-import '../../../data/school_data/SchoolData.dart';
+import '../../../../data/school_data/SchoolData.dart';
+
 
 class SchoolDataLoadedState extends BlocState
 {

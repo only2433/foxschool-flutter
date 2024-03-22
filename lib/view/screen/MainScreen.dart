@@ -5,6 +5,9 @@ import 'package:foxschool/data/main/main_story_infomation/MainInformationResult.
 import 'package:foxschool/enum/MainMenuDrawerType.dart';
 import 'package:foxschool/route/RouteHelper.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
+import 'package:foxschool/view/screen/sub_screen/main/MainMyBooksSubScreen.dart';
+import 'package:foxschool/view/screen/sub_screen/main/MainSongSubScreen.dart';
+import 'package:foxschool/view/screen/sub_screen/main/MainStorySubScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/main/menu/MainMenuDrawerView.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -41,8 +44,7 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> loadMainData() async
   {
     Object? userObject = await Preference.getObject(Common.PARAMS_USER_API_INFORMATION);
-    if(userObject != null)
-    {
+    if (userObject != null) {
       _userData = LoginInformationResult.fromJson(userObject as Map<String, dynamic>);
       setState(() {
         _schoolName = _userData.schoolData!.name;
@@ -52,42 +54,26 @@ class _MainScreenState extends State<MainScreen> {
     }
 
     Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
-    if(mainObject != null)
-      {
-        _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
-      }
+    if (mainObject != null) {
+      _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
+    }
   }
 
-  void _setTabNavigation(int index)
-  {
+  void _setTabNavigation(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  List<Widget> _buildScreens()
-  {
+  List<Widget> _buildScreens() {
     return [
-      Container(
-        child: Center(
-          child: Text("동화"),
-        ),
-      ),
-      Container(
-        child: Center(
-          child: Text("동요"),
-        ),
-      ),
-      Container(
-        child: Center(
-          child: Text("나의 책장"),
-        ),
-      )
+      MainStorySubScreen(),
+      MainSongSubScreen(),
+      MainMyBooksSubScreen()
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navigationBarItems()
-  {
+  List<PersistentBottomNavBarItem> _navigationBarItems() {
     return [
       PersistentBottomNavBarItem(
           icon: Icon(Icons.menu_book_outlined),
@@ -111,8 +97,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 
-
-
   @override
   void initState() {
     super.initState();
@@ -126,8 +110,14 @@ class _MainScreenState extends State<MainScreen> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
         color: AppColors.color_47e1ad,
         child: SafeArea(
           child: Column(
@@ -147,15 +137,18 @@ class _MainScreenState extends State<MainScreen> {
                 screens: _buildScreens(),
                 items: _navigationBarItems(),
                 confineInSafeArea: true,
-                backgroundColor: Colors.white, // Default is Colors.white.
-                handleAndroidBackButtonPress: true, // Default is true.
-                resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-                stateManagement: true, // Default is true.
-                hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-                decoration: NavBarDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  colorBehindNavBar: Colors.white,
-                ),
+                backgroundColor: AppColors.color_f5f5f5,
+                // Default is Colors.white.
+                handleAndroidBackButtonPress: true,
+                // Default is true.
+                resizeToAvoidBottomInset: true,
+                // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+                stateManagement: true,
+                // Default is true.
+                hideNavigationBarWhenKeyboardShows: true,
+                // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+
+
                 popAllScreensOnTapOfSelectedTab: true,
                 popActionScreens: PopActionScreensType.all,
                 itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
@@ -179,33 +172,37 @@ class _MainScreenState extends State<MainScreen> {
           userName: _userName,
           userClass: _userClass,
           onSelected: (type) async {
-            switch(type)
-            {
-              case MainMenuDrawerType.LOG_OUT:
-                await FoxSchoolAlertDialog.showSelectDialog(
-                    context,
-                    getIt<FoxschoolLocalization>().data['message_try_logout'],
-                    getIt<FoxschoolLocalization>().data['text_confirm'],
-                        () async {
-                            Logger.d("Logout Selected");
-                            _scaffoldKey.currentState?.closeDrawer();
-                            await Future.delayed(Duration(
-                              milliseconds: Common.DURATION_LONG
-                            ));
-                            Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
-                            Preference.setObject(Common.PARAMS_USER_API_INFORMATION, null);
-                            Navigator.of(context).pushReplacementNamed(RouteHelper.getLogout());
-                        });
-                break;
-              case MainMenuDrawerType.STUDY_LOG:
-                break;
-              default:
-                break;
-            }
+            checkDrawerItem(type);
           },
         ),
       ),
 
     );
+  }
+
+  void checkDrawerItem(MainMenuDrawerType type) async
+  {
+    switch (type) {
+      case MainMenuDrawerType.LOG_OUT:
+        await FoxSchoolAlertDialog.showSelectDialog(
+            context,
+            getIt<FoxschoolLocalization>().data['message_try_logout'],
+            getIt<FoxschoolLocalization>().data['text_confirm'],
+                () async {
+              Logger.d("Logout Selected");
+              _scaffoldKey.currentState?.closeDrawer();
+              await Future.delayed(Duration(
+                  milliseconds: Common.DURATION_LONG
+              ));
+              Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+              Preference.setObject(Common.PARAMS_USER_API_INFORMATION, null);
+              Navigator.of(context).pushReplacementNamed(RouteHelper.getLogout());
+            });
+        break;
+      case MainMenuDrawerType.STUDY_LOG:
+        break;
+      default:
+        break;
+    }
   }
 }

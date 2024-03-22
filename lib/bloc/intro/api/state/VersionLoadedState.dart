@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:foxschool/data/version_data_result/VersionDataResult.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../base/BlocState.dart';
+import '../../../base/BlocState.dart';
 
 
 class VersionLoadedState extends BlocState{

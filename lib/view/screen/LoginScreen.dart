@@ -6,8 +6,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
-import 'package:foxschool/bloc/login/LoginBloc.dart';
-import 'package:foxschool/bloc/login/state/LoginLoadedState.dart';
+import 'package:foxschool/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
+import 'package:foxschool/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
+import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
+import 'package:foxschool/bloc/login/factory/state/AutoLoginCheckState.dart';
+import 'package:foxschool/bloc/login/factory/state/SchoolNameState.dart';
+
 import 'package:foxschool/view/widget/BlueTextButton.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
@@ -15,10 +19,9 @@ import 'package:foxschool/view/widget/RobotoRegularText.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_loading_dialog/simple_loading_dialog.dart';
 
-import '../../bloc/intro/IntroBloc.dart';
-import '../../bloc/login/event/GetSchoolDataEvent.dart';
-import '../../bloc/login/event/LoginEvent.dart';
-import '../../bloc/login/state/SchoolDataLoadedState.dart';
+
+import '../../bloc/login/factory/LoginFactoryController.dart';
+import '../../bloc/login/factory/state/FindSchoolListState.dart';
 import '../../common/Common.dart';
 import '../../common/CommonUtils.dart';
 import '../../common/FoxschoolLocalization.dart';
@@ -40,58 +43,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
 {
+  late LoginFactoryController _factoryController;
   TextEditingController _schoolNameTextController = TextEditingController();
   final int MAX_TEXT_FIELD_COUNT = 3;
   final _formKey = GlobalKey<FormState>();
   late List<FocusNode> _focusNodeList;
-  late StreamSubscription _subscription;
-  late List<SchoolData> _schoolDataList;
-  bool _isAutoLoginCheck = false;
-  String _schoolName = "";
+
   String _userID = "";
   String _userPassword = "";
   String _selectSchoolID = "";
-  List<SchoolData> _currentSearchSchoolList = [];
+
   bool isSchoolListItemSelected = false;
-  bool isLoginSuccess = false;
 
-
-  void _settingSubscriptions() {
-    var blocState;
-    _subscription = context.read<LoginBloc>().stream.listen((state) {
-      switch (state.runtimeType) {
-        case LoadingState:
-          {
-            LoadingDialog.show(context);
-            break;
-          }
-        case SchoolDataLoadedState:
-          {
-            blocState = state as SchoolDataLoadedState;
-            Logger.d("LoadedState : ${blocState.data.toString()}");
-            LoadingDialog.dismiss(context);
-            _schoolDataList = blocState.data;
-            break;
-          }
-        case LoginLoadedState:
-          {
-            blocState = state as LoginLoadedState;
-            Logger.d("LoadedState : ${blocState.data.toString()}");
-            LoadingDialog.dismiss(context);
-            isLoginSuccess = true;
-            Navigator.of(context).pop(isLoginSuccess);
-            break;
-          }
-        case ErrorState:
-          {
-            var errorState = state as ErrorState;
-            LoadingDialog.dismiss(context);
-            CommonUtils.getInstance(context).showErrorMessage(errorState.message);
-            break;
-          }
-      }
-    });
-  }
 
   void _settingFocusNode() {
     _focusNodeList = List.generate(MAX_TEXT_FIELD_COUNT, (index) => FocusNode());
@@ -102,27 +65,10 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
-  void _settingCurrentSearchSchoolList() {
-    _currentSearchSchoolList = [];
-    for (int i = 0; i < _schoolDataList.length; i++) {
-      if (_schoolDataList[i].name.contains(_schoolName)) {
-        _currentSearchSchoolList.add(_schoolDataList[i]);
-      }
-    }
-  }
 
-  String _getSchoolID(String selectSchoolName) {
-    String result = "";
-    for (var data in _schoolDataList) {
-      if (data.name == selectSchoolName) {
-        result = data.id;
-        break;
-      }
-    }
-    return result;
-  }
 
-  void _submitLogin() {
+  void _submitLogin()
+  {
     if (_selectSchoolID == "" || _userID == "" || _userPassword == "") {
       if (_selectSchoolID == "") {
         CommonUtils.getInstance(context).showErrorMessage(getIt<FoxschoolLocalization>().data['message_warning_empty_school']);
@@ -132,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen>
         CommonUtils.getInstance(context).showErrorMessage(getIt<FoxschoolLocalization>().data['message_warning_empty_password']);
       }
     } else {
-      context.read<LoginBloc>().add(LoginEvent(loginID: _userID.trim().toString(), password: _userPassword.trim().toString(), schoolCode: _selectSchoolID));
+      _factoryController.onClickLogin(_userID.trim().toString(), _userPassword.trim().toString(), _selectSchoolID);
     }
   }
 
@@ -146,12 +92,11 @@ class _LoginScreenState extends State<LoginScreen>
   void initState() {
     super.initState();
     Logger.d("initState");
-    isLoginSuccess = false;
+
+    _factoryController = LoginFactoryController(context: context);
+    _factoryController.init();
     _settingFocusNode();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      context.read<LoginBloc>().add(GetSchoolDataEvent());
-    });
-    _settingSubscriptions();
+
   }
 
   @override
@@ -162,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void dispose() {
-    _subscription.cancel();
+    _factoryController.dispose();
     _schoolNameTextController.dispose();
     _disposeFocusNode();
     super.dispose();
@@ -182,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen>
                     title: getIt<FoxschoolLocalization>().data['text_login'],
                     type: TopTitleButtonType.BACK,
                     onPressed: () {
-                      Navigator.of(context).pop(isLoginSuccess);
+                      _factoryController.onBackPressed();
                     },
                   ),
                   Expanded(
@@ -209,21 +154,21 @@ class _LoginScreenState extends State<LoginScreen>
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              _isAutoLoginCheck = !_isAutoLoginCheck;
-                                            });
-                                            Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, _isAutoLoginCheck);
-                                          },
-                                          child: _isAutoLoginCheck == false
-                                              ? Image.asset('asset/image/radio_off.png', width: CommonUtils.getInstance(context).getWidth(60), height: CommonUtils.getInstance(context).getWidth(60))
-                                              : Image.asset(
-                                            'asset/image/radio_on.png',
-                                            width: CommonUtils.getInstance(context).getWidth(60),
-                                            height: CommonUtils.getInstance(context).getWidth(60),
-                                          ),
-                                        ),
+                                        BlocBuilder<LoginAutoCheckCubit, AutoLoginCheckState>(
+                                          builder: (context, state) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              _factoryController.onCheckAutoLogin();
+                                            },
+                                            child: state.isAutoLogin == false
+                                                ? Image.asset('asset/image/radio_off.png', width: CommonUtils.getInstance(context).getWidth(60), height: CommonUtils.getInstance(context).getWidth(60))
+                                                : Image.asset(
+                                              'asset/image/radio_on.png',
+                                              width: CommonUtils.getInstance(context).getWidth(60),
+                                              height: CommonUtils.getInstance(context).getWidth(60),
+                                            ),
+                                          );
+                                        },),
                                         SizedBox(
                                           width: CommonUtils.getInstance(context).getWidth(20),
                                         ),
@@ -271,7 +216,16 @@ class _LoginScreenState extends State<LoginScreen>
                                     )
                                   ],
                                 )),
-                            if (_schoolName.length > 0 && _focusNodeList[0].hasFocus) _SchoolListView(),
+                            BlocBuilder<LoginSchoolNameCubit, SchoolNameState>(builder: (context, state) {
+                              if (state.name.length > 0 && _focusNodeList[0].hasFocus)
+                                {
+                                  return _SchoolListView();
+                                }
+                              else
+                                {
+                                  return Container();
+                                }
+                            },),
                             _bottomInfoLayout()
                           ],
                         ),
@@ -301,31 +255,21 @@ class _LoginScreenState extends State<LoginScreen>
                 controller: _schoolNameTextController,
                 onTap: () {
                   _schoolNameTextController.text = "";
-                  _currentSearchSchoolList = [];
-                  _schoolName = "";
+                  _factoryController.onInitSchoolData();
                   isSchoolListItemSelected = false;
-                },
-                onSaved: (newValue) {
-                  Logger.d("onSaved : ${newValue}");
-                  _schoolName = newValue!;
                 },
                 onFieldSubmitted: (value) {
                   Logger.d("onSaved : ${value}");
-                  String schoolID = _getSchoolID(value);
+                  String schoolID = _factoryController.getSchoolID(value);
                   if (schoolID == "") {
                     _schoolNameTextController.clear();
-                    setState(() {
-                      _schoolName = "";
-                    });
+                    _factoryController.onSetSchoolName("");
                   } else {
                     _selectSchoolID = schoolID;
                   }
                 },
                 onChanged: (value) {
-                  setState(() {
-                    _schoolName = value;
-                    _settingCurrentSearchSchoolList();
-                  });
+                  _factoryController.onChangeSchoolData(value);
                 },
                 decoration: InputDecoration(
                     filled: true,
@@ -340,14 +284,11 @@ class _LoginScreenState extends State<LoginScreen>
                         color: _focusNodeList[0].hasFocus ? AppColors.color_26d0df : AppColors.color_cccccc,
                       ),
                     ),
-                    suffixIcon: _schoolName.length > 0 && _focusNodeList[0].hasFocus
+                    suffixIcon: _schoolNameTextController.text.isNotEmpty && _focusNodeList[0].hasFocus
                         ? GestureDetector(
                       onTap: () {
                         _schoolNameTextController.clear();
-
-                        setState(() {
-                          _schoolName = "";
-                        });
+                        _factoryController.onSetSchoolName("");
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(14.0),
@@ -361,12 +302,12 @@ class _LoginScreenState extends State<LoginScreen>
                     )
                         : null,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: _schoolName.length > 0 && _focusNodeList[0].hasFocus
+                        borderRadius: _schoolNameTextController.text.isNotEmpty && _focusNodeList[0].hasFocus
                             ? BorderRadius.only(topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)), topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10)))
                             : BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
                         borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     focusedBorder: OutlineInputBorder(
-                        borderRadius: _schoolName.length > 0 && _focusNodeList[0].hasFocus
+                        borderRadius: _schoolNameTextController.text.isNotEmpty && _focusNodeList[0].hasFocus
                             ? BorderRadius.only(topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)), topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10)))
                             : BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
                         borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
@@ -485,31 +426,32 @@ class _LoginScreenState extends State<LoginScreen>
             color: Colors.white,
             border: Border.all(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2)),
           ),
-          child: ListView.builder(
-            itemCount: _currentSearchSchoolList.length,
-            itemBuilder: (context, index) {
-              Logger.d("index : ${index}, data : ${_currentSearchSchoolList[index]}");
-              return Container(
-                height: CommonUtils.getInstance(context).getWidth(100),
-                padding: EdgeInsets.only(left: CommonUtils.getInstance(context).getWidth(100)),
-                child: ListTile(
-                  onTap: () {
-                    _selectSchoolID = _currentSearchSchoolList[index].id;
-                    setState(() {
-                      _schoolName = _currentSearchSchoolList[index].name;
-                      _schoolNameTextController.text = _schoolName;
-                    });
-                    _focusNodeList[0].unfocus();
-                  },
-                  title: RobotoRegularText(
-                    text: _currentSearchSchoolList[index].name,
-                    fontSize: CommonUtils.getInstance(context).getWidth(42),
-                    color: AppColors.color_333333,
+          child: BlocBuilder<LoginFindSchoolListCubit, FindSchoolListState>(
+            builder: (context, state) {
+              return ListView.builder(
+                itemCount: state.schoolList.length,
+                itemBuilder: (context, index) {
+                  Logger.d("index : ${index}, data : ${state.schoolList[index]}");
+                  return Container(
+                    height: CommonUtils.getInstance(context).getWidth(100),
+                    padding: EdgeInsets.only(left: CommonUtils.getInstance(context).getWidth(100)),
+                    child: ListTile(
+                      onTap: () {
+                        _selectSchoolID = state.schoolList[index].id;
+                        _schoolNameTextController.text = state.schoolList[index].name;
+                        _factoryController.onSetSchoolName(state.schoolList[index].name);
+                        _focusNodeList[0].unfocus();
+                    },
+                      title: RobotoRegularText(
+                        text: state.schoolList[index].name,
+                        fontSize: CommonUtils.getInstance(context).getWidth(42),
+                        color: AppColors.color_333333,
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
+                );
+              },
+            );
+          },),
         ),
       ),
     );

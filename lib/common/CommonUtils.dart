@@ -33,7 +33,7 @@ class CommonUtils
               errorMessage,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: getWidth(12),
+                fontSize: getWidth(30),
                 color: Colors.white,
               ),
             )
@@ -55,7 +55,7 @@ class CommonUtils
               successMessage,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: getWidth(12),
+                fontSize: getWidth(30),
                 color: Colors.white,
               ),
             )

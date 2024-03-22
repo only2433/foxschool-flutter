@@ -1,5 +1,7 @@
 
-import '../../base/BlocEvent.dart';
+
+
+import '../../../base/BlocEvent.dart';
 
 class GetVersionEvent extends BlocEvent
 {
@@ -14,5 +16,5 @@ class GetVersionEvent extends BlocEvent
   });
 
   @override
-  List<Object> get props => [this.deviceType, this.pushAddress, this.pushOn];
+  List<Object> get props => [deviceType, pushAddress, pushOn];
 }

@@ -1,13 +1,11 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:foxschool/bloc/intro/event/AuthMeEvent.dart';
-import 'package:foxschool/bloc/login/event/GetSchoolDataEvent.dart';
-import 'package:foxschool/bloc/intro/event/MainInformationEvent.dart';
-import 'package:foxschool/bloc/intro/state/AuthMeLoadedState.dart';
-import 'package:foxschool/bloc/login/state/LoginLoadedState.dart';
-import 'package:foxschool/bloc/intro/state/MainInformationLoadedState.dart';
-import 'package:foxschool/bloc/intro/state/VersionLoadedState.dart';
+import 'package:foxschool/bloc/intro/api/state/AuthMeLoadedState.dart';
+import 'package:foxschool/bloc/intro/api/state/MainInformationLoadedState.dart';
+import 'package:foxschool/bloc/intro/api/state/VersionLoadedState.dart';
+
+import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/data/login/LoginInformationResult.dart';
 import 'package:foxschool/data/main/main_story_infomation/MainInformationResult.dart';
@@ -15,11 +13,14 @@ import 'package:foxschool/data/main/series/SeriesInformationResult.dart';
 import 'package:foxschool/data/school_data/SchoolData.dart';
 import 'package:foxschool/data/version_data_result/VersionDataResult.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
-import '../../api/remote_intro/FoxSchoolRepository.dart';
-import '../../common/Common.dart';
-import '../base/BlocEvent.dart';
-import '../base/BlocState.dart';
+import '../../../api/remote_intro/FoxSchoolRepository.dart';
+import '../../../common/Common.dart';
+import '../../base/BlocEvent.dart';
+import '../../base/BlocState.dart';
+import 'event/AuthMeEvent.dart';
 import 'event/GetVersionEvent.dart';
+import 'event/MainInformationEvent.dart';
+
 
 
 class IntroBloc extends Bloc<BlocEvent, BlocState>

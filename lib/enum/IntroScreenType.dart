@@ -1,0 +1,5 @@
+enum IntroScreenType
+{
+  TYPE_LOGIN_PROGRESS,
+  TYPE_SELECT_MENU
+}

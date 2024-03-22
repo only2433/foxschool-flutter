@@ -7,8 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
-import 'package:foxschool/bloc/intro/IntroBloc.dart';
-import 'package:foxschool/bloc/login/LoginBloc.dart';
+import 'package:foxschool/bloc/intro/api/IntroBloc.dart';
+import 'package:foxschool/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
+import 'package:foxschool/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
+import 'package:foxschool/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
+import 'package:foxschool/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
+import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/route/RouteHelper.dart';
@@ -19,6 +23,7 @@ import 'package:foxschool/di/Dependencies.dart' as Dependencies;
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import '../../common/Preference.dart' as Preference;
 
+import 'bloc/login/api/LoginBloc.dart';
 import 'common/Common.dart';
 import 'data/base/BaseResponse.dart';
 import 'di/Dependencies.dart';
@@ -56,8 +61,23 @@ class MyApp extends StatelessWidget {
               create: (context) => getIt<IntroBloc>(),
           ),
           BlocProvider(
+            create: (context) => IntroScreenTypeCubit(),
+          ),
+          BlocProvider(
+            create: (context) => IntroProgressPercentCubit(),
+          ),
+          BlocProvider(
             create: (context) => getIt<LoginBloc>(),
-          )
+          ),
+          BlocProvider(
+            create: (context) => LoginAutoCheckCubit(),
+          ),
+          BlocProvider(
+            create: (context) => LoginFindSchoolListCubit(),
+          ),
+          BlocProvider(
+            create: (context) => LoginSchoolNameCubit(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
