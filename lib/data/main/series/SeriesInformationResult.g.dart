@@ -12,8 +12,6 @@ SeriesInformationResult _$SeriesInformationResultFromJson(
       id: json['id'] as String? ?? '',
       name: json['name'] as String? ?? '',
       thumbnailUrl: json['thumbnail_url'] as String? ?? '',
-      colors: ColorData.fromJson(json['colors'] as Map<String, dynamic>),
-      series: SeriesData.fromJson(json['series'] as Map<String, dynamic>),
       freeSeriesSortNumber: json['free_series_sort_number'] as int? ?? 0,
       freeSingleSortNumber: json['free_single_sort_number'] as int? ?? 0,
       basicSortNumber: json['basic_sort_number'] as int? ?? 0,
@@ -24,7 +22,13 @@ SeriesInformationResult _$SeriesInformationResultFromJson(
       contentsCount: json['contents_count'] as int? ?? -1,
       level: json['level'] as int? ?? -1,
       isSingle: json['is_single'] as String? ?? '',
-    );
+    )
+      ..colors = json['colors'] == null
+          ? null
+          : ColorData.fromJson(json['colors'] as Map<String, dynamic>)
+      ..series = json['series'] == null
+          ? null
+          : SeriesData.fromJson(json['series'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$SeriesInformationResultToJson(
         SeriesInformationResult instance) =>

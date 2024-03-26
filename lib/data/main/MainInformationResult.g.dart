@@ -11,7 +11,7 @@ _$MainInformationResultImpl _$$MainInformationResultImplFromJson(
     _$MainInformationResultImpl(
       mainStoryInformation: json['story'] == null
           ? null
-          : MainInformationResult.fromJson(
+          : MainStoryInformationResult.fromJson(
               json['story'] as Map<String, dynamic>),
       mainSongInformation: (json['song'] as List<dynamic>?)
               ?.map((e) =>

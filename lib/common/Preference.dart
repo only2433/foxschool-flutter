@@ -16,7 +16,7 @@ Future<bool> getBoolean(String key) async
   return result ?? false;
 }
 
-Future<Object?> getObject(String key) async {
+Future<Map<String, dynamic>?> getObject(String key) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String result = prefs.getString(key) ?? '';
   if (result.isNotEmpty) {

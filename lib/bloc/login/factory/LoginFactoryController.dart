@@ -40,6 +40,8 @@ class LoginFactoryController extends BlocController {
   @override
   void init() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+
+      await Future.delayed(Duration(milliseconds: Common.DURATION_NORMAL));
       context.read<LoginBloc>().add(GetSchoolDataEvent());
     });
     _settingSubscriptions();

@@ -20,8 +20,8 @@ class SeriesBaseResult
   @JsonKey(name: 'thumbnail_url', defaultValue: "")
   final String thumbnailUrl;
 
-  final ColorData? colors;
-  final SeriesData? series;
+  ColorData? colors;
+  SeriesData? series;
 
   @JsonKey(name: 'free_single_sort_number', defaultValue: 0)
   final int freeSingleSortNumber;
@@ -39,8 +39,8 @@ class SeriesBaseResult
     required this.id,
     required this.name,
     required this.thumbnailUrl,
-    required this.colors,
-    required this.series,
+    this.colors,
+    this.series,
     required this.freeSeriesSortNumber,
     required this.freeSingleSortNumber,
     required this.basicSortNumber,

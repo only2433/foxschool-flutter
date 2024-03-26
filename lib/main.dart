@@ -13,6 +13,8 @@ import 'package:foxschool/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
+import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
+import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/route/RouteHelper.dart';
@@ -77,6 +79,13 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => LoginSchoolNameCubit(),
+          ),
+
+          BlocProvider(
+            create: (context) => MainStorySelectTypeListCubit(),
+          ),
+          BlocProvider(
+            create: (context) => MainSongCategoryListCubit(),
           ),
         ],
         child: MaterialApp(

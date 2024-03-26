@@ -22,7 +22,7 @@ MainInformationResult _$MainInformationResultFromJson(
 /// @nodoc
 mixin _$MainInformationResult {
   @JsonKey(name: 'story')
-  MainInformationResult? get mainStoryInformation =>
+  MainStoryInformationResult? get mainStoryInformation =>
       throw _privateConstructorUsedError;
   @JsonKey(name: 'song')
   List<SeriesInformationResult> get mainSongInformation =>
@@ -57,7 +57,7 @@ abstract class $MainInformationResultCopyWith<$Res> {
       _$MainInformationResultCopyWithImpl<$Res, MainInformationResult>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'story') MainInformationResult? mainStoryInformation,
+      {@JsonKey(name: 'story') MainStoryInformationResult? mainStoryInformation,
       @JsonKey(name: 'song') List<SeriesInformationResult> mainSongInformation,
       @JsonKey(name: 'bookshelves') List<MyBookshelfResult> bookshelfList,
       @JsonKey(name: 'vocabularies') List<MyVocabularyResult> vocabularyList,
@@ -68,7 +68,7 @@ abstract class $MainInformationResultCopyWith<$Res> {
       String news,
       @JsonKey(name: 'files') FileInformationResult? filesInformation});
 
-  $MainInformationResultCopyWith<$Res>? get mainStoryInformation;
+  $MainStoryInformationResultCopyWith<$Res>? get mainStoryInformation;
   $CompanyInformationCopyWith<$Res>? get companyInformation;
   $InAppCampaignResultCopyWith<$Res>? get inAppCampaign;
   $FileInformationResultCopyWith<$Res>? get filesInformation;
@@ -102,7 +102,7 @@ class _$MainInformationResultCopyWithImpl<$Res,
       mainStoryInformation: freezed == mainStoryInformation
           ? _value.mainStoryInformation
           : mainStoryInformation // ignore: cast_nullable_to_non_nullable
-              as MainInformationResult?,
+              as MainStoryInformationResult?,
       mainSongInformation: null == mainSongInformation
           ? _value.mainSongInformation
           : mainSongInformation // ignore: cast_nullable_to_non_nullable
@@ -140,13 +140,13 @@ class _$MainInformationResultCopyWithImpl<$Res,
 
   @override
   @pragma('vm:prefer-inline')
-  $MainInformationResultCopyWith<$Res>? get mainStoryInformation {
+  $MainStoryInformationResultCopyWith<$Res>? get mainStoryInformation {
     if (_value.mainStoryInformation == null) {
       return null;
     }
 
-    return $MainInformationResultCopyWith<$Res>(_value.mainStoryInformation!,
-        (value) {
+    return $MainStoryInformationResultCopyWith<$Res>(
+        _value.mainStoryInformation!, (value) {
       return _then(_value.copyWith(mainStoryInformation: value) as $Val);
     });
   }
@@ -200,7 +200,7 @@ abstract class _$$MainInformationResultImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'story') MainInformationResult? mainStoryInformation,
+      {@JsonKey(name: 'story') MainStoryInformationResult? mainStoryInformation,
       @JsonKey(name: 'song') List<SeriesInformationResult> mainSongInformation,
       @JsonKey(name: 'bookshelves') List<MyBookshelfResult> bookshelfList,
       @JsonKey(name: 'vocabularies') List<MyVocabularyResult> vocabularyList,
@@ -212,7 +212,7 @@ abstract class _$$MainInformationResultImplCopyWith<$Res>
       @JsonKey(name: 'files') FileInformationResult? filesInformation});
 
   @override
-  $MainInformationResultCopyWith<$Res>? get mainStoryInformation;
+  $MainStoryInformationResultCopyWith<$Res>? get mainStoryInformation;
   @override
   $CompanyInformationCopyWith<$Res>? get companyInformation;
   @override
@@ -247,7 +247,7 @@ class __$$MainInformationResultImplCopyWithImpl<$Res>
       mainStoryInformation: freezed == mainStoryInformation
           ? _value.mainStoryInformation
           : mainStoryInformation // ignore: cast_nullable_to_non_nullable
-              as MainInformationResult?,
+              as MainStoryInformationResult?,
       mainSongInformation: null == mainSongInformation
           ? _value._mainSongInformation
           : mainSongInformation // ignore: cast_nullable_to_non_nullable
@@ -309,7 +309,7 @@ class _$MainInformationResultImpl implements _MainInformationResult {
 
   @override
   @JsonKey(name: 'story')
-  final MainInformationResult? mainStoryInformation;
+  final MainStoryInformationResult? mainStoryInformation;
   final List<SeriesInformationResult> _mainSongInformation;
   @override
   @JsonKey(name: 'song')
@@ -415,7 +415,7 @@ class _$MainInformationResultImpl implements _MainInformationResult {
 abstract class _MainInformationResult implements MainInformationResult {
   factory _MainInformationResult(
       {@JsonKey(name: 'story')
-      final MainInformationResult? mainStoryInformation,
+      final MainStoryInformationResult? mainStoryInformation,
       @JsonKey(name: 'song')
       final List<SeriesInformationResult> mainSongInformation,
       @JsonKey(name: 'bookshelves') final List<MyBookshelfResult> bookshelfList,
@@ -436,7 +436,7 @@ abstract class _MainInformationResult implements MainInformationResult {
 
   @override
   @JsonKey(name: 'story')
-  MainInformationResult? get mainStoryInformation;
+  MainStoryInformationResult? get mainStoryInformation;
   @override
   @JsonKey(name: 'song')
   List<SeriesInformationResult> get mainSongInformation;

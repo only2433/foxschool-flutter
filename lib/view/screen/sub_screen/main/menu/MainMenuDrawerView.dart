@@ -105,6 +105,7 @@ class MainMenuDrawerView extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(15))),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
                 onTap: () {
@@ -153,6 +154,7 @@ class MainMenuDrawerView extends StatelessWidget {
               height: CommonUtils.getInstance(context).getWidth(40),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _IconTextWidget(context,
                     'asset/image/main_option_icon_5.png',
@@ -168,7 +170,12 @@ class MainMenuDrawerView extends StatelessWidget {
                 )
               ],
             ),
-            Row(children: [
+            SizedBox(
+              height: CommonUtils.getInstance(context).getWidth(40),
+            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
               _IconTextWidget(context,
                   'asset/image/main_option_icon_8.png',
                   getIt<FoxschoolLocalization>().data['text_about_app']

@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'MainInformationResult.dart';
+part of 'MainStoryInformationResult.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$MainInformationResultImpl _$$MainInformationResultImplFromJson(
+_$MainStoryInformationResultImpl _$$MainStoryInformationResultImplFromJson(
         Map<String, dynamic> json) =>
-    _$MainInformationResultImpl(
+    _$MainStoryInformationResultImpl(
       levelsList: (json['levels'] as List<dynamic>?)
               ?.map((e) =>
                   SeriesInformationResult.fromJson(e as Map<String, dynamic>))
@@ -21,8 +21,8 @@ _$MainInformationResultImpl _$$MainInformationResultImplFromJson(
           const [],
     );
 
-Map<String, dynamic> _$$MainInformationResultImplToJson(
-        _$MainInformationResultImpl instance) =>
+Map<String, dynamic> _$$MainStoryInformationResultImplToJson(
+        _$MainStoryInformationResultImpl instance) =>
     <String, dynamic>{
       'levels': instance.levelsList,
       'categories': instance.categoriesList,

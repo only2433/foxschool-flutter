@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/data/login/user_info_section/UserInfoSectionResult.dart';
-import 'package:foxschool/data/main/main_story_infomation/MainInformationResult.dart';
+import 'package:foxschool/data/main/main_story_infomation/MainStoryInformationResult.dart';
 import 'package:foxschool/enum/MainMenuDrawerType.dart';
 import 'package:foxschool/route/RouteHelper.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
@@ -12,9 +12,11 @@ import 'package:foxschool/view/screen/sub_screen/main/menu/MainMenuDrawerView.da
 import 'package:page_transition/page_transition.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../bloc/main/factory/MainFactoryController.dart';
 import '../../common/Common.dart';
 import '../../common/FoxschoolLocalization.dart';
 import '../../data/login/LoginInformationResult.dart';
+import '../../data/main/MainInformationResult.dart';
 import '../../di/Dependencies.dart';
 import '../../enum/TopTitleButtonType.dart';
 import '../../values/AppColors.dart';
@@ -31,7 +33,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late MainFactoryController _factoryController;
   late PersistentTabController _controller;
   late MainInformationResult _mainData;
   late LoginInformationResult _userData;
@@ -67,8 +71,8 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> _buildScreens() {
     return [
-      MainStorySubScreen(),
-      MainSongSubScreen(),
+      MainStorySubScreen(factoryController: _factoryController),
+      MainSongSubScreen(factoryController: _factoryController),
       MainMyBooksSubScreen()
     ];
   }
@@ -100,6 +104,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    _factoryController = MainFactoryController(context: context);
+    _factoryController.init();
+
     _controller = PersistentTabController(initialIndex: _selectedIndex);
     loadMainData();
   }

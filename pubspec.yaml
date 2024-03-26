@@ -63,6 +63,7 @@ dependencies:
   device_info_plus: ^9.1.2
   persistent_bottom_nav_bar: any
   android_id:
+  transparent_image: ^2.0.1
 
 
 dev_dependencies:

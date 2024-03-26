@@ -56,6 +56,29 @@ class _LoginScreenState extends State<LoginScreen>
   bool isSchoolListItemSelected = false;
 
 
+  @override
+  void initState() {
+    super.initState();
+    Logger.d("initState");
+    _factoryController = LoginFactoryController(context: context);
+    _factoryController.init();
+    _settingFocusNode();
+  }
+
+  @override
+  void activate() {
+    super.activate();
+    Logger.d("activate");
+  }
+
+  @override
+  void dispose() {
+    _factoryController.dispose();
+    _schoolNameTextController.dispose();
+    _disposeFocusNode();
+    super.dispose();
+  }
+
   void _settingFocusNode() {
     _focusNodeList = List.generate(MAX_TEXT_FIELD_COUNT, (index) => FocusNode());
     for (var focus in _focusNodeList) {
@@ -64,8 +87,6 @@ class _LoginScreenState extends State<LoginScreen>
       });
     }
   }
-
-
 
   void _submitLogin()
   {
@@ -86,31 +107,6 @@ class _LoginScreenState extends State<LoginScreen>
     for (var focusNode in _focusNodeList) {
       focusNode.dispose();
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Logger.d("initState");
-
-    _factoryController = LoginFactoryController(context: context);
-    _factoryController.init();
-    _settingFocusNode();
-
-  }
-
-  @override
-  void activate() {
-    super.activate();
-    Logger.d("activate");
-  }
-
-  @override
-  void dispose() {
-    _factoryController.dispose();
-    _schoolNameTextController.dispose();
-    _disposeFocusNode();
-    super.dispose();
   }
 
   @override

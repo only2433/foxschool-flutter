@@ -19,11 +19,19 @@ class FoxschoolIntroduceScreen extends StatefulWidget {
 
 class _FoxschoolIntroduceScreenState extends State<FoxschoolIntroduceScreen> {
 
-  bool isLoading = false;
+  bool isInAppWebViewReady = false;
+  bool isWebViewLoadingComplete = false;
   @override
   void initState() {
     super.initState();
-    isLoading = true;
+
+    isInAppWebViewReady = false;
+    isWebViewLoadingComplete = false;
+    Future.delayed(Duration(milliseconds: Common.DURATION_NORMAL), () {
+      setState(() {
+        isInAppWebViewReady = true;
+      });
+    });
   }
 
 
@@ -49,7 +57,8 @@ class _FoxschoolIntroduceScreenState extends State<FoxschoolIntroduceScreen> {
                     children: [
                       Container(
                         color: Colors.white,
-                        child: InAppWebView(
+                        child: isInAppWebViewReady == true ?
+                        InAppWebView(
                           initialUrlRequest: URLRequest(
                             url: Uri.parse(Common.URL_FOXSCHOOL_INTRODUCE),
                           ),
@@ -63,12 +72,13 @@ class _FoxschoolIntroduceScreenState extends State<FoxschoolIntroduceScreen> {
                             print("onLoadStop");
                             await Future.delayed(Duration(seconds: 1));
                             setState(() {
-                              isLoading = false;
+                              isWebViewLoadingComplete = true;
                             });
                           },
-                        ),
+                        ) :
+                        Container(),
                       ),
-                      if(isLoading)
+                      if(isWebViewLoadingComplete == false)
                         Center(
                          child: CircularProgressIndicator(),
                       )

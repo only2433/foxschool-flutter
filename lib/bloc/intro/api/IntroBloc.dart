@@ -8,13 +8,14 @@ import 'package:foxschool/bloc/intro/api/state/VersionLoadedState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/data/login/LoginInformationResult.dart';
-import 'package:foxschool/data/main/main_story_infomation/MainInformationResult.dart';
+import 'package:foxschool/data/main/main_story_infomation/MainStoryInformationResult.dart';
 import 'package:foxschool/data/main/series/SeriesInformationResult.dart';
 import 'package:foxschool/data/school_data/SchoolData.dart';
 import 'package:foxschool/data/version_data_result/VersionDataResult.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
 import '../../../api/remote_intro/FoxSchoolRepository.dart';
 import '../../../common/Common.dart';
+import '../../../data/main/MainInformationResult.dart';
 import '../../base/BlocEvent.dart';
 import '../../base/BlocState.dart';
 import 'event/AuthMeEvent.dart';
@@ -67,6 +68,7 @@ class IntroBloc extends Bloc<BlocEvent, BlocState>
     {
       emit(LoadingState());
       BaseResponse response = await repository.authMe();
+      Logger.d("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
         {
           if(response.access_token != "") {
@@ -90,6 +92,7 @@ class IntroBloc extends Bloc<BlocEvent, BlocState>
     try {
       emit(LoadingState());
       BaseResponse response = await repository.mainInformation();
+      Logger.d("response : ${response.data.toString()}");
       if (response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "") {

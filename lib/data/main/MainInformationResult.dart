@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'files/FileInformationResult.dart';
 import 'in_app_campaign/InAppCampaignResult.dart';
+import 'main_story_infomation/MainStoryInformationResult.dart';
 import 'my_book/MyBookshelfResult.dart';
 import 'my_vocabulary/MyVocabularyResult.dart';
 
@@ -17,7 +18,7 @@ class MainInformationResult with _$MainInformationResult
   factory MainInformationResult({
 
     @JsonKey(name: 'story')
-    final MainInformationResult? mainStoryInformation,
+    final MainStoryInformationResult? mainStoryInformation,
 
     @JsonKey(name: 'song')
     @Default([])
