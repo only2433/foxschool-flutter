@@ -48,6 +48,27 @@ class SeriesBaseResult
     this.transitionType = TransitionType.PAIR_IMAGE
   });
 
+  String getStatusColor()
+  {
+    return colors?.statusBar ?? "#1a8ec7";
+  }
+
+  String getTitleColor()
+  {
+    return colors?.title ?? "#20b1f9";
+  }
+
+  String getIntroduction()
+  {
+    return series?.introduction ?? "";
+  }
+
+  String getCategoryData()
+  {
+    return series?.categories ?? "";
+  }
+
+
   factory SeriesBaseResult.fromJson(Map<String, dynamic> data) => _$SeriesBaseResultFromJson(data);
 
   Map<String, dynamic> toJson() => _$SeriesBaseResultToJson(this);

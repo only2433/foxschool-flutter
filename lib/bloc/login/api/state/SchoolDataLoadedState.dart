@@ -11,6 +11,7 @@ class SchoolDataLoadedState extends BlocState
   const SchoolDataLoadedState({
   required this.data
   });
+
   @override
   List<Object> get props => [data];
 }

@@ -23,8 +23,8 @@ mixin _$MyVocabularyResult {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get color => throw _privateConstructorUsedError;
-  @JsonKey(name: 'word_count')
-  int get wordCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'words_count')
+  int get wordsCount => throw _privateConstructorUsedError;
   String get contentID => throw _privateConstructorUsedError;
   VocabularyType get vocabularyType => throw _privateConstructorUsedError;
 
@@ -44,7 +44,7 @@ abstract class $MyVocabularyResultCopyWith<$Res> {
       {String id,
       String name,
       String color,
-      @JsonKey(name: 'word_count') int wordCount,
+      @JsonKey(name: 'words_count') int wordsCount,
       String contentID,
       VocabularyType vocabularyType});
 }
@@ -65,7 +65,7 @@ class _$MyVocabularyResultCopyWithImpl<$Res, $Val extends MyVocabularyResult>
     Object? id = null,
     Object? name = null,
     Object? color = null,
-    Object? wordCount = null,
+    Object? wordsCount = null,
     Object? contentID = null,
     Object? vocabularyType = null,
   }) {
@@ -82,9 +82,9 @@ class _$MyVocabularyResultCopyWithImpl<$Res, $Val extends MyVocabularyResult>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as String,
-      wordCount: null == wordCount
-          ? _value.wordCount
-          : wordCount // ignore: cast_nullable_to_non_nullable
+      wordsCount: null == wordsCount
+          ? _value.wordsCount
+          : wordsCount // ignore: cast_nullable_to_non_nullable
               as int,
       contentID: null == contentID
           ? _value.contentID
@@ -110,7 +110,7 @@ abstract class _$$MyVocabularyResultImplCopyWith<$Res>
       {String id,
       String name,
       String color,
-      @JsonKey(name: 'word_count') int wordCount,
+      @JsonKey(name: 'words_count') int wordsCount,
       String contentID,
       VocabularyType vocabularyType});
 }
@@ -129,7 +129,7 @@ class __$$MyVocabularyResultImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? color = null,
-    Object? wordCount = null,
+    Object? wordsCount = null,
     Object? contentID = null,
     Object? vocabularyType = null,
   }) {
@@ -146,9 +146,9 @@ class __$$MyVocabularyResultImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as String,
-      wordCount: null == wordCount
-          ? _value.wordCount
-          : wordCount // ignore: cast_nullable_to_non_nullable
+      wordsCount: null == wordsCount
+          ? _value.wordsCount
+          : wordsCount // ignore: cast_nullable_to_non_nullable
               as int,
       contentID: null == contentID
           ? _value.contentID
@@ -169,7 +169,7 @@ class _$MyVocabularyResultImpl implements _MyVocabularyResult {
       {this.id = "",
       this.name = "",
       this.color = "",
-      @JsonKey(name: 'word_count') this.wordCount = 0,
+      @JsonKey(name: 'words_count') this.wordsCount = 0,
       this.contentID = "",
       this.vocabularyType = VocabularyType.VOCABULARY_CONTENTS});
 
@@ -186,8 +186,8 @@ class _$MyVocabularyResultImpl implements _MyVocabularyResult {
   @JsonKey()
   final String color;
   @override
-  @JsonKey(name: 'word_count')
-  final int wordCount;
+  @JsonKey(name: 'words_count')
+  final int wordsCount;
   @override
   @JsonKey()
   final String contentID;
@@ -197,7 +197,7 @@ class _$MyVocabularyResultImpl implements _MyVocabularyResult {
 
   @override
   String toString() {
-    return 'MyVocabularyResult(id: $id, name: $name, color: $color, wordCount: $wordCount, contentID: $contentID, vocabularyType: $vocabularyType)';
+    return 'MyVocabularyResult(id: $id, name: $name, color: $color, wordsCount: $wordsCount, contentID: $contentID, vocabularyType: $vocabularyType)';
   }
 
   @override
@@ -208,8 +208,8 @@ class _$MyVocabularyResultImpl implements _MyVocabularyResult {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.color, color) || other.color == color) &&
-            (identical(other.wordCount, wordCount) ||
-                other.wordCount == wordCount) &&
+            (identical(other.wordsCount, wordsCount) ||
+                other.wordsCount == wordsCount) &&
             (identical(other.contentID, contentID) ||
                 other.contentID == contentID) &&
             (identical(other.vocabularyType, vocabularyType) ||
@@ -219,7 +219,7 @@ class _$MyVocabularyResultImpl implements _MyVocabularyResult {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, name, color, wordCount, contentID, vocabularyType);
+      runtimeType, id, name, color, wordsCount, contentID, vocabularyType);
 
   @JsonKey(ignore: true)
   @override
@@ -241,7 +241,7 @@ abstract class _MyVocabularyResult implements MyVocabularyResult {
       {final String id,
       final String name,
       final String color,
-      @JsonKey(name: 'word_count') final int wordCount,
+      @JsonKey(name: 'words_count') final int wordsCount,
       final String contentID,
       final VocabularyType vocabularyType}) = _$MyVocabularyResultImpl;
 
@@ -255,8 +255,8 @@ abstract class _MyVocabularyResult implements MyVocabularyResult {
   @override
   String get color;
   @override
-  @JsonKey(name: 'word_count')
-  int get wordCount;
+  @JsonKey(name: 'words_count')
+  int get wordsCount;
   @override
   String get contentID;
   @override

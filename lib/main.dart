@@ -13,9 +13,15 @@ import 'package:foxschool/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
+import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
+import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableInformationIconViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableSeriesDataViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/route/RouteHelper.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
@@ -59,6 +65,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
+
+          /**
+           *  Intro
+           */
           BlocProvider(
               create: (context) => getIt<IntroBloc>(),
           ),
@@ -68,6 +78,10 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => IntroProgressPercentCubit(),
           ),
+
+          /**
+           *  Login
+           */
           BlocProvider(
             create: (context) => getIt<LoginBloc>(),
           ),
@@ -81,11 +95,36 @@ class MyApp extends StatelessWidget {
             create: (context) => LoginSchoolNameCubit(),
           ),
 
+          /**
+           *  Main
+           */
           BlocProvider(
             create: (context) => MainStorySelectTypeListCubit(),
           ),
           BlocProvider(
             create: (context) => MainSongCategoryListCubit(),
+          ),
+          BlocProvider(
+            create: (context) => MainMyBooksTypeCubit(),
+          ),
+
+          /**
+           *  SeriesContentsScreen
+           */
+          BlocProvider(
+            create: (context) => getIt<SeriesContentsBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => EnableInformationIconViewCubit(),
+          ),
+          BlocProvider(
+            create: (context) => EnableSeriesDataViewCubit(),
+          ),
+          BlocProvider(
+            create: (context) => LastWatchSeriesItemCubit(),
+          ),
+          BlocProvider(
+            create: (context) => SeriesItemListCubit(),
           ),
         ],
         child: MaterialApp(

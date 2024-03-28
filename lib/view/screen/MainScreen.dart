@@ -73,7 +73,7 @@ class _MainScreenState extends State<MainScreen> {
     return [
       MainStorySubScreen(factoryController: _factoryController),
       MainSongSubScreen(factoryController: _factoryController),
-      MainMyBooksSubScreen()
+      MainMyBooksSubScreen(factoryController: _factoryController)
     ];
   }
 

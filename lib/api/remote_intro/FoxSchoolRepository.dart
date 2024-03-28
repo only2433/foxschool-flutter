@@ -44,6 +44,13 @@ class FoxSchoolRepository extends FoxSchoolDataSource
     return apiClient.mainAsync();
   }
 
+  @override
+  Future<BaseResponse> seriesStoryData(String displayID) {
+    return apiClient.seriesStoryContentsDataAsync(displayID);
+  }
+
+
+
 
 
 }

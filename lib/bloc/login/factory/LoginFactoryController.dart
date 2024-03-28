@@ -49,10 +49,7 @@ class LoginFactoryController extends BlocController {
 
   void _settingSubscriptions() {
     var blocState;
-    _subscription = context
-        .read<LoginBloc>()
-        .stream
-        .listen((state) {
+    _subscription = context.read<LoginBloc>().stream.listen((state) {
       switch (state.runtimeType) {
         case LoadingState:
           {

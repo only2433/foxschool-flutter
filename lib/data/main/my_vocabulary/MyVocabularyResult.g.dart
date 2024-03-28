@@ -12,7 +12,7 @@ _$MyVocabularyResultImpl _$$MyVocabularyResultImplFromJson(
       id: json['id'] as String? ?? "",
       name: json['name'] as String? ?? "",
       color: json['color'] as String? ?? "",
-      wordCount: json['word_count'] as int? ?? 0,
+      wordsCount: json['words_count'] as int? ?? 0,
       contentID: json['contentID'] as String? ?? "",
       vocabularyType: $enumDecodeNullable(
               _$VocabularyTypeEnumMap, json['vocabularyType']) ??
@@ -25,7 +25,7 @@ Map<String, dynamic> _$$MyVocabularyResultImplToJson(
       'id': instance.id,
       'name': instance.name,
       'color': instance.color,
-      'word_count': instance.wordCount,
+      'words_count': instance.wordsCount,
       'contentID': instance.contentID,
       'vocabularyType': _$VocabularyTypeEnumMap[instance.vocabularyType]!,
     };

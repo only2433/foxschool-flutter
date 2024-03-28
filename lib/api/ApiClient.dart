@@ -37,4 +37,13 @@ abstract class ApiClient
       @Field('school_id') String schoolCode
       );
 
+  @GET('contents/story/series/{display_id}')
+  Future<BaseResponse>  seriesStoryContentsDataAsync(
+      @Path('display_id') String displayID
+      );
+
+  @GET('contents/song/series/{display_id}')
+  Future<BaseResponse>  seriesSongContentsDataAsync(
+      @Path('display_id') String displayID
+      );
 }

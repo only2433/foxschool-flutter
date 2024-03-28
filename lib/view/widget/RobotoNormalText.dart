@@ -24,6 +24,8 @@ class RobotoNormalText extends StatelessWidget {
           fontFamily: 'Roboto'
       ),
       textAlign: align,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

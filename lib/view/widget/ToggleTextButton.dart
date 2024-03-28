@@ -40,14 +40,16 @@ class _ToggleTextButtonState extends State<ToggleTextButton>
   Widget build(BuildContext context) {
 
     return Container(
-      width: widget.width + CommonUtils.getInstance(context).getHeight(10),
-      height: widget.height + CommonUtils.getInstance(context).getHeight(10),
+      width: widget.width,
+      height: widget.height,
+
       child: Stack(
         children: [
           Container(
             width: widget.width,
             height: widget.height,
               decoration: BoxDecoration(
+                  color: AppColors.color_ffffff,
                   borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(60)),
                   border: Border.all(
                       color: AppColors.color_999999,

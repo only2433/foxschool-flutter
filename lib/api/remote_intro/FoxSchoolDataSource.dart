@@ -9,5 +9,6 @@ abstract class FoxSchoolDataSource{
   Future<BaseResponse> getVersion(String deviceID, String pushAddress, String pushOn);
   Future<BaseResponse> authMe();
   Future<BaseResponse> mainInformation();
+  Future<BaseResponse> seriesStoryData(String displayID);
 
 }

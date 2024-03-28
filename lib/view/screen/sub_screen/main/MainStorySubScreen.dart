@@ -45,38 +45,46 @@ class _MainStorySubScreenState extends State<MainStorySubScreen> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
+      color: AppColors.color_f5f5f5,
       child: Column(
         children: [
-          SizedBox(
-            height: CommonUtils.getInstance(context).getHeight(40),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: CommonUtils.getInstance(context).getHeight(40),
+                ),
+                ToggleTextButton(
+                  width: CommonUtils.getInstance(context).getWidth(660),
+                  height: CommonUtils.getInstance(context).getHeight(96),
+                  firstButtonText: getIt<FoxschoolLocalization>().data['text_levels'],
+                  secondButtonText: getIt<FoxschoolLocalization>().data['text_categories'],
+                  type: UserType.STUDENT,
+                  onSelected: (index) {
+                    if(index == 0)
+                    {
+                      widget.factoryController.onClickStorySelectType(SeriesType.LEVEL);
+                    }
+                    else
+                    {
+                      widget.factoryController.onClickStorySelectType(SeriesType.CATEGORY);
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: CommonUtils.getInstance(context).getHeight(40),
+                ),
+              ],
+            ),
           ),
-          ToggleTextButton(
-            width: CommonUtils.getInstance(context).getWidth(660),
-            height: CommonUtils.getInstance(context).getHeight(96),
-            firstButtonText: getIt<FoxschoolLocalization>().data['text_levels'],
-            secondButtonText: getIt<FoxschoolLocalization>().data['text_categories'],
-            type: UserType.STUDENT,
-            onSelected: (index) {
-              if(index == 0)
-              {
-                widget.factoryController.onClickStorySelectType(SeriesType.LEVEL);
-              }
-              else
-              {
-                widget.factoryController.onClickStorySelectType(SeriesType.CATEGORY);
-              }
-            },
-          ),
-          SizedBox(
-            height: CommonUtils.getInstance(context).getHeight(40),
-          ),
+
           Expanded(
-              child: BlocListener<MainStorySelectTypeListCubit, StorySelectTypeListState>(
-                listener: (context, state) {
-                  Logger.d("data list : ${state.list.length}");
-                },
+              child: Container(
+
                 child: BlocBuilder<MainStorySelectTypeListCubit, StorySelectTypeListState>(builder: (context, state) {
                   return GridView.builder(
+
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: CommonUtils.getInstance(context).getHeight(10),
@@ -87,15 +95,25 @@ class _MainStorySubScreenState extends State<MainStorySubScreen> {
                     padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(20)),
                     itemCount: state.list.length,
                     itemBuilder: (context, index) {
-                      return ThumbnailView(
-                        imageUrl: state.list[index].thumbnailUrl,
-                        title: '${state.list[index].contentsCount} 편',
-                        level: state.list[index].level,
+                      return GestureDetector(
+                        onTap: () {
+                          Logger.d("select ID : " + state.list[index].id);
+                          widget.factoryController.onClickSeriesItem(state.list[index]);
+                        },
+                        child: Hero(
+                          tag: state.list[index].id,
+                          child: ThumbnailView(
+                            imageUrl: state.list[index].thumbnailUrl,
+                            title: '${state.list[index].contentsCount} 편',
+                            level: state.list[index].level,
+                          ),
+                        ),
                       );
                     },
                   );
                 },),
-              ))
+              )
+          )
         ],
       ),
     );

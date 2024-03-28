@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:foxschool/api/intercepter/AuthInterceptor.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
 import 'package:foxschool/bloc/intro/api/IntroBloc.dart';
+import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:flutter_easylogger/flutter_logger.dart';
@@ -29,6 +30,7 @@ Future<void> init() async
   getIt.registerLazySingleton(() => FoxSchoolRepository(dio: getIt<Dio>(), apiClient: getIt<ApiClient>()));
   getIt.registerLazySingleton(() => IntroBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => LoginBloc(repository: getIt<FoxSchoolRepository>()));
+  getIt.registerLazySingleton(() => SeriesContentsBloc(repository: getIt<FoxSchoolRepository>()));
 }
 
 

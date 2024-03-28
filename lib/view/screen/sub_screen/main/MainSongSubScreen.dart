@@ -26,6 +26,7 @@ class _MainSongSubScreenState extends State<MainSongSubScreen> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
+      color: AppColors.color_f5f5f5,
       child: Column(
         children: [
           SizedBox(

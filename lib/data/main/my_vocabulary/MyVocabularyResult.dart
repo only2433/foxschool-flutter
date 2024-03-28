@@ -19,9 +19,9 @@ class MyVocabularyResult with _$MyVocabularyResult
     @Default("")
     String color,
 
-    @JsonKey(name: 'word_count')
+    @JsonKey(name:'words_count')
     @Default(0)
-    int wordCount,
+    int wordsCount,
 
     @Default("")
     String contentID,

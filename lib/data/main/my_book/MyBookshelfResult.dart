@@ -18,7 +18,7 @@ class MyBookshelfResult with _$MyBookshelfResult
     @Default("")
     String color,
 
-    @JsonKey(name: 'contents_count')
+    @JsonKey(name:'contents_count')
     @Default(0)
     int contentsCount
   }) = _MyBookshelfResult;

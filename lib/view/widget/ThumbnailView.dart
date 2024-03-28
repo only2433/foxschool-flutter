@@ -37,6 +37,7 @@ class ThumbnailView extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(394),
+      color: AppColors.color_f5f5f5,
       child: Column(
         children: [
           Stack(

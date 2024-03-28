@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:foxschool/enum/BookColor.dart';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,6 +76,69 @@ class CommonUtils
     return size * displayFactor;
   }
 
+  BookColor getBookColorType(String color)
+  {
+    switch(color)
+    {
+      case "red":
+        return BookColor.RED;
+      case "orange":
+        return BookColor.ORANGE;
+      case "green":
+        return BookColor.GREEN;
+      case "blue":
+        return BookColor.BLUE;
+      case "purple":
+        return BookColor.PURPLE;
+      case "pink":
+        return BookColor.PINK;
+    }
+    return BookColor.RED;
+  }
+
+  String getBookResource(BookColor color)
+  {
+    switch(color)
+    {
+      case BookColor.RED:
+        return 'asset/image/bookshelf_01.png';
+      case BookColor.ORANGE:
+        return 'asset/image/bookshelf_02.png';
+      case BookColor.GREEN:
+        return 'asset/image/bookshelf_03.png';
+      case BookColor.BLUE:
+        return 'asset/image/bookshelf_04.png';
+      case BookColor.PURPLE:
+        return 'asset/image/bookshelf_05.png';
+      case BookColor.PINK:
+        return 'asset/image/bookshelf_06.png';
+    }
+  }
+
+  String getBookColorString(BookColor color)
+  {
+    switch(color)
+    {
+      case BookColor.RED:
+        return 'red';
+      case BookColor.ORANGE:
+        return 'orange';
+      case BookColor.GREEN:
+        return 'green';
+      case BookColor.BLUE:
+        return 'blue';
+      case BookColor.PURPLE:
+        return 'purple';
+      case BookColor.PINK:
+        return 'pink';
+    }
+  }
+
+  // 문자열 형식의 색상 코드를 Color 객체로 변환하는 함수
+  Color colorFromHex(String colorCode) {
+    final hexCode = colorCode.replaceAll('#', '');
+    return Color(int.parse('FF$hexCode', radix: 16));
+  }
 
 
 }
