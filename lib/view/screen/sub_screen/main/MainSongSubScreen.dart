@@ -9,18 +9,13 @@ import '../../../../common/CommonUtils.dart';
 import '../../../../values/AppColors.dart';
 import '../../../widget/RobotoBoldText.dart';
 
-class MainSongSubScreen extends StatefulWidget {
+class MainSongSubScreen extends StatelessWidget {
 
   final MainFactoryController factoryController;
   const MainSongSubScreen({
     super.key,
     required this.factoryController});
 
-  @override
-  State<MainSongSubScreen> createState() => _MainSongSubScreenState();
-}
-
-class _MainSongSubScreenState extends State<MainSongSubScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(

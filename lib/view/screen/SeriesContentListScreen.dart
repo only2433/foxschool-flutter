@@ -48,103 +48,114 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
   @override
   Widget build(BuildContext context) {
 
-    Color backgroundColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.statusBar);
+    Color statusBarColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.statusBar);
+    Color topBarColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.title); 
     return Scaffold(
       backgroundColor: AppColors.color_edeef2,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: backgroundColor,
-            toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
-            expandedHeight: CommonUtils.getInstance(context).getHeight(530),
-            centerTitle: true,
-            title: RobotoBoldText(
-              text: widget.seriesBaseResult.name,
-              fontSize: CommonUtils.getInstance(context).getWidth(50),
-              color: AppColors.color_ffffff,
-            ),
-            flexibleSpace: FlexibleSpaceBar(
-              collapseMode: CollapseMode.parallax,
-              background: Container(
-                width: MediaQuery.of(context).size.width,
-                height: CommonUtils.getInstance(context).getHeight(607),
-                alignment: Alignment.topCenter,
-                child: Hero(
-                  tag: widget.seriesBaseResult.id,
-                  child: Image.network(
-                    widget.seriesBaseResult.thumbnailUrl,
-                    width: MediaQuery.of(context).size.width,
-                    height: CommonUtils.getInstance(context).getHeight(607),
-                    fit: BoxFit.fitWidth,
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: statusBarColor,
+        child: SafeArea(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            color: Colors.white,
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  backgroundColor: topBarColor,
+                  toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
+                  expandedHeight: CommonUtils.getInstance(context).getHeight(530),
+                  centerTitle: true,
+                  title: RobotoBoldText(
+                    text: widget.seriesBaseResult.name,
+                    fontSize: CommonUtils.getInstance(context).getWidth(50),
+                    color: AppColors.color_ffffff,
+                  ),
+                  flexibleSpace: FlexibleSpaceBar(
+                    collapseMode: CollapseMode.parallax,
+                    background: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: CommonUtils.getInstance(context).getHeight(607),
+                      child: Hero(
+                        tag: widget.seriesBaseResult.id,
+                        child: Image.network(
+                          widget.seriesBaseResult.thumbnailUrl,
+                          width: MediaQuery.of(context).size.width,
+                          height: CommonUtils.getInstance(context).getHeight(607),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ),
+                  pinned: true,
+                  floating: true,
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white,),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
-              ),
-            ),
-            pinned: true,
-            floating: true,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white,),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-          BlocBuilder<SeriesItemListCubit, SeriesDataBaseState>(
-            builder: (context, state) {
-              Logger.d("state : ${state.toString()}");
-              if (state is SeriesItemListState) {
-                _animationController.forward();
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                      return FadeTransition(
-                        opacity: _animationController.drive(
-                          Tween<double>(
-                            begin: 0.0,
-                            end: 1.0,
-                          ).chain(
-                            CurveTween(
-                              curve: Interval(
-                                index * 0.1,
-                                1.0,
-                                curve: Curves.easeInOut,
+                BlocBuilder<SeriesItemListCubit, SeriesDataBaseState>(
+                  builder: (context, state) {
+                    Logger.d("state : ${state.toString()}");
+                    if (state is SeriesItemListState) {
+                      _animationController.forward();
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                            return FadeTransition(
+                              opacity: _animationController.drive(
+                                Tween<double>(
+                                  begin: 0.0,
+                                  end: 1.0,
+                                ).chain(
+                                  CurveTween(
+                                    curve: Interval(
+                                      index * 0.1,
+                                      1.0,
+                                      curve: Curves.easeInOut,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: index == 0 ?
-                              EdgeInsets.only(
-                                top: CommonUtils.getInstance(context).getHeight(40),
-                                bottom: CommonUtils.getInstance(context).getHeight(20),
-                                left: CommonUtils.getInstance(context).getWidth(25),
-                                right: CommonUtils.getInstance(context).getWidth(25)
-                              )
-                          : EdgeInsets.only(
-                              bottom: CommonUtils.getInstance(context).getHeight(20),
-                              left: CommonUtils.getInstance(context).getWidth(25),
-                              right: CommonUtils.getInstance(context).getWidth(25)
-                          ),
-                          child: ContentsListItemView(
-                            thumbnailUrl: state.itemList[index].thumbnailUrl,
-                            title: state.itemList[index].name,
-                            onThumbnailPressed: () {},
-                          ),
+                              child: Padding(
+                                padding: index == 0 ?
+                                    EdgeInsets.only(
+                                      top: CommonUtils.getInstance(context).getHeight(40),
+                                      bottom: CommonUtils.getInstance(context).getHeight(20),
+                                      left: CommonUtils.getInstance(context).getWidth(25),
+                                      right: CommonUtils.getInstance(context).getWidth(25)
+                                    )
+                                : EdgeInsets.only(
+                                    bottom: CommonUtils.getInstance(context).getHeight(20),
+                                    left: CommonUtils.getInstance(context).getWidth(25),
+                                    right: CommonUtils.getInstance(context).getWidth(25)
+                                ),
+                                child: ContentsListItemView(
+                                  thumbnailUrl: state.itemList[index].thumbnailUrl,
+                                  title: state.itemList[index].name,
+                                  onThumbnailPressed: () {},
+                                ),
+                              ),
+                            );
+                          },
+                          childCount: state.itemList.length,
                         ),
                       );
-                    },
-                    childCount: state.itemList.length,
-                  ),
-                );
-              } else {
-                return SliverFillRemaining(
-                  child: Center(
-                    child: CircularProgressIndicator(color: AppColors.color_47e1ad,),
-                  ),
-                );
-              }
-            },
+                    } else {
+                      return SliverFillRemaining(
+                        child: Center(
+                          child: CircularProgressIndicator(color: AppColors.color_47e1ad,),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }

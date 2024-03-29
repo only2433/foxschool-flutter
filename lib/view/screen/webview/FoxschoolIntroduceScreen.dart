@@ -41,7 +41,7 @@ class _FoxschoolIntroduceScreenState extends State<FoxschoolIntroduceScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: AppColors.color_47e1ad,
+        color: AppColors.color_1fb77c,
         child: SafeArea(
           child: Column(
             children: [

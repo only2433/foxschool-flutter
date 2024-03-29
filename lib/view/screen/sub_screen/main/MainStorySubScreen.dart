@@ -18,6 +18,7 @@ import '../../../../data/main/series/SeriesInformationResult.dart';
 import '../../../../di/Dependencies.dart';
 import '../../../../enum/SeriesType.dart';
 import '../../../../values/AppColors.dart';
+import '../../SeriesContentListScreen.dart';
 
 class MainStorySubScreen extends StatefulWidget {
 
@@ -98,7 +99,7 @@ class _MainStorySubScreenState extends State<MainStorySubScreen> {
                       return GestureDetector(
                         onTap: () {
                           Logger.d("select ID : " + state.list[index].id);
-                          widget.factoryController.onClickSeriesItem(state.list[index]);
+                          widget.factoryController.onClickSeriesItem(state.list[index], context.widget);
                         },
                         child: Hero(
                           tag: state.list[index].id,

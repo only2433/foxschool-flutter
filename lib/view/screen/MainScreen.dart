@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/data/login/user_info_section/UserInfoSectionResult.dart';
 import 'package:foxschool/data/main/main_story_infomation/MainStoryInformationResult.dart';
 import 'package:foxschool/enum/MainMenuDrawerType.dart';
-import 'package:foxschool/route/RouteHelper.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/main/MainMyBooksSubScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/main/MainSongSubScreen.dart';
@@ -117,15 +117,9 @@ class _MainScreenState extends State<MainScreen> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Container(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
-        height: MediaQuery
-            .of(context)
-            .size
-            .height,
-        color: AppColors.color_47e1ad,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: AppColors.color_1fb77c,
         child: SafeArea(
           child: Column(
             children: [
@@ -135,7 +129,7 @@ class _MainScreenState extends State<MainScreen> {
                   _scaffoldKey.currentState?.openDrawer();
                 },
                 onSearchPressed: () {
-
+          
                 },
               ),
               Expanded(child: PersistentTabView(
@@ -154,8 +148,8 @@ class _MainScreenState extends State<MainScreen> {
                 // Default is true.
                 hideNavigationBarWhenKeyboardShows: true,
                 // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-
-
+          
+          
                 popAllScreensOnTapOfSelectedTab: true,
                 popActionScreens: PopActionScreensType.all,
                 itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
@@ -203,7 +197,7 @@ class _MainScreenState extends State<MainScreen> {
               ));
               Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
               Preference.setObject(Common.PARAMS_USER_API_INFORMATION, null);
-              Navigator.of(context).pushReplacementNamed(RouteHelper.getLogout());
+              _factoryController.onClickLogout();
             });
         break;
       case MainMenuDrawerType.STUDY_LOG:

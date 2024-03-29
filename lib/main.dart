@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
@@ -23,7 +24,6 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableSeriesDa
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
-import 'package:foxschool/route/RouteHelper.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:foxschool/view/screen/LoginScreen.dart';
 import 'package:foxschool/view/screen/webview/FoxschoolIntroduceScreen.dart';
@@ -129,8 +129,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          onGenerateRoute: RouteHelper.getGenerateRoute,
-          initialRoute: RouteHelper.getIntro(),
+          home: IntroScreen(),
         )
     );
   }

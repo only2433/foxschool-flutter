@@ -11,7 +11,7 @@ import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/enum/IntroScreenType.dart';
-import 'package:foxschool/route/RouteHelper.dart';
+
 import 'package:foxschool/view/screen/webview/FoxschoolIntroduceScreen.dart';
 import 'package:foxschool/view/widget/BlueOutlinedTextButton.dart';
 import 'package:foxschool/view/widget/BlueTextButton.dart';
@@ -19,6 +19,7 @@ import 'package:foxschool/view/widget/FrameAnimationView.dart';
 import 'package:foxschool/view/widget/PercentLineProgressBar.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
+import 'package:page_transition/page_transition.dart';
 import '../../bloc/intro/api/event/AuthMeEvent.dart';
 import '../../bloc/intro/api/event/GetVersionEvent.dart';
 import '../../bloc/intro/api/event/MainInformationEvent.dart';

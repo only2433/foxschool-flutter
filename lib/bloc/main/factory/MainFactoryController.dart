@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
@@ -8,8 +9,10 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
+import 'package:foxschool/common/PageNaviagator.dart' as Page;
 import 'package:foxschool/enum/MyBooksType.dart';
-import 'package:foxschool/route/RouteHelper.dart';
+import 'package:foxschool/view/screen/IntroScreen.dart';
+import 'package:foxschool/view/screen/SeriesContentListScreen.dart';
 
 import '../../../common/Common.dart';
 import '../../../data/main/MainInformationResult.dart';
@@ -17,6 +20,7 @@ import '../../../data/main/my_book/MyBookshelfResult.dart';
 import '../../../data/main/my_vocabulary/MyVocabularyResult.dart';
 import '../../../data/main/series/SeriesInformationResult.dart';
 import '../../../enum/SeriesType.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MainFactoryController extends BlocController
 {
@@ -98,12 +102,22 @@ class MainFactoryController extends BlocController
     _settingMyBooksData(type);
   }
 
-  void onClickSeriesItem(SeriesInformationResult data)
+  void onClickSeriesItem(SeriesInformationResult data, Widget widget)
   {
-    if(_currentStorySeriesType == SeriesType.LEVEL)
-      {
-        Navigator.of(context).pushNamed(RouteHelper.getSeriesContentsList(), arguments: data);
-      }
+    if(_currentStorySeriesType == SeriesType.LEVEL) {
+      Navigator.push(
+        context,
+          Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
+      );
+    }
+  }
+
+  void onClickLogout()
+  {
+    Navigator.pushReplacement(
+        context,
+        Page.getLogoutTransition(context)
+    );
   }
 
   @override
