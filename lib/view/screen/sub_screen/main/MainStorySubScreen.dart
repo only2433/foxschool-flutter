@@ -101,14 +101,11 @@ class _MainStorySubScreenState extends State<MainStorySubScreen> {
                           Logger.d("select ID : " + state.list[index].id);
                           widget.factoryController.onClickSeriesItem(state.list[index], context.widget);
                         },
-                        child: Hero(
-                          tag: state.list[index].id,
-                          child: ThumbnailView(
+                        child: ThumbnailView(
+                            id: state.list[index].id,
                             imageUrl: state.list[index].thumbnailUrl,
                             title: '${state.list[index].contentsCount} 편',
-                            level: state.list[index].level,
-                          ),
-                        ),
+                            level: state.list[index].level),
                       );
                     },
                   );

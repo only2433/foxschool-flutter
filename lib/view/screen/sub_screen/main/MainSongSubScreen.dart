@@ -42,6 +42,7 @@ class MainSongSubScreen extends StatelessWidget {
                     itemCount: state.list.length,
                     itemBuilder: (context, index) {
                       return ThumbnailView(
+                        id: state.list[index].id,
                         imageUrl: state.list[index].thumbnailUrl,
                         title: '${state.list[index].contentsCount} 편',
                       );

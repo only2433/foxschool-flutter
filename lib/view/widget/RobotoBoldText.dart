@@ -6,13 +6,14 @@ class RobotoBoldText extends StatelessWidget {
   final double fontSize;
   Color color;
   TextAlign align;
-
+  int maxLines;
   RobotoBoldText({
     super.key,
     required this.text,
     required this.fontSize,
     this.color = Colors.white,
-    this.align = TextAlign.start});
+    this.align = TextAlign.start,
+    this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class RobotoBoldText extends StatelessWidget {
           fontFamily: 'Roboto'
       ),
       textAlign: align,
-      maxLines: 1,
+      maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
     );
   }

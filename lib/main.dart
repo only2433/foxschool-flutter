@@ -24,10 +24,12 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableSeriesDa
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
+import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:foxschool/view/screen/LoginScreen.dart';
 import 'package:foxschool/view/screen/webview/FoxschoolIntroduceScreen.dart';
 import 'package:foxschool/di/Dependencies.dart' as Dependencies;
+import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import '../../common/Preference.dart' as Preference;
 
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
            *  Intro
            */
           BlocProvider(
-              create: (context) => getIt<IntroBloc>(),
+            create: (context) => getIt<IntroBloc>(),
           ),
           BlocProvider(
             create: (context) => IntroScreenTypeCubit(),
@@ -134,4 +136,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -8,12 +9,14 @@ import '../../values/AppColors.dart';
 
 class ThumbnailView extends StatelessWidget {
 
+  final String id;
   final String imageUrl;
   final String title;
   int level;
 
   ThumbnailView({
     super.key,
+    required this.id,
     required this.imageUrl,
     required this.title,
     this.level = -1
@@ -42,12 +45,15 @@ class ThumbnailView extends StatelessWidget {
         children: [
           Stack(
             children: [
-              FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  width: CommonUtils.getInstance(context).getWidth(502),
-                  height: CommonUtils.getInstance(context).getHeight(282),
-                  fit: BoxFit.cover,
-                  image: imageUrl),
+              Hero(
+                tag: id,
+                child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    width: CommonUtils.getInstance(context).getWidth(502),
+                    height: CommonUtils.getInstance(context).getHeight(282),
+                    fit: BoxFit.cover,
+                    image: imageUrl),
+              ),
               if(level >= 0)
                 Positioned(
                   bottom: 0,

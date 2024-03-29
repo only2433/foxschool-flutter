@@ -59,13 +59,13 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
         child: SafeArea(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            color: Colors.white,
+            color: AppColors.color_edeef2,
             child: CustomScrollView(
-              slivers: [
+              slivers: <Widget>[
                 SliverAppBar(
                   backgroundColor: topBarColor,
                   toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
-                  expandedHeight: CommonUtils.getInstance(context).getHeight(530),
+                  expandedHeight: CommonUtils.getInstance(context).getHeight(607),
                   centerTitle: true,
                   title: RobotoBoldText(
                     text: widget.seriesBaseResult.name,
@@ -74,17 +74,13 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.parallax,
-                    background: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: CommonUtils.getInstance(context).getHeight(607),
-                      child: Hero(
-                        tag: widget.seriesBaseResult.id,
-                        child: Image.network(
-                          widget.seriesBaseResult.thumbnailUrl,
-                          width: MediaQuery.of(context).size.width,
-                          height: CommonUtils.getInstance(context).getHeight(607),
-                          fit: BoxFit.fill,
-                        ),
+
+                    background: Hero(
+                      tag: widget.seriesBaseResult.id,
+                      child: Image.network(
+                        widget.seriesBaseResult.thumbnailUrl,
+                        height: CommonUtils.getInstance(context).getHeight(607),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -134,7 +130,9 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                                 ),
                                 child: ContentsListItemView(
                                   thumbnailUrl: state.itemList[index].thumbnailUrl,
-                                  title: state.itemList[index].name,
+                                  index: state.itemList[index].index,
+                                  indexColor: topBarColor,
+                                  title: state.itemList[index].getSubName(),
                                   onThumbnailPressed: () {},
                                 ),
                               ),
