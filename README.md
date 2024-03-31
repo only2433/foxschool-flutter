@@ -14,3 +14,6 @@ Bloc , Cubit을 이용한 상태관리 패턴을 적용하였으며, DI 는 getI
 **bloc**은 API 와의 이벤트 처리를 담당학고 있습니다.<br>
 **Controller**가 **Factory**와 **bloc** 사이에서 중개인 역활을 수행합니다.<br>
 **Model**은 **Data Class**에서 담당하며 Freezed를 사용하여 구성 하였습니다. 
+
+    Factory 패키지는 Controller 에서 Screen 으로 이벤트를 발행 할 때 사용 합니다. 
+    Controller는 Screen 에서 Action을 했을 때, 이에 대한 
