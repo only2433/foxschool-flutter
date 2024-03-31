@@ -7,15 +7,10 @@ Architecture 까지 적용 하였습니다.
 
 Bloc , Cubit을 이용한 상태관리 패턴을 적용하였으며, DI 는 getIt을 사용 하였습니다. 
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Architecture
+이 앱은 **MVVM** 구조로 개발되어 있으며, **View**는 Screen에서 담당하고 있으며, <br>
+**ViewModel**은 **Factory** 와 **bloc**으로 나누어져 있습니다. **Factory**는 Screen 과의 이벤트 처리<br>
+**bloc**은 API 와의 이벤트 처리를 담당학고 있습니다.<br>
+**Controller**가 **Factory**와 **bloc** 사이에서 중개인 역활을 수행합니다.<br>
+**Model**은 **Data Class**에서 담당하며 Freezed를 사용하여 구성 하였습니다. 
