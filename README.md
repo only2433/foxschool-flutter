@@ -1,6 +1,13 @@
-# foxschool
+# About
 
-A Flutter project to convert Foxschool.
+기존의 팍스스쿨 앱을 Flutter 로 변환 하기 위해 진행 하는 <br>
+프로젝트 입니다.
+
+단순히 Flutter를 배우는게 목적이 아닌, 실제 사용할 수 있는 회사 내에서 <br>
+사용할 수 있게 MVVM Architecture 까지 적용 하였습니다.
+
+Bloc , Cubit을 이용한 상태관리 패턴을 적용하였으며, DI 는 getIt을 <br>
+사용 하였습니다. 
 
 ## Getting Started
 
