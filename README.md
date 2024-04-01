@@ -16,7 +16,12 @@ Bloc , Cubit을 이용한 상태관리 패턴을 적용하였으며, DI 는 getI
 **Model**은 **Data Class**에서 담당하며 Freezed를 사용하여 구성 하였습니다. 
 
     Factory 패키지는 Controller 에서 Screen 으로 이벤트를 발행 할 때 사용합니다. 
-    Controller는 Screen 에서 Action을 했을 때, 이에 대한 처리를 하고, Cubit으로 이벤트를 발행하여 <br>
+    Controller는 Screen 에서 Action을 했을 때, 이에 대한 처리를 하고, Cubit으로 이벤트를 발행하여 
     Screen 에서 UI를 갱신하게 합니다. 
 
     Bloc 패키지는 API 진행에 관련된 처리 이벤트를 Controller에 발행 할 때 사용합니다.
+    API 통신은 Retrofit 라이브러리를 사용 하였으며, Controller 는 이에 대한 상황을 Stream 으로 계속 감시를 하고 있으며,
+    BlocState 에 따라 처리를 달리 합니다. 
+
+    이러한 구조를 통해 View 와 비즈니스 로직을 분리하고, 코드의 재사용성과 유지보수성을 높일 수 있습니다.
+    
