@@ -25,3 +25,15 @@ Bloc , Cubit을 이용한 상태관리 패턴을 적용하였으며, DI 는 getI
 
     이러한 구조를 통해 View 와 비즈니스 로직을 분리하고, 코드의 재사용성과 유지보수성을 높일 수 있습니다.
     
+~~~ mermaid
+flowchart LR
+    subgraph View
+    A(Screen)
+    end
+    subgraph Controller
+    B(Controller)
+    end
+    subgraph ViewModel
+    C(Bloc)
+    D(Factory)
+    end
