@@ -30,10 +30,18 @@ flowchart LR
     subgraph View
     A(Screen)
     end
-    subgraph Controller
-    B(Controller)
-    end
     subgraph ViewModel
+    B(Controller)
     C(Bloc)
     D(Factory)
     end
+
+        A(Screen)-- Action --> B(Controller)
+        B(Controller)-- Server Request --> C(Bloc)
+        C(Bloc)-- Get Data --> E(Service)
+        E(Service) -. Response .-> C(Bloc)
+        C(Bloc) -. Stream Subscription .-> B(Controller)
+        B(Controller)-- UI Update --> D(Factory)
+        D(Factory) -. BlucBuilder .-> A(Screen)
+~~~
+        
