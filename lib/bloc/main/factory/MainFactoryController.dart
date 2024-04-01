@@ -13,6 +13,7 @@ import 'package:foxschool/common/PageNaviagator.dart' as Page;
 import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:foxschool/view/screen/SeriesContentListScreen.dart';
+import 'package:foxschool/view/screen/StoryCategoryListScreen.dart';
 
 import '../../../common/Common.dart';
 import '../../../data/main/MainInformationResult.dart';
@@ -102,7 +103,7 @@ class MainFactoryController extends BlocController
     _settingMyBooksData(type);
   }
 
-  void onClickSeriesItem(SeriesInformationResult data, Widget widget)
+  void onClickStorySeriesItem(SeriesInformationResult data, Widget widget)
   {
     if(_currentStorySeriesType == SeriesType.LEVEL) {
       Navigator.push(
@@ -110,6 +111,21 @@ class MainFactoryController extends BlocController
           Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
       );
     }
+    else
+    {
+      Navigator.push(
+          context,
+          Page.getSeriesDetailListTransition(context, StoryCategoryListScreen(seriesBaseResult: data))
+      );
+    }
+  }
+
+  void onClickSongSeriesItem(SeriesInformationResult data, Widget widget)
+  {
+    Navigator.push(
+        context,
+        Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
+    );
   }
 
   void onClickLogout()

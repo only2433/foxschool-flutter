@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
-import 'package:foxschool/bloc/series_contents_list/api/event/SeriesStoryDataEvent.dart';
-import 'package:foxschool/bloc/series_contents_list/api/state/SeriesStoryDataState.dart';
+import 'package:foxschool/bloc/series_contents_list/api/event/SeriesContentsDataEvent.dart';
+import 'package:foxschool/bloc/series_contents_list/api/state/SeriesContentsDataState.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 import '../../../common/Common.dart';
 import '../../base/BlocState.dart';
@@ -17,10 +17,10 @@ class SeriesContentsBloc extends Bloc<BlocEvent, BlocState>
    required this.repository
   }) : super(InitState())
   {
-    on<SeriesStoryDataEvent>(_onSeriesStoryData);
+    on<SeriesContentsDataEvent>(_onSeriesContentsData);
   }
 
-  void _onSeriesStoryData(SeriesStoryDataEvent event, Emitter<BlocState> emit) async
+  void _onSeriesContentsData(SeriesContentsDataEvent event, Emitter<BlocState> emit) async
   {
     try
     {
@@ -33,7 +33,7 @@ class SeriesContentsBloc extends Bloc<BlocEvent, BlocState>
           await Preference.setString(Common.PARAMS_ACCESS_TOKEN, response.access_token);
         }
         DetailItemInformationResult result = DetailItemInformationResult.fromJson(response.data);
-        emit(SeriesStoryDataState(data: result));
+        emit(SeriesContentsDataState(data: result));
       }
       else
       {

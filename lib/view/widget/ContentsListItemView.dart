@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
@@ -13,7 +14,7 @@ class ContentsListItemView extends StatelessWidget {
   final String thumbnailUrl;
   final String title;
   final VoidCallback onThumbnailPressed;
-  Color? indexColor;
+  String indexColor;
   int index;
   bool isStoryViewComplete;
   VoidCallback? onOptionPressed;
@@ -23,7 +24,7 @@ class ContentsListItemView extends StatelessWidget {
     required this.thumbnailUrl,
     required this.title,
     required this.onThumbnailPressed,
-    this.indexColor,
+    this.indexColor = "",
     this.index = 0,
     this.isStoryViewComplete = false,
     onOptionPressed
@@ -31,6 +32,8 @@ class ContentsListItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Logger.d("index : ${index}");
     return Container(
         width: MediaQuery.of(context).size.width,
         height: CommonUtils.getInstance(context).getHeight(244),
@@ -68,7 +71,7 @@ class ContentsListItemView extends StatelessWidget {
           SizedBox(
             width: CommonUtils.getInstance(context).getWidth(36),
           ),
-          index != 0 ? getTitleAndIndexWidget(context) : getTitleWidget(context),
+          indexColor == "" ? getTitleWidget(context) : getTitleAndIndexWidget(context),
           GestureDetector(
             onTap: onOptionPressed,
             child: Image.asset('asset/image/icon_learning.png',
@@ -87,7 +90,6 @@ class ContentsListItemView extends StatelessWidget {
       width: CommonUtils.getInstance(context).getWidth(530),
       height: CommonUtils.getInstance(context).getHeight(182),
       child: Row(
-
         children: [
           Container(
             width: CommonUtils.getInstance(context).getWidth(80),
@@ -96,7 +98,9 @@ class ContentsListItemView extends StatelessWidget {
             child: RobotoBoldText(
                 text: getIndexText(index),
                 fontSize: CommonUtils.getInstance(context).getWidth(40),
-                color: indexColor ?? AppColors.color_ffffff,
+                color: indexColor == "" ?
+                AppColors.color_ffffff
+                    : CommonUtils.getInstance(context).colorFromHex(indexColor),
 
             ),
           ),

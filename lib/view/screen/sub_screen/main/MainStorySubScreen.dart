@@ -99,7 +99,7 @@ class _MainStorySubScreenState extends State<MainStorySubScreen> {
                       return GestureDetector(
                         onTap: () {
                           Logger.d("select ID : " + state.list[index].id);
-                          widget.factoryController.onClickSeriesItem(state.list[index], context.widget);
+                          widget.factoryController.onClickStorySeriesItem(state.list[index], context.widget);
                         },
                         child: ThumbnailView(
                             id: state.list[index].id,

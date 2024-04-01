@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
+import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
+import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
 import 'package:foxschool/bloc/intro/api/IntroBloc.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
@@ -128,6 +130,17 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => SeriesItemListCubit(),
           ),
+
+          /**
+           * StoryCategoryListScreen
+           */
+          BlocProvider(
+              create: (context) => getIt<CategoryContentsDataBloc>()
+          ),
+          BlocProvider(
+              create: (context) => CategoryItemListCubit()
+          ),
+
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

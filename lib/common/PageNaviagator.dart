@@ -36,8 +36,8 @@ PageTransition getSeriesDetailListTransition(BuildContext context, Widget toWidg
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_NORMAL),
-      reverseDuration: Duration(milliseconds: Common.DURATION_NORMAL),
+      duration: Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
       type: PageTransitionType.fade,
       child: toWidget,
       childCurrent: context.widget);
@@ -47,8 +47,8 @@ PageTransition getLogoutTransition(BuildContext context)
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_NORMAL),
-      reverseDuration: Duration(milliseconds: Common.DURATION_NORMAL),
+      duration: Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
       type: PageTransitionType.leftToRightJoined,
       child: const IntroScreen(),
       childCurrent: context.widget

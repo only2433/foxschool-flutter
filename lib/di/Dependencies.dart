@@ -2,6 +2,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:foxschool/api/intercepter/AuthInterceptor.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
+import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/bloc/intro/api/IntroBloc.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -31,6 +32,7 @@ Future<void> init() async
   getIt.registerLazySingleton(() => IntroBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => LoginBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => SeriesContentsBloc(repository: getIt<FoxSchoolRepository>()));
+  getIt.registerLazySingleton(() => CategoryContentsDataBloc(repository: getIt<FoxSchoolRepository>()));
 }
 
 

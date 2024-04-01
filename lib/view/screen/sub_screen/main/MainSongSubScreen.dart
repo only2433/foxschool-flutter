@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/view/widget/ThumbnailView.dart';
 
@@ -41,10 +42,16 @@ class MainSongSubScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(20)),
                     itemCount: state.list.length,
                     itemBuilder: (context, index) {
-                      return ThumbnailView(
-                        id: state.list[index].id,
-                        imageUrl: state.list[index].thumbnailUrl,
-                        title: '${state.list[index].contentsCount} 편',
+                      return GestureDetector(
+                        onTap: () {
+                          Logger.d("select ID : " + state.list[index].id);
+                          factoryController.onClickSongSeriesItem(state.list[index], context.widget);
+                        },
+                        child: ThumbnailView(
+                          id: state.list[index].id,
+                          imageUrl: state.list[index].thumbnailUrl,
+                          title: '${state.list[index].contentsCount} 편',
+                        ),
                       );
                     },);
                 },

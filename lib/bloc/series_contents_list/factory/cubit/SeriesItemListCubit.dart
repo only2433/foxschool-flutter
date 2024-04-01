@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
 
 import '../../../../data/contents/contents_base/ContentsBaseResult.dart';
+import '../../../base/ContentsListBaseState.dart';
 
-class SeriesItemListCubit extends Cubit<SeriesDataBaseState>
+class SeriesItemListCubit extends Cubit<ContentsListBaseState>
 {
   SeriesItemListCubit() : super(LoadingState());
 
@@ -21,5 +22,7 @@ class SeriesItemListCubit extends Cubit<SeriesDataBaseState>
         itemList: list)
     );
   }
-
 }
+
+
+class LoadingState extends ContentsListBaseState {}

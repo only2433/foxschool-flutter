@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:foxschool/bloc/category_contents_list/CategoryContentsListController.dart';
+import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
+import 'package:foxschool/bloc/category_contents_list/factory/state/CategoryItemListState.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/SeriesContentsListFactoryController.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
@@ -13,28 +16,29 @@ import '../../common/Common.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
 import '../../values/AppColors.dart';
 import '../widget/ContentsListItemView.dart';
+import '../widget/ThumbnailView.dart';
 
-class SeriesContentListScreen extends StatefulWidget {
+class StoryCategoryListScreen extends StatefulWidget {
 
   final SeriesBaseResult seriesBaseResult;
 
-  const SeriesContentListScreen({
+  const StoryCategoryListScreen({
     super.key,
     required this.seriesBaseResult});
 
   @override
-  State<SeriesContentListScreen> createState() => _SeriesContentListScreenState();
+  State<StoryCategoryListScreen> createState() => _StoryCategoryListScreenState();
 }
 
-class _SeriesContentListScreenState extends State<SeriesContentListScreen> with TickerProviderStateMixin  {
+class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with TickerProviderStateMixin  {
 
-  late SeriesContentsListFactoryController _factoryController;
+  late CategoryContentsListController _factoryController;
   late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _factoryController = SeriesContentsListFactoryController(
+    _factoryController = CategoryContentsListController(
         context: context, currentSeriesBaseResult: widget.seriesBaseResult);
     _factoryController.init();
 
@@ -50,7 +54,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
   Widget build(BuildContext context) {
 
     Color statusBarColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.statusBar);
-    Color topBarColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.title); 
+    Color topBarColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.title);
     return Scaffold(
       backgroundColor: AppColors.color_edeef2,
       body: Container(
@@ -60,7 +64,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
         child: SafeArea(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            color: AppColors.color_edeef2,
+            color: AppColors.color_f5f5f5,
             child: CustomScrollView(
               slivers: <Widget>[
                 SliverAppBar(
@@ -94,13 +98,21 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                     },
                   ),
                 ),
-                BlocBuilder<SeriesItemListCubit, ContentsListBaseState>(
+                BlocBuilder<CategoryItemListCubit, ContentsListBaseState>(
                   builder: (context, state) {
                     Logger.d("state : ${state.toString()}");
-                    if (state is SeriesItemListState) {
+                    if (state is CategoryItemListState) {
                       _animationController.forward();
-                      return SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index) {
+                      return SliverPadding(
+                        padding: EdgeInsets.only(
+                          top: CommonUtils.getInstance(context).getHeight(40)
+                        ),
+                        sliver: SliverGrid(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: CommonUtils.getInstance(context).getHeight(10),
+                            mainAxisExtent: CommonUtils.getInstance(context).getHeight(374)),
+                          delegate: SliverChildBuilderDelegate((context, index) {
                             return FadeTransition(
                               opacity: _animationController.drive(
                                 Tween<double>(
@@ -116,30 +128,21 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                                   ),
                                 ),
                               ),
-                              child: Padding(
-                                padding: index == 0 ?
-                                    EdgeInsets.only(
-                                      top: CommonUtils.getInstance(context).getHeight(40),
-                                      bottom: CommonUtils.getInstance(context).getHeight(20),
-                                      left: CommonUtils.getInstance(context).getWidth(25),
-                                      right: CommonUtils.getInstance(context).getWidth(25)
-                                    )
-                                : EdgeInsets.only(
-                                    bottom: CommonUtils.getInstance(context).getHeight(20),
-                                    left: CommonUtils.getInstance(context).getWidth(25),
-                                    right: CommonUtils.getInstance(context).getWidth(25)
-                                ),
-                                child: ContentsListItemView(
-                                  thumbnailUrl: state.itemList[index].thumbnailUrl,
-                                  index: state.itemList[index].index,
-                                  indexColor: state.seriesColor,
-                                  title: state.itemList[index].getSubName(),
-                                  onThumbnailPressed: () {},
-                                ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _factoryController.onClickStorySeriesItem(state.itemList[index], context.widget);
+                                },
+                                child: ThumbnailView(
+                                      id: state.itemList[index].id,
+                                      imageUrl: state.itemList[index].thumbnailUrl,
+                                      title: '${state.itemList[index].contentsCount} 편',
+                                      level: state.itemList[index].level),
                               ),
+
                             );
                           },
-                          childCount: state.itemList.length,
+                            childCount: state.itemList.length,
+                          ),
                         ),
                       );
                     } else {

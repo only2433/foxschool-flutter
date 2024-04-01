@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
-import 'package:foxschool/bloc/series_contents_list/api/event/SeriesStoryDataEvent.dart';
-import 'package:foxschool/bloc/series_contents_list/api/state/SeriesStoryDataState.dart';
+import 'package:foxschool/bloc/series_contents_list/api/event/SeriesContentsDataEvent.dart';
+import 'package:foxschool/bloc/series_contents_list/api/state/SeriesContentsDataState.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 
 import '../../../common/Common.dart';
@@ -31,14 +31,12 @@ class SeriesContentsListFactoryController extends BlocController
 
   @override
   void init() {
-
     context.read<SeriesItemListCubit>().showLoading();
     _settingSubscriptions();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-
-      await Future.delayed(Duration(milliseconds: Common.DURATION_LONG));
+      await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
       context.read<SeriesContentsBloc>().add(
-        SeriesStoryDataEvent(displayID: currentSeriesBaseResult.id)
+        SeriesContentsDataEvent(displayID: currentSeriesBaseResult.id)
       );
     });
   }
@@ -49,8 +47,8 @@ class SeriesContentsListFactoryController extends BlocController
     _subscription = context.read<SeriesContentsBloc>().stream.listen((state) async{
       switch(state.runtimeType)
       {
-        case SeriesStoryDataState:
-          blocState = state as SeriesStoryDataState;
+        case SeriesContentsDataState:
+          blocState = state as SeriesContentsDataState;
           _seriesContentsData = blocState.data;
 
           if(_seriesContentsData.getSeriesID() != "")
@@ -71,14 +69,10 @@ class SeriesContentsListFactoryController extends BlocController
   {
     _currentContentsItemList.clear();
     _currentContentsItemList.addAll(_seriesContentsData.contentsList);
-
-
-
     if(isStillOnSeries)
       {
         _currentContentsItemList = List.from(_currentContentsItemList.reversed);
       }
-
     context.read<SeriesItemListCubit>().showSeriesItemList(
         _getSeriesColor(),
         _seriesContentsData.isSingleSeries() ? true : false,

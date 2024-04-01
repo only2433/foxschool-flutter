@@ -1,10 +1,10 @@
 
 import 'package:foxschool/bloc/base/BlocEvent.dart';
 
-class SeriesStoryDataEvent extends BlocEvent
+class CategoryContentsDataEvent extends BlocEvent
 {
   final String displayID;
-  SeriesStoryDataEvent({
+  CategoryContentsDataEvent({
     required this.displayID
   });
 

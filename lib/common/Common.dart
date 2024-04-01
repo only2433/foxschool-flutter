@@ -148,7 +148,7 @@ class Common
 
   static const int DURATION_SHORTEST = 100;
   static const int DURATION_SHORTER = 150;
-  static const int DURATION_SHORT = 300;
+  static const int DURATION_SHORT = 350;
   static const int DURATION_MENU_ANIMATION_PHONE = 350;
   static const int DURATION_NORMAL = 500;
   static const int DURATION_CHANGE_USER = 600;
