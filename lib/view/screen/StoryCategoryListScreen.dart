@@ -31,9 +31,10 @@ class StoryCategoryListScreen extends StatefulWidget {
 }
 
 class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with TickerProviderStateMixin  {
-
+  late ScrollController _scrollController;
   late CategoryContentsListController _factoryController;
   late AnimationController _animationController;
+  Color _titleColor = Colors.white;
 
   @override
   void initState() {
@@ -47,7 +48,19 @@ class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with 
       duration: Duration(milliseconds: Common.DURATION_SHORT),
     );
 
+    _scrollController = ScrollController()
+      ..addListener(() {
+        setState(() {
+          _titleColor = _isSliverAppBarExpanded ? AppColors.color_ffffff : Colors.transparent;
+        });
+      });
 
+  }
+
+  bool get _isSliverAppBarExpanded {
+    return _scrollController.hasClients &&
+        _scrollController.offset >
+            CommonUtils.getInstance(context).getHeight(607) - CommonUtils.getInstance(context).getHeight(150);
   }
 
   @override
@@ -66,17 +79,18 @@ class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with 
             width: MediaQuery.of(context).size.width,
             color: AppColors.color_f5f5f5,
             child: CustomScrollView(
+              controller: _scrollController,
               slivers: <Widget>[
                 SliverAppBar(
                   backgroundColor: topBarColor,
                   toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
                   expandedHeight: CommonUtils.getInstance(context).getHeight(607),
                   centerTitle: true,
-                  title: RobotoBoldText(
+                  title: _isSliverAppBarExpanded ? RobotoBoldText(
                     text: widget.seriesBaseResult.name,
                     fontSize: CommonUtils.getInstance(context).getWidth(50),
-                    color: AppColors.color_ffffff,
-                  ),
+                    color: _titleColor,
+                  ) : null,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.parallax,
 

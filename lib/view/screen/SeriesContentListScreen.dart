@@ -27,9 +27,10 @@ class SeriesContentListScreen extends StatefulWidget {
 }
 
 class _SeriesContentListScreenState extends State<SeriesContentListScreen> with TickerProviderStateMixin  {
-
+  late ScrollController _scrollController;
   late SeriesContentsListFactoryController _factoryController;
   late AnimationController _animationController;
+  Color _titleColor = Colors.white;
 
   @override
   void initState() {
@@ -44,6 +45,18 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
     );
 
 
+    _scrollController = ScrollController()
+      ..addListener(() {
+        setState(() {
+          _titleColor = _isSliverAppBarExpanded ? AppColors.color_ffffff : Colors.transparent;
+        });
+      });
+  }
+
+  bool get _isSliverAppBarExpanded {
+    return _scrollController.hasClients &&
+        _scrollController.offset >
+            CommonUtils.getInstance(context).getHeight(607) - CommonUtils.getInstance(context).getHeight(150);
   }
 
   @override
@@ -62,20 +75,20 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
             width: MediaQuery.of(context).size.width,
             color: AppColors.color_edeef2,
             child: CustomScrollView(
+              controller: _scrollController,
               slivers: <Widget>[
                 SliverAppBar(
                   backgroundColor: topBarColor,
                   toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
                   expandedHeight: CommonUtils.getInstance(context).getHeight(607),
                   centerTitle: true,
-                  title: RobotoBoldText(
+                  title: _isSliverAppBarExpanded ? RobotoBoldText(
                     text: widget.seriesBaseResult.name,
                     fontSize: CommonUtils.getInstance(context).getWidth(50),
-                    color: AppColors.color_ffffff,
-                  ),
+                    color: _titleColor,
+                  ) : null,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.parallax,
-
                     background: Hero(
                       tag: widget.seriesBaseResult.id,
                       child: Image.network(
@@ -87,6 +100,9 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                   ),
                   pinned: true,
                   floating: true,
+                  onStretchTrigger: () async {
+                    Logger.d("onStretchTrigger");
+                  },
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back, color: Colors.white,),
                     onPressed: () {

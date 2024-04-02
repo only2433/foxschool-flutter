@@ -20,26 +20,13 @@ import '../../../../enum/SeriesType.dart';
 import '../../../../values/AppColors.dart';
 import '../../SeriesContentListScreen.dart';
 
-class MainStorySubScreen extends StatefulWidget {
+class MainStorySubScreen extends StatelessWidget {
 
   final MainFactoryController factoryController;
 
   const MainStorySubScreen({
     super.key,
     required this.factoryController});
-
-  @override
-  State<MainStorySubScreen> createState() => _MainStorySubScreenState();
-}
-
-class _MainStorySubScreenState extends State<MainStorySubScreen> {
-
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +52,11 @@ class _MainStorySubScreenState extends State<MainStorySubScreen> {
                   onSelected: (index) {
                     if(index == 0)
                     {
-                      widget.factoryController.onClickStorySelectType(SeriesType.LEVEL);
+                      factoryController.onClickStorySelectType(SeriesType.LEVEL);
                     }
                     else
                     {
-                      widget.factoryController.onClickStorySelectType(SeriesType.CATEGORY);
+                      factoryController.onClickStorySelectType(SeriesType.CATEGORY);
                     }
                   },
                 ),
@@ -99,7 +86,7 @@ class _MainStorySubScreenState extends State<MainStorySubScreen> {
                       return GestureDetector(
                         onTap: () {
                           Logger.d("select ID : " + state.list[index].id);
-                          widget.factoryController.onClickStorySeriesItem(state.list[index], context.widget);
+                          factoryController.onClickStorySeriesItem(state.list[index], context.widget);
                         },
                         child: ThumbnailView(
                             id: state.list[index].id,
@@ -116,6 +103,4 @@ class _MainStorySubScreenState extends State<MainStorySubScreen> {
       ),
     );
   }
-
-
 }
