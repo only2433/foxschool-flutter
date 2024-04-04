@@ -61,7 +61,7 @@ class TopTitleView extends StatelessWidget {
   {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: CommonUtils.getInstance(context).getHeight(50),
+      height: CommonUtils.getInstance(context).getHeight(145),
       color: AppColors.color_23cc8a,
       child: Stack(
         children: [
@@ -70,17 +70,17 @@ class TopTitleView extends StatelessWidget {
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: CommonUtils.getInstance(context).getWidth(18),
+                  fontSize: CommonUtils.getInstance(context).getWidth(50),
                   fontFamily: 'Roboto'
               ),),
           ),
           Positioned(
-            top: CommonUtils.getInstance(context).getWidth(8),
-            right: CommonUtils.getInstance(context).getWidth(10),
+            top: CommonUtils.getInstance(context).getWidth(35),
+            right: CommonUtils.getInstance(context).getWidth(40),
             child: GestureDetector(
                 onTap: onPressed,
                 child: Icon(Icons.close, color: Colors.white,
-                size: CommonUtils.getInstance(context).getWidth(35),)
+                size: CommonUtils.getInstance(context).getWidth(80),)
             ),
           ),
         ],

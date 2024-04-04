@@ -133,7 +133,7 @@ class IntroFactoryController extends BlocController
   {
     var result = await Navigator.push(
       context,
-      Page.getDefaultTransition(context, const LoginScreen())
+      Page.getDefaultJoinedTransition(context, const LoginScreen())
     );
 
     Logger.i("result : $result");
@@ -149,7 +149,7 @@ class IntroFactoryController extends BlocController
   {
     Navigator.push(
       context,
-      Page.getDefaultTransition(context, const FoxschoolIntroduceScreen())
+      Page.getDefaultJoinedTransition(context, const FoxschoolIntroduceScreen())
     );
   }
 

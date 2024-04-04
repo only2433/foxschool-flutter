@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
-import 'package:foxschool/bloc/category_contents_list/api/event/CategoryContentsDataEvent.dart';
-import 'package:foxschool/bloc/category_contents_list/api/state/CategoryContentsDataState.dart';
+import 'package:foxschool/bloc/category_contents_list/api/event/GetCategoryContentsEvent.dart';
+import 'package:foxschool/bloc/category_contents_list/api/state/CategoryContentsLoadedState.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/data/story_category_contents/StoryCategoryContentsResult.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
@@ -18,10 +18,10 @@ class CategoryContentsDataBloc extends Bloc<BlocEvent, BlocState>
     required this.repository 
   }) : super(InitState())
   {
-    on<CategoryContentsDataEvent>(_onCategoryContentsData);
+    on<GetCategoryContentsEvent>(_onCategoryContentsData);
   }
   
-  void _onCategoryContentsData(CategoryContentsDataEvent event, Emitter<BlocState> state) async
+  void _onCategoryContentsData(GetCategoryContentsEvent event, Emitter<BlocState> state) async
   {
     try
     {
@@ -36,7 +36,7 @@ class CategoryContentsDataBloc extends Bloc<BlocEvent, BlocState>
               await Preference.setString(Common.PARAMS_ACCESS_TOKEN, response.access_token);
             }
           StoryCategoryContentsResult result = StoryCategoryContentsResult.fromJson(response.data);
-          emit(CategoryContentsDataState(data: result));
+          emit(CategoryContentsLoadedState(data: result));
         }
       else
         {

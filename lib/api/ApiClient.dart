@@ -38,12 +38,21 @@ abstract class ApiClient
       );
 
   @GET('contents/story/series/{display_id}')
-  Future<BaseResponse>  seriesStoryContentsDataAsync(
+  Future<BaseResponse> seriesStoryContentsDataAsync(
       @Path('display_id') String displayID
       );
 
   @GET('contents/song/series/{display_id}')
-  Future<BaseResponse>  seriesSongContentsDataAsync(
+  Future<BaseResponse> seriesSongContentsDataAsync(
       @Path('display_id') String displayID
       );
+
+  @GET('contents/search')
+  Future<BaseResponse> getSearchListAsync(
+      @Query('type') String? searchType,
+      @Query('keyword') String keyword,
+      @Query('per_page') String pageCount,
+      @Query('page') String currentPage
+      );
+
 }

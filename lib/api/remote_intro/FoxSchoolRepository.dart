@@ -6,6 +6,8 @@ import 'package:foxschool/api/remote_intro/FoxSchoolDataSource.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/data/version_data_result/VersionDataResult.dart';
 
+import '../../common/Common.dart';
+
 class FoxSchoolRepository extends FoxSchoolDataSource
 {
   final Dio dio;
@@ -47,6 +49,11 @@ class FoxSchoolRepository extends FoxSchoolDataSource
   @override
   Future<BaseResponse> seriesStoryData(String displayID) {
     return apiClient.seriesStoryContentsDataAsync(displayID);
+  }
+
+  @override
+  Future<BaseResponse> getSearchList(String type, String keyword, String currentPage) {
+    return apiClient.getSearchListAsync(type, keyword, Common.PAGE_LOAD_COUNT.toString(), currentPage);
   }
 
 

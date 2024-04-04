@@ -20,6 +20,9 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
+import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
+import 'package:foxschool/bloc/search/factory/cubit/SearchItemListCubit.dart';
+import 'package:foxschool/bloc/search/factory/cubit/SearchTypeCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableInformationIconViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableSeriesDataViewCubit.dart';
@@ -29,6 +32,7 @@ import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:foxschool/view/screen/LoginScreen.dart';
+import 'package:foxschool/view/screen/SearchScreen.dart';
 import 'package:foxschool/view/screen/webview/FoxschoolIntroduceScreen.dart';
 import 'package:foxschool/di/Dependencies.dart' as Dependencies;
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
@@ -141,6 +145,18 @@ class MyApp extends StatelessWidget {
               create: (context) => CategoryItemListCubit()
           ),
 
+          /**
+           * Search
+           */
+          BlocProvider(
+              create: (context) => getIt<SearchContentsBloc>()
+          ),
+          BlocProvider(
+              create: (context) => SearchItemListCubit()
+          ),
+          BlocProvider(
+              create: (context) => SearchTypeCubit()
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

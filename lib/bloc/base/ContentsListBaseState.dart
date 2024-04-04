@@ -7,3 +7,5 @@ abstract class ContentsListBaseState extends Equatable
   List<Object> get props => [];
 }
 
+class LoadingState extends ContentsListBaseState {}
+

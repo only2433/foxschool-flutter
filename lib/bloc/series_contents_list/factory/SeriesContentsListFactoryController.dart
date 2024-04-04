@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
-import 'package:foxschool/bloc/series_contents_list/api/event/SeriesContentsDataEvent.dart';
-import 'package:foxschool/bloc/series_contents_list/api/state/SeriesContentsDataState.dart';
+import 'package:foxschool/bloc/series_contents_list/api/event/GetSeriesContentsDataEvent.dart';
+import 'package:foxschool/bloc/series_contents_list/api/state/SeriesContentsDataLoadedState.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 
 import '../../../common/Common.dart';
@@ -36,7 +36,7 @@ class SeriesContentsListFactoryController extends BlocController
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
       context.read<SeriesContentsBloc>().add(
-        SeriesContentsDataEvent(displayID: currentSeriesBaseResult.id)
+        GetSeriesContentsDataEvent(displayID: currentSeriesBaseResult.id)
       );
     });
   }
@@ -47,8 +47,8 @@ class SeriesContentsListFactoryController extends BlocController
     _subscription = context.read<SeriesContentsBloc>().stream.listen((state) async{
       switch(state.runtimeType)
       {
-        case SeriesContentsDataState:
-          blocState = state as SeriesContentsDataState;
+        case SeriesContentsDataLoadedState:
+          blocState = state as SeriesContentsDataLoadedState;
           _seriesContentsData = blocState.data;
 
           if(_seriesContentsData.getSeriesID() != "")

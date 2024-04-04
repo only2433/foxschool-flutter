@@ -10,15 +10,26 @@ import '../view/screen/MainScreen.dart';
 import '../view/screen/SeriesContentListScreen.dart';
 import 'Common.dart';
 
+PageTransition getDefaultJoinedTransition(BuildContext context, Widget toWidget)
+{
+  return PageTransition(
+      curve: Curves.decelerate,
+      duration: Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
+      type: PageTransitionType.rightToLeftJoined,
+      child: toWidget,
+      childCurrent: context.widget
+  );
+}
+
 PageTransition getDefaultTransition(BuildContext context, Widget toWidget)
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_NORMAL),
-      reverseDuration: Duration(milliseconds: Common.DURATION_NORMAL),
-      type: PageTransitionType.rightToLeftJoined,
+      duration: Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
+      type: PageTransitionType.rightToLeft,
       child: toWidget,
-      childCurrent: context.widget
   );
 }
 
@@ -26,8 +37,8 @@ PageTransition getMainTransition()
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_NORMAL),
-      reverseDuration: Duration(milliseconds: Common.DURATION_NORMAL),
+      duration: Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
       type: PageTransitionType.rightToLeft,
       child: MainScreen());
 }

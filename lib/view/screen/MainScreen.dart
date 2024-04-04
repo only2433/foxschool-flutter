@@ -5,6 +5,7 @@ import 'package:foxschool/data/login/user_info_section/UserInfoSectionResult.dar
 import 'package:foxschool/data/main/main_story_infomation/MainStoryInformationResult.dart';
 import 'package:foxschool/enum/MainMenuDrawerType.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
+import 'package:foxschool/view/screen/SearchScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/main/MainMyBooksSubScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/main/MainSongSubScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/main/MainStorySubScreen.dart';
@@ -24,6 +25,7 @@ import '../widget/MainScreenTitleView.dart';
 import '../widget/TopTitleView.dart';
 import '../../common/Preference.dart' as Preference;
 import '../dialog/FoxSchoolAlertDialog.dart' as FoxSchoolAlertDialog;
+import 'package:foxschool/common/PageNaviagator.dart' as Page;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -43,7 +45,6 @@ class _MainScreenState extends State<MainScreen> {
   String _schoolName = "";
   String _userName = "";
   String _userClass = "";
-
 
   Future<void> loadMainData() async
   {
@@ -129,7 +130,7 @@ class _MainScreenState extends State<MainScreen> {
                   _scaffoldKey.currentState?.openDrawer();
                 },
                 onSearchPressed: () {
-          
+                   _factoryController.onClickSearch();
                 },
               ),
               Expanded(child: PersistentTabView(
@@ -148,18 +149,18 @@ class _MainScreenState extends State<MainScreen> {
                 // Default is true.
                 hideNavigationBarWhenKeyboardShows: true,
                 // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-          
-          
+
+
                 popAllScreensOnTapOfSelectedTab: true,
                 popActionScreens: PopActionScreensType.all,
                 itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
-                  duration: Duration(milliseconds: 200),
+                  duration: Duration(milliseconds: Common.DURATION_SHORT),
                   curve: Curves.ease,
                 ),
                 screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
                   animateTabTransition: true,
                   curve: Curves.ease,
-                  duration: Duration(milliseconds: 200),
+                  duration: Duration(milliseconds: Common.DURATION_SHORT),
                 ),
                 navBarStyle: NavBarStyle.style10, // Choose the nav bar style with this property.
               ))
@@ -205,5 +206,12 @@ class _MainScreenState extends State<MainScreen> {
       default:
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    _factoryController.dispose();
+    _controller.dispose();
+    super.dispose();
   }
 }

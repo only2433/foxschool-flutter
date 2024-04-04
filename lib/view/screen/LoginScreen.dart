@@ -118,8 +118,9 @@ class _LoginScreenState extends State<LoginScreen>
             height: MediaQuery.of(context).size.height,
             color: AppColors.color_47e1ad,
             child: SafeArea(
-                child: Column(children: [
-                  TopTitleView(
+                child: Column(
+                    children: [
+                      TopTitleView(
                     title: getIt<FoxschoolLocalization>().data['text_login'],
                     type: TopTitleButtonType.BACK,
                     onPressed: () {
@@ -354,7 +355,13 @@ class _LoginScreenState extends State<LoginScreen>
                         borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     contentPadding: EdgeInsets.only(top: CommonUtils.getInstance(context).getHeight(2)),
                     hintText: getIt<FoxschoolLocalization>().data['text_id_input'],
-                    hintStyle: TextStyle(color: AppColors.color_cccccc, fontWeight: FontWeight.normal, fontSize: CommonUtils.getInstance(context).getWidth(42), fontFamily: 'Roboto')),
+                    hintStyle: TextStyle(
+                        color: AppColors.color_cccccc,
+                        fontWeight: FontWeight.normal,
+                        fontSize: CommonUtils.getInstance(context).getWidth(42),
+                        fontFamily: 'Roboto'
+                    )
+                ),
               ),
             ),
             SizedBox(

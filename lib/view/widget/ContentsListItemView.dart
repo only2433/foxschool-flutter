@@ -33,7 +33,7 @@ class ContentsListItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Logger.d("index : ${index}");
+
     return Container(
         width: MediaQuery.of(context).size.width,
         height: CommonUtils.getInstance(context).getHeight(244),

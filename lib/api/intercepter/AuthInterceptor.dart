@@ -12,7 +12,6 @@ class AuthInterceptor extends Interceptor
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async{
     var token = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
     var userAgent = Common.TEST_USER_AGENT;
-    Logger.d("token : ${token}");
 
     options.headers['Authorization'] = "Bearer $token";
     options.headers['api-user-agent'] = Common.TEST_USER_AGENT;

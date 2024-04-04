@@ -4,10 +4,10 @@ import 'package:foxschool/bloc/base/BlocState.dart';
 
 import '../../../../data/contents/DetailItemInformationResult.dart';
 
-class SeriesContentsDataState extends BlocState
+class SeriesContentsDataLoadedState extends BlocState
 {
   final DetailItemInformationResult data;
-  const SeriesContentsDataState({
+  const SeriesContentsDataLoadedState({
     required this.data
   });
 

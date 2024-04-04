@@ -10,5 +10,6 @@ abstract class FoxSchoolDataSource{
   Future<BaseResponse> authMe();
   Future<BaseResponse> mainInformation();
   Future<BaseResponse> seriesStoryData(String displayID);
+  Future<BaseResponse> getSearchList(String type, String keyword, String currentPage);
 
 }

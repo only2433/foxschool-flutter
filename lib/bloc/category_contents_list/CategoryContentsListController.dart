@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
-import 'package:foxschool/bloc/category_contents_list/api/state/CategoryContentsDataState.dart';
+import 'package:foxschool/bloc/category_contents_list/api/state/CategoryContentsLoadedState.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
 import 'package:foxschool/common/PageNaviagator.dart' as Page;
 import '../../common/Common.dart';
@@ -13,7 +13,7 @@ import '../../data/main/series/SeriesInformationResult.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
 import '../../data/story_category_contents/StoryCategoryContentsResult.dart';
 import '../../view/screen/SeriesContentListScreen.dart';
-import 'api/event/CategoryContentsDataEvent.dart';
+import 'api/event/GetCategoryContentsEvent.dart';
 
 class CategoryContentsListController extends BlocController
 {
@@ -35,7 +35,7 @@ class CategoryContentsListController extends BlocController
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
       await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
       context.read<CategoryContentsDataBloc>().add(
-        CategoryContentsDataEvent(displayID: currentSeriesBaseResult.id)
+        GetCategoryContentsEvent(displayID: currentSeriesBaseResult.id)
       );
     });
 
@@ -47,8 +47,8 @@ class CategoryContentsListController extends BlocController
     _subscription = context.read<CategoryContentsDataBloc>().stream.listen((state) async {
       switch(state.runtimeType)
       {
-        case CategoryContentsDataState:
-          blocState = state as CategoryContentsDataState;
+        case CategoryContentsLoadedState:
+          blocState = state as CategoryContentsLoadedState;
           _storyCategoryContentsResult = blocState.data;
           _initCategoryList();
           break;

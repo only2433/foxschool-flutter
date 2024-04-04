@@ -1,7 +1,5 @@
 
 import 'package:equatable/equatable.dart';
-import 'package:foxschool/bloc/base/BlocState.dart';
-
 import '../../../../data/contents/contents_base/ContentsBaseResult.dart';
 import '../../../base/ContentsListBaseState.dart';
 
@@ -19,3 +17,4 @@ class SeriesItemListState extends ContentsListBaseState
   @override
   List<Object> get props => [seriesColor, isFullName, itemList];
 }
+

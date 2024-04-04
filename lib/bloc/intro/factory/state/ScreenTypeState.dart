@@ -3,10 +3,10 @@ import 'package:foxschool/bloc/base/BlocState.dart';
 
 import '../../../../enum/IntroScreenType.dart';
 
-class IntroScreenTypeState extends BlocState
+class ScreenTypeState extends BlocState
 {
   final IntroScreenType type;
-  const IntroScreenTypeState ({
+  const ScreenTypeState ({
     required this.type
   });
   @override

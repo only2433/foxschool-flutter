@@ -1,9 +1,11 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:foxschool/api/intercepter/AuthInterceptor.dart';
+import 'package:foxschool/api/intercepter/LoggingInterceptor.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
 import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/bloc/intro/api/IntroBloc.dart';
+import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
@@ -23,6 +25,7 @@ Future<void> init() async
 
   final dio = Dio();
   dio.interceptors.add(AuthInterceptor());
+  dio.interceptors.add(LoggingInterceptor());
   getIt.registerSingleton(dio);
 
   final apiClient = ApiClient(getIt<Dio>());
@@ -33,6 +36,7 @@ Future<void> init() async
   getIt.registerLazySingleton(() => LoginBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => SeriesContentsBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => CategoryContentsDataBloc(repository: getIt<FoxSchoolRepository>()));
+  getIt.registerLazySingleton(() => SearchContentsBloc(repository: getIt<FoxSchoolRepository>()));
 }
 
 

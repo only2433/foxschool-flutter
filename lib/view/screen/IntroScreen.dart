@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
-import 'package:foxschool/bloc/intro/factory/state/IntroScreenTypeState.dart';
+import 'package:foxschool/bloc/intro/factory/state/ScreenTypeState.dart';
 import 'package:foxschool/bloc/intro/factory/state/ProgressPercentState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -96,7 +96,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
                   ),
                 ),
-                BlocBuilder<IntroScreenTypeCubit, IntroScreenTypeState>(
+                BlocBuilder<IntroScreenTypeCubit, ScreenTypeState>(
                     builder: (context, state) {
                       if (state.type == IntroScreenType.TYPE_LOGIN_PROGRESS)
                       {

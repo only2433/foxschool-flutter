@@ -2,10 +2,10 @@
 import 'package:foxschool/bloc/base/BlocState.dart';
 import 'package:foxschool/data/story_category_contents/StoryCategoryContentsResult.dart';
 
-class CategoryContentsDataState extends BlocState
+class CategoryContentsLoadedState extends BlocState
 {
   final StoryCategoryContentsResult data;
-  CategoryContentsDataState({
+  CategoryContentsLoadedState({
     required this.data
   });
 

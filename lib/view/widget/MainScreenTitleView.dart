@@ -49,7 +49,7 @@ class MainScreenTitleView extends StatelessWidget {
             top: CommonUtils.getInstance(context).getWidth(35),
             right: CommonUtils.getInstance(context).getWidth(40),
             child: GestureDetector(
-                onTap: onMenuPressed,
+                onTap: onSearchPressed,
                 child: Icon(Icons.search_outlined, color: Colors.white,
                   size: CommonUtils.getInstance(context).getWidth(80),
                 )

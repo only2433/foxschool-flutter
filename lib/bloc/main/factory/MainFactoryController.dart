@@ -12,6 +12,7 @@ import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:foxschool/common/PageNaviagator.dart' as Page;
 import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
+import 'package:foxschool/view/screen/SearchScreen.dart';
 import 'package:foxschool/view/screen/SeriesContentListScreen.dart';
 import 'package:foxschool/view/screen/StoryCategoryListScreen.dart';
 
@@ -125,6 +126,14 @@ class MainFactoryController extends BlocController
     Navigator.push(
         context,
         Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
+    );
+  }
+
+  void onClickSearch()
+  {
+    Navigator.push(
+        context,
+        Page.getDefaultTransition(context, const SearchScreen())
     );
   }
 
