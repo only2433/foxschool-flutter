@@ -41,23 +41,30 @@ class IntroScreen extends StatefulWidget {
   State<IntroScreen> createState() => _IntroScreenState();
 }
 
-class _IntroScreenState extends State<IntroScreen> {
+class _IntroScreenState extends State<IntroScreen>  with WidgetsBindingObserver{
   late IntroFactoryController _factoryController;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
     _factoryController = IntroFactoryController(context: context);
     _factoryController.init();
   }
 
-
   @override
-  void dispose() {
-    _factoryController.dispose();
-    super.dispose();
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed)
+    {
+      // 앱이 활성화될 때 실행할 작업
+      _factoryController.onResume();
+    } else if (state == AppLifecycleState.paused)
+    {
+      // 앱이 비활성화될 때 실행할 작업
+      _factoryController.onPause();
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +174,13 @@ class _IntroScreenState extends State<IntroScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _factoryController.dispose();
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
   }
 
 }

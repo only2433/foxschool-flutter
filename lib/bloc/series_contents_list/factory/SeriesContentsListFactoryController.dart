@@ -91,6 +91,12 @@ class SeriesContentsListFactoryController extends BlocController
   }
 
   @override
+  void onPause() {}
+
+  @override
+  void onResume() {}
+
+  @override
   void dispose() {
     _subscription.cancel();
   }
@@ -99,5 +105,6 @@ class SeriesContentsListFactoryController extends BlocController
   void onBackPressed() {
     Navigator.of(context).pop();
   }
+
 
 }

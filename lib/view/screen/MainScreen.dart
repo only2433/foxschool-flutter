@@ -187,10 +187,10 @@ class _MainScreenState extends State<MainScreen> {
     switch (type) {
       case MainMenuDrawerType.LOG_OUT:
         await FoxSchoolAlertDialog.showSelectDialog(
-            context,
-            getIt<FoxschoolLocalization>().data['message_try_logout'],
-            getIt<FoxschoolLocalization>().data['text_confirm'],
-                () async {
+            context: context,
+            message: getIt<FoxschoolLocalization>().data['message_try_logout'],
+            buttonText: getIt<FoxschoolLocalization>().data['text_confirm'],
+            onSelected: () async {
               Logger.d("Logout Selected");
               _scaffoldKey.currentState?.closeDrawer();
               await Future.delayed(Duration(

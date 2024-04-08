@@ -30,7 +30,7 @@ class SearchContentsListFactoryController extends BlocController
   SearchType _currentSearchType = SearchType.ALL;
   String _currentKeyword = "";
   int _requestPagePosition = 1;
-
+  bool isRequestLoading = false;
 
   final BuildContext context;
   SearchContentsListFactoryController({
@@ -61,15 +61,34 @@ class SearchContentsListFactoryController extends BlocController
         case SearchContentsListLoadedState:
           blocState = state as SearchContentsListLoadedState;
           _searchListPagingResult = blocState.data;
-          await Future.delayed(Duration(milliseconds: Common.DURATION_LONGEST), (){
+          await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), (){
           _settingSearchItemList();
           });
+          isRequestLoading = false;
           break;
         case LoadingState:
+          if(_searchListPagingResult != null)
+          {
+            context.read<SearchItemListCubit>().setSearchContentsList(true, _currentItemList);
+          }
+          else
+          {
+            context.read<SearchItemListCubit>().showLoading();
+          }
+          isRequestLoading = true;
           break;
         case ErrorState:
           blocState = state as ErrorState;
+          if(_searchListPagingResult != null)
+            {
+              context.read<SearchItemListCubit>().init();
+            }
+          else
+            {
+              context.read<SearchItemListCubit>().setSearchContentsList(false, _currentItemList);
+            }
           CommonUtils.getInstance(context).showErrorMessage(blocState.message);
+          isRequestLoading = false;
           break;
       }
     });
@@ -101,12 +120,15 @@ class SearchContentsListFactoryController extends BlocController
   {
     if(_searchListPagingResult != null)
     {
-      _requestPagePosition = _searchListPagingResult!.getCurrentPageIndex() + 1;
-      context.read<SearchItemListCubit>().setSearchContentsList(true, _currentItemList);
-    }
-    else
-    {
-      context.read<SearchItemListCubit>().showLoading();
+      if(_searchListPagingResult!.isLastPage())
+        {
+          CommonUtils.getInstance(context).showErrorMessage(getIt<FoxschoolLocalization>().data['message_last_page']);
+          return;
+        }
+      else
+        {
+          _requestPagePosition = _searchListPagingResult!.getCurrentPageIndex() + 1;
+        }
     }
 
     context.read<SearchContentsBloc>().add(
@@ -130,6 +152,12 @@ class SearchContentsListFactoryController extends BlocController
         return Common.CONTENT_TYPE_SONG;
     }
   }
+
+  @override
+  void onPause() {}
+
+  @override
+  void onResume() {}
 
   @override
   void dispose() {
@@ -174,9 +202,15 @@ class SearchContentsListFactoryController extends BlocController
     _requestSearchList();
   }
 
-  void fetchData()
+  void onFetchData()
   {
-    Logger.d("");
+    Logger.d("isRequestLoading : ${isRequestLoading}");
+    if(isRequestLoading)
+      {
+        return;
+      }
     _requestSearchList();
   }
+
+
 }

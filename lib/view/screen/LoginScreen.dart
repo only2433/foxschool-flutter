@@ -109,6 +109,13 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
+  void _hideFocusNode()
+  {
+    for (var focusNode in _focusNodeList) {
+      focusNode.unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,6 +190,7 @@ class _LoginScreenState extends State<LoginScreen>
                                       height: CommonUtils.getInstance(context).getWidth(120),
                                       text: getIt<FoxschoolLocalization>().data['text_login'],
                                       onPressed: () {
+                                        _hideFocusNode();
                                         _submitLogin();
                                       },
                                     ),
@@ -281,8 +289,9 @@ class _LoginScreenState extends State<LoginScreen>
                         color: _focusNodeList[0].hasFocus ? AppColors.color_26d0df : AppColors.color_cccccc,
                       ),
                     ),
-                    suffixIcon: _schoolNameTextController.text.isNotEmpty && _focusNodeList[0].hasFocus
-                        ? GestureDetector(
+                    suffixIcon:  _focusNodeList[0].hasFocus
+                        ?
+                    GestureDetector(
                       onTap: () {
                         _schoolNameTextController.clear();
                         _factoryController.onSetSchoolName("");
@@ -299,14 +308,10 @@ class _LoginScreenState extends State<LoginScreen>
                     )
                         : null,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: _schoolNameTextController.text.isNotEmpty && _focusNodeList[0].hasFocus
-                            ? BorderRadius.only(topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)), topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10)))
-                            : BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
+                        borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
                         borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     focusedBorder: OutlineInputBorder(
-                        borderRadius: _schoolNameTextController.text.isNotEmpty && _focusNodeList[0].hasFocus
-                            ? BorderRadius.only(topLeft: Radius.circular(CommonUtils.getInstance(context).getWidth(10)), topRight: Radius.circular(CommonUtils.getInstance(context).getWidth(10)))
-                            : BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
+                        borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
                         borderSide: BorderSide(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2))),
                     contentPadding: EdgeInsets.only(top: CommonUtils.getInstance(context).getHeight(2)),
                     hintText: getIt<FoxschoolLocalization>().data['text_school_search'],
@@ -422,41 +427,48 @@ class _LoginScreenState extends State<LoginScreen>
       right: 0,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(67)),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: CommonUtils.getInstance(context).getHeight(400),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2)),
-          ),
-          child: BlocBuilder<LoginFindSchoolListCubit, FindSchoolListState>(
+        child: BlocBuilder<LoginFindSchoolListCubit, FindSchoolListState>(
             builder: (context, state) {
-              return ListView.builder(
-                itemCount: state.schoolList.length,
-                itemBuilder: (context, index) {
-                  Logger.d("index : ${index}, data : ${state.schoolList[index]}");
+              if(state.schoolList.length > 0)
+                {
                   return Container(
-                    height: CommonUtils.getInstance(context).getWidth(100),
-                    padding: EdgeInsets.only(left: CommonUtils.getInstance(context).getWidth(100)),
-                    child: ListTile(
-                      onTap: () {
-                        _selectSchoolID = state.schoolList[index].id;
-                        _schoolNameTextController.text = state.schoolList[index].name;
-                        _factoryController.onSetSchoolName(state.schoolList[index].name);
-                        _focusNodeList[0].unfocus();
-                    },
-                      title: RobotoRegularText(
-                        text: state.schoolList[index].name,
-                        fontSize: CommonUtils.getInstance(context).getWidth(42),
-                        color: AppColors.color_333333,
+                    width: MediaQuery.of(context).size.width,
+                    height: CommonUtils.getInstance(context).getHeight(400),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: AppColors.color_999999, width: CommonUtils.getInstance(context).getWidth(2)),
                     ),
-                  ),
-                );
-              },
-            );
+                    child: ListView.builder(
+                      itemCount: state.schoolList.length,
+                      itemBuilder: (context, index) {
+                        Logger.d("index : ${index}, data : ${state.schoolList[index]}");
+                        return Container(
+                          height: CommonUtils.getInstance(context).getWidth(100),
+                          padding: EdgeInsets.only(left: CommonUtils.getInstance(context).getWidth(100)),
+                          child: ListTile(
+                            onTap: () {
+                              _selectSchoolID = state.schoolList[index].id;
+                              _schoolNameTextController.text = state.schoolList[index].name;
+                              _factoryController.onSetSchoolName(state.schoolList[index].name);
+                              _focusNodeList[0].unfocus();
+                            },
+                            title: RobotoRegularText(
+                              text: state.schoolList[index].name,
+                              fontSize: CommonUtils.getInstance(context).getWidth(42),
+                              color: AppColors.color_333333,
+                            ),
+                          ),
+                        );
+                      },),
+
+                  );
+                }
+              else
+                {
+                  return Container();
+                }
           },),
         ),
-      ),
     );
   }
 

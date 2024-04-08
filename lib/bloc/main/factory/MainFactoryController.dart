@@ -93,6 +93,20 @@ class MainFactoryController extends BlocController
     );
   }
 
+  @override
+  void onPause() {}
+
+  @override
+  void onResume() {}
+
+  @override
+  void dispose() {}
+
+  @override
+  void onBackPressed() {
+    Navigator.of(context).pop();
+  }
+
   void onClickStorySelectType(SeriesType type)
   {
     Logger.d("type : ${type}");
@@ -145,12 +159,7 @@ class MainFactoryController extends BlocController
     );
   }
 
-  @override
-  void dispose() {
 
-  }
 
-  @override
-  void onBackPressed() {}
 
 }

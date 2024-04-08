@@ -77,7 +77,7 @@ class _SearchScreenState extends State<SearchScreen> {
     if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent)
       {
         Logger.d("fetchData");
-        _factoryController.fetchData();
+        _factoryController.onFetchData();
       }
   }
 
@@ -123,12 +123,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   height: MediaQuery.of(context).size.height,
                   color: AppColors.color_edeef2,
                   child: BlocBuilder<SearchItemListCubit, SearchListBaseState>(builder: (context, state) {
-                    Logger.d("state : ${state}");
+
                     if(state is SearchItemListState)
                       {
                         return ListView.builder(
                             controller: _scrollController,
-                            itemCount: state.isLoading ? state.list.length + 1 : state.list.length,
+                            itemCount: state.list.length + 1,
                             itemBuilder: (context, index) {
                               if(index < state.list.length)
                                 {
@@ -158,11 +158,18 @@ class _SearchScreenState extends State<SearchScreen> {
                                   return Container(
                                     width: MediaQuery.of(context).size.width,
                                     height: CommonUtils.getInstance(context).getHeight(150),
-                                    child: Center(
+                                    child: state.isLoading ?
+                                    Center(
                                       child: SizedBox(
                                           width: CommonUtils.getInstance(context).getWidth(50),
                                           height: CommonUtils.getInstance(context).getHeight(50),
                                           child: CircularProgressIndicator(color: AppColors.color_47e1ad)),
+                                    ) :
+                                    Center(
+                                      child: Image.asset('asset/image/footer_logo132.png',
+                                      width: CommonUtils.getInstance(context).getWidth(187),
+                                      height: CommonUtils.getInstance(context).getHeight(97),
+                                      fit: BoxFit.cover,),
                                     ),
                                   );
                                 }

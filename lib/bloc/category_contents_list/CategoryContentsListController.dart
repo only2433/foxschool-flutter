@@ -72,6 +72,12 @@ class CategoryContentsListController extends BlocController
   }
 
   @override
+  void onPause() {}
+
+  @override
+  void onResume() {}
+
+  @override
   void onBackPressed() {
     Navigator.of(context).pop();
   }
@@ -81,5 +87,7 @@ class CategoryContentsListController extends BlocController
     _subscription.cancel();
 
   }
+
+
 
 }

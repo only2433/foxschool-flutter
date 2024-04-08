@@ -2,17 +2,23 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
+import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/enum/IntroScreenType.dart';
 import 'package:foxschool/view/screen/LoginScreen.dart';
 import 'package:foxschool/view/screen/MainScreen.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../common/Common.dart';
 import '../../../common/CommonUtils.dart';
+import '../../../di/Dependencies.dart';
 import '../../../view/screen/webview/FoxschoolIntroduceScreen.dart';
+import '../../../view/dialog/FoxSchoolAlertDialog.dart' as FoxSchoolAlertDialog;
 import '../../base/BlocController.dart';
 import '../../base/BlocState.dart';
 import '../api/IntroBloc.dart';
@@ -33,6 +39,8 @@ class IntroFactoryController extends BlocController
   late StreamSubscription _subscription;
   double? _percent;
   bool _isLogin = false;
+  bool _isOpenPermissionSetting = false;
+
 
   IntroFactoryController({
     required this.context
@@ -40,8 +48,9 @@ class IntroFactoryController extends BlocController
 
   @override
   void init() {
+    Logger.d("init");
     _settingSubscriptions();
-    _checkAutoLogin();
+    _checkPermission();
   }
 
   void _settingSubscriptions()
@@ -100,6 +109,58 @@ class IntroFactoryController extends BlocController
     });
   }
 
+  void _checkPermission() async
+  {
+    bool isPermissionDenied = false;
+    Map<Permission, PermissionStatus> statusList = await [
+      Permission.microphone
+    ].request();
+
+    for(var entry in statusList.entries)
+    {
+      var permission = entry.key;
+      var status = entry.value;
+
+      Logger.d("status.isGranted : ${status.isGranted}, status.isDenied : ${status.isDenied}, status.isPermanentlyDenied : ${status.isPermanentlyDenied}");
+      if(status.isGranted == false)
+        {
+          isPermissionDenied = true;
+          break;
+        }
+    }
+
+    if(isPermissionDenied)
+    {
+      await FoxSchoolAlertDialog.showSelectDetailDialog(
+          context: context,
+          message: getIt<FoxschoolLocalization>().data['message_warning_storage_permission'],
+          button1Text: getIt<FoxschoolLocalization>().data['text_cancel'],
+          button2Text: getIt<FoxschoolLocalization>().data['text_change_permission'],
+          onSelected: (index) async{
+            if(index == FoxSchoolAlertDialog.BUTTON_1_CLICK)
+            {
+              Logger.d("BUTTON_1_CLICK");
+              await Future.delayed(Duration(milliseconds:  Common.DURATION_SHORT), () {
+                Fluttertoast.showToast(
+                    msg: getIt<FoxschoolLocalization>().data['message_warning_storage_permission']
+                );
+                SystemNavigator.pop();
+              },);
+            }
+            else
+            {
+              Logger.d("BUTTON_2_CLICK");
+              _isOpenPermissionSetting = true;
+              openAppSettings();
+            }
+          },);
+    }
+    else
+    {
+      _checkAutoLogin();
+    }
+  }
+
   void _checkAutoLogin() async
   {
     bool isAutoLogin = await Preference.getBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA);
@@ -154,6 +215,21 @@ class IntroFactoryController extends BlocController
   }
 
   @override
+  void onPause() {
+    Logger.d("onPause");
+  }
+
+  @override
+  void onResume() {
+    Logger.d("onResume");
+    if(_isOpenPermissionSetting)
+    {
+      _isOpenPermissionSetting = false;
+      _checkPermission();
+    }
+  }
+
+  @override
   void dispose() {
     _subscription.cancel();
   }
@@ -162,7 +238,4 @@ class IntroFactoryController extends BlocController
   void onBackPressed() {
     Navigator.of(context).pop();
   }
-
-
-
 }

@@ -92,6 +92,23 @@ class LoginFactoryController extends BlocController {
     }
   }
 
+  @override
+  void onPause() {}
+
+  @override
+  void onResume() {}
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+  }
+
+  @override
+  void onBackPressed()
+  {
+    Navigator.of(context).pop(false);
+  }
+
   String getSchoolID(String selectSchoolName) {
     String result = "";
     for (var data in _schoolDataList) {
@@ -115,17 +132,13 @@ class LoginFactoryController extends BlocController {
   void onInitSchoolData()
   {
     _schoolName = "";
-    _currentSearchSchoolList = [];
-  }
-
-  void onInitFindSchoolList()
-  {
-    _currentSearchSchoolList = [];
+    _currentSearchSchoolList.clear();
     context.read<LoginFindSchoolListCubit>().setSchoolList(_currentSearchSchoolList);
   }
 
   void onSetSchoolName(String value)
   {
+    Logger.d("value : $value");
     _schoolName = value;
     context.read<LoginSchoolNameCubit>().setSchoolName(_schoolName);
   }
@@ -149,18 +162,5 @@ class LoginFactoryController extends BlocController {
     _isAutoLoginCheck = !_isAutoLoginCheck;
     Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, _isAutoLoginCheck);
     context.read<LoginAutoCheckCubit>().setAutoLogin(_isAutoLoginCheck);
-  }
-
-
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-  }
-
-  @override
-  void onBackPressed()
-  {
-    Navigator.of(context).pop(false);
   }
 }

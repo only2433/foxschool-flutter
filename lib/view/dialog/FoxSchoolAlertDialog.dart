@@ -11,8 +11,14 @@ import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:foxschool/view/widget/RobotoRegularText.dart';
 
+final int BUTTON_1_CLICK = 0;
+final int BUTTON_2_CLICK = 1;
 
-Future<void> showSelectDialog(BuildContext context, String message, String buttonText, VoidCallback onSelected) async
+Future<void> showSelectDialog({
+  required BuildContext context,
+  required String message,
+  required String buttonText,
+  required VoidCallback onSelected}) async
 {
   showDialog(
       context: context,
@@ -28,7 +34,32 @@ Future<void> showSelectDialog(BuildContext context, String message, String butto
   );
 }
 
-Future<void> showConfirmDialog(BuildContext context, String message,  VoidCallback onSelected) async
+Future<void> showSelectDetailDialog({
+  required BuildContext context,
+  required String message,
+  required String button1Text,
+  required String button2Text,
+  required Function(int index) onSelected}) async
+{
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return _AlertSelectDetailDialog(
+          context,
+          message,
+          button1Text,
+          button2Text,
+          onSelected
+      );
+    },
+  );
+}
+
+Future<void> showConfirmDialog({
+  required BuildContext context,
+  required String message,
+  required VoidCallback onSelected}) async
 {
   showDialog(
     context: context,
@@ -79,6 +110,56 @@ Widget _AlertSelectDialog(BuildContext context, String message, String buttonTex
           ),
           child: RobotoNormalText(
             text: buttonText,
+            fontSize: CommonUtils.getInstance(context).getWidth(35),
+            color: AppColors.color_5c42a6,
+          )
+      )
+    ],
+  );
+}
+
+
+Widget _AlertSelectDetailDialog(
+    BuildContext context,
+    String message,
+    String button1Text,
+    String button2Text,
+    Function(int position) onSelected)
+{
+  return AlertDialog(
+    content:  RobotoNormalText(
+      text: message,
+      fontSize: CommonUtils.getInstance(context).getWidth(40),
+      color: AppColors.color_000000,
+    ),
+    actionsPadding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(10)),
+    actions: <Widget>[
+      TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            onSelected(0);
+          },
+          style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+              alignment: Alignment.bottomCenter
+          ),
+          child: RobotoNormalText(
+            text: button1Text,
+            fontSize: CommonUtils.getInstance(context).getWidth(35),
+            color: AppColors.color_5c42a6,
+          )
+      ),
+      TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            onSelected(1);
+          },
+          style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+              alignment: Alignment.bottomCenter
+          ),
+          child: RobotoNormalText(
+            text: button2Text,
             fontSize: CommonUtils.getInstance(context).getWidth(35),
             color: AppColors.color_5c42a6,
           )
