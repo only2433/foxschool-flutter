@@ -147,7 +147,7 @@ class MainFactoryController extends BlocController
   {
     Navigator.push(
         context,
-        Page.getDefaultTransition(context, const SearchScreen())
+        Page.getDefaultTransition(context,  const SearchScreen())
     );
   }
 

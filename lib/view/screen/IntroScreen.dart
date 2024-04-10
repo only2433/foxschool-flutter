@@ -35,7 +35,7 @@ import '../../bloc/intro/api/IntroBloc.dart';
 import '../../values/AppColors.dart';
 
 class IntroScreen extends StatefulWidget {
-  const IntroScreen({Key? key});
+  const IntroScreen({super.key});
 
   @override
   State<IntroScreen> createState() => _IntroScreenState();

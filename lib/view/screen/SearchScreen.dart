@@ -21,14 +21,39 @@ import '../../common/CommonUtils.dart';
 import '../../di/Dependencies.dart';
 import '../../values/AppColors.dart';
 
+
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({Key? key}) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<SearchScreen> createState() => _State();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _State extends State<SearchScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (context) => SearchItemListCubit(),
+      ),
+      BlocProvider(
+        create: (context) => SearchTypeCubit(),
+      ),
+    ],
+      child: SearchView(),
+    );
+  }
+}
+
+
+class SearchView extends StatefulWidget {
+  const SearchView({super.key});
+
+  @override
+  State<SearchView> createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
 
   final int MAX_TEXT_FIELD_COUNT = 1;
   final _formKey = GlobalKey<FormState>();
@@ -147,6 +172,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                     child: ContentsListItemView(
                                       thumbnailUrl: state.list[index].thumbnailUrl,
                                       title: state.list[index].getContentsName(),
+                                      onItemPressed: () {
+
+                                      },
                                       onThumbnailPressed: () {
 
                                       },
@@ -201,6 +229,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _getSelectItemLayout()
   {
     return BlocBuilder<SearchTypeCubit, SearchTypeState>(builder: (context, state) {
+      Logger.d("state.type : ${state.type}");
       return Row(
         children: [
           GestureDetector(

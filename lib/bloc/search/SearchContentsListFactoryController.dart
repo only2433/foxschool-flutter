@@ -171,17 +171,16 @@ class SearchContentsListFactoryController extends BlocController
 
   void onClickSearchType(SearchType type)
   {
-    Logger.d("type : ${type}");
     if(_currentSearchType == type)
       {
         return;
       }
     _currentSearchType = type;
+    context.read<SearchTypeCubit>().setSearchType(_currentSearchType);
     if(_currentKeyword != "")
       {
         _clearData();
         context.read<SearchItemListCubit>().setSearchContentsList(false, _currentItemList);
-        context.read<SearchTypeCubit>().setSearchType(_currentSearchType);
         _requestSearchList();
       }
   }

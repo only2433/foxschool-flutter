@@ -41,7 +41,36 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LoginAutoCheckCubit(),
+          ),
+          BlocProvider(
+            create: (context) => LoginFindSchoolListCubit(),
+          ),
+          BlocProvider(
+            create: (context) => LoginSchoolNameCubit(),
+          ),
+        ],
+        child: const LoginView()
+    );
+  }
+}
+
+
+
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView>
 {
   late LoginFactoryController _factoryController;
   TextEditingController _schoolNameTextController = TextEditingController();

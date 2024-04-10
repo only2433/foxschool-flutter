@@ -80,6 +80,11 @@ class ContentsBaseResult with _$ContentsBaseResult
     return copyWith(index: i);
   }
 
+  ContentsBaseResult setSelected(bool isEnable)
+  {
+    return copyWith(isSelected : isEnable);
+  }
+
 
   factory ContentsBaseResult.fromJson(Map<String, dynamic> data) => _$ContentsBaseResultFromJson(data);
 

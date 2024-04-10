@@ -1,8 +1,9 @@
 
 
+import 'package:equatable/equatable.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 
-class EnableSeriesDataViewState extends BlocState
+class EnableSeriesDataViewState extends Equatable
 {
   final String seriesType;
   final int level;

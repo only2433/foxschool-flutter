@@ -1,12 +1,11 @@
 
-
 import 'package:equatable/equatable.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 
-class EnableInformationIconViewState extends Equatable
+class EnableBottomSelectViewState extends Equatable
 {
   final bool isEnable;
-  EnableInformationIconViewState({
+  const EnableBottomSelectViewState({
     required this.isEnable
   });
 

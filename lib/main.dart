@@ -24,9 +24,11 @@ import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchItemListCubit.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchTypeCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableBottomSelectViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableInformationIconViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableSeriesDataViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/values/AppColors.dart';
@@ -93,15 +95,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => getIt<LoginBloc>(),
           ),
-          BlocProvider(
-            create: (context) => LoginAutoCheckCubit(),
-          ),
-          BlocProvider(
-            create: (context) => LoginFindSchoolListCubit(),
-          ),
-          BlocProvider(
-            create: (context) => LoginSchoolNameCubit(),
-          ),
+
 
           /**
            *  Main
@@ -122,27 +116,12 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => getIt<SeriesContentsBloc>(),
           ),
-          BlocProvider(
-            create: (context) => EnableInformationIconViewCubit(),
-          ),
-          BlocProvider(
-            create: (context) => EnableSeriesDataViewCubit(),
-          ),
-          BlocProvider(
-            create: (context) => LastWatchSeriesItemCubit(),
-          ),
-          BlocProvider(
-            create: (context) => SeriesItemListCubit(),
-          ),
 
           /**
            * StoryCategoryListScreen
            */
           BlocProvider(
               create: (context) => getIt<CategoryContentsDataBloc>()
-          ),
-          BlocProvider(
-              create: (context) => CategoryItemListCubit()
           ),
 
           /**
@@ -151,12 +130,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) => getIt<SearchContentsBloc>()
           ),
-          BlocProvider(
-              create: (context) => SearchItemListCubit()
-          ),
-          BlocProvider(
-              create: (context) => SearchTypeCubit()
-          ),
+
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,8 +1,9 @@
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 
-class LastWatchSeriesItemState extends BlocState
+class LastWatchSeriesItemState extends Equatable
 {
   final String seriesName;
   final String nickName;

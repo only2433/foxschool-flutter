@@ -13,8 +13,8 @@ class SearchTypeCubit extends Cubit<SearchTypeState>
     emit(SearchTypeState(type: SearchType.ALL));
   }
 
-  void setSearchType(SearchType type)
+  void setSearchType(SearchType searchType)
   {
-    emit(SearchTypeState(type: type));
+    emit(SearchTypeState(type: searchType));
   }
 }

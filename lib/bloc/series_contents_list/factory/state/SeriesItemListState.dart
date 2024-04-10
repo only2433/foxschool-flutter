@@ -1,4 +1,8 @@
 
+
+
+import 'dart:math';
+
 import 'package:equatable/equatable.dart';
 import '../../../../data/contents/contents_base/ContentsBaseResult.dart';
 import '../../../base/ContentsListBaseState.dart';
@@ -14,7 +18,12 @@ class SeriesItemListState extends ContentsListBaseState
     required this.itemList
   });
 
+  /**
+   * 리스트 아이템 각 개별마다 업데이트를 해주기 위해서, 매번 업데이트
+   */
   @override
-  List<Object> get props => [seriesColor, isFullName, itemList];
+  List<Object> get props => [seriesColor, isFullName, itemList,  Random().nextInt(DateTime.now().millisecond)];
+
+
 }
 
