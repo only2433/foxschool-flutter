@@ -63,7 +63,7 @@ class _FoxschoolIntroduceScreenState extends State<FoxschoolIntroduceScreen> {
                             url: Uri.parse(Common.URL_FOXSCHOOL_INTRODUCE),
                           ),
                           initialOptions: InAppWebViewGroupOptions(
-                              android: AndroidInAppWebViewOptions(useHybridComposition: true)
+                              android: AndroidInAppWebViewOptions(useHybridComposition: true,),
                           ),
                           onLoadStart: (controller, url) {
                             print("onLoadStart");

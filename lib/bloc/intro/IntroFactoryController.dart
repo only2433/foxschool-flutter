@@ -14,29 +14,29 @@ import 'package:foxschool/view/screen/MainScreen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../common/Common.dart';
-import '../../../common/CommonUtils.dart';
-import '../../../di/Dependencies.dart';
-import '../../../view/screen/webview/FoxschoolIntroduceScreen.dart';
-import '../../../view/dialog/FoxSchoolAlertDialog.dart' as FoxSchoolAlertDialog;
-import '../../base/BlocController.dart';
-import '../../base/BlocState.dart';
-import '../api/IntroBloc.dart';
-import '../api/event/AuthMeEvent.dart';
-import '../api/event/GetVersionEvent.dart';
-import '../api/event/MainInformationEvent.dart';
-import '../api/state/AuthMeLoadedState.dart';
-import '../api/state/MainInformationLoadedState.dart';
+import '../../common/Common.dart';
+import '../../common/CommonUtils.dart';
+import '../../di/Dependencies.dart';
+import '../../view/screen/webview/FoxschoolIntroduceScreen.dart';
+import '../../view/dialog/FoxSchoolAlertDialog.dart' as FoxSchoolAlertDialog;
+import '../base/BlocController.dart';
+import '../base/BlocState.dart';
+import 'api/IntroBloc.dart';
+import 'api/event/AuthMeEvent.dart';
+import 'api/event/GetVersionEvent.dart';
+import 'api/event/MainInformationEvent.dart';
+import 'api/state/AuthMeLoadedState.dart';
+import 'api/state/MainInformationLoadedState.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
-import 'package:foxschool/common/PageNaviagator.dart' as Page;
-import '../api/state/VersionLoadedState.dart';
-import 'cubit/IntroScreenTypeCubit.dart';
+import 'package:foxschool/common/PageNavigator.dart' as Page;
+import 'api/state/VersionLoadedState.dart';
+import 'factory/cubit/IntroScreenTypeCubit.dart';
 class IntroFactoryController extends BlocController
 {
   final List<double> _PROGRESS_PERCENT = [0, 30, 60, 100];
 
   final BuildContext context;
-  late StreamSubscription _subscription;
+  StreamSubscription? _subscription;
   double? _percent;
   bool _isLogin = false;
   bool _isOpenPermissionSetting = false;
@@ -48,8 +48,9 @@ class IntroFactoryController extends BlocController
 
   @override
   void init() {
-    Logger.d("init");
     _settingSubscriptions();
+    Logger.d("init");
+
     _checkPermission();
   }
 
@@ -102,7 +103,12 @@ class IntroFactoryController extends BlocController
           break;
         case ErrorState:
           blocState = state as ErrorState;
-          CommonUtils.getInstance(context).showErrorMessage(blocState.message);
+          Fluttertoast.showToast(msg: blocState.message);
+          await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+          await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
+            context.read<IntroScreenTypeCubit>().setIntroScreenType(IntroScreenType.TYPE_SELECT_MENU);
+          },);
+
           break;
       }
 
@@ -190,6 +196,31 @@ class IntroFactoryController extends BlocController
     );
   }
 
+  @override
+  void onPause() {
+    Logger.d("onPause");
+  }
+
+  @override
+  void onResume() {
+    Logger.d("onResume");
+    if(_isOpenPermissionSetting)
+    {
+      _isOpenPermissionSetting = false;
+      _checkPermission();
+    }
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+  }
+
+  @override
+  void onBackPressed() {
+    Navigator.of(context).pop();
+  }
+
   Future<void> onClickLogin() async
   {
     var result = await Navigator.push(
@@ -214,28 +245,5 @@ class IntroFactoryController extends BlocController
     );
   }
 
-  @override
-  void onPause() {
-    Logger.d("onPause");
-  }
 
-  @override
-  void onResume() {
-    Logger.d("onResume");
-    if(_isOpenPermissionSetting)
-    {
-      _isOpenPermissionSetting = false;
-      _checkPermission();
-    }
-  }
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-  }
-
-  @override
-  void onBackPressed() {
-    Navigator.of(context).pop();
-  }
 }

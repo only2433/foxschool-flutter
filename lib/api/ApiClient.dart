@@ -55,4 +55,18 @@ abstract class ApiClient
       @Query('page') String currentPage
       );
 
+  @GET('contents/player/{data}')
+  Future<BaseResponse> authContentsPlayAsync(
+      @Path('data') String requestData
+      );
+
+  @FormUrlEncoded()
+  @POST('contents/player/save')
+  Future<BaseResponse> saveMovieStudyAsync(
+      @Field('content_id') String contentID,
+      @Field('play_type') String playType,
+      @Field('play_time') String playTime,
+      @Field('hw_no') int? homeworkNumber
+      );
+
 }

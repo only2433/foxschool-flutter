@@ -5,7 +5,7 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/category_contents_list/CategoryContentsListController.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/state/CategoryItemListState.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/SeriesContentsListFactoryController.dart';
+import 'package:foxschool/bloc/series_contents_list/SeriesContentsListFactoryController.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
@@ -18,46 +18,20 @@ import '../../values/AppColors.dart';
 import '../widget/ContentsListItemView.dart';
 import '../widget/ThumbnailView.dart';
 
+
 class StoryCategoryListScreen extends StatefulWidget {
+
   final SeriesBaseResult seriesBaseResult;
-  const StoryCategoryListScreen({super.key,
-    required this.seriesBaseResult}
-      );
+
+  const StoryCategoryListScreen({
+    super.key,
+    required this.seriesBaseResult});
 
   @override
   State<StoryCategoryListScreen> createState() => _StoryCategoryListScreenState();
 }
 
-class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (context) => CategoryItemListCubit()
-          ),
-        ],
-        child: StoryCategoryListView(
-          seriesBaseResult: widget.seriesBaseResult
-        )
-    );
-  }
-}
-
-
-class StoryCategoryListView extends StatefulWidget {
-
-  final SeriesBaseResult seriesBaseResult;
-
-  const StoryCategoryListView({
-    super.key,
-    required this.seriesBaseResult});
-
-  @override
-  State<StoryCategoryListView> createState() => _StoryCategoryListViewState();
-}
-
-class _StoryCategoryListViewState extends State<StoryCategoryListView> with TickerProviderStateMixin  {
+class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with TickerProviderStateMixin  {
   late ScrollController _scrollController;
   late CategoryContentsListController _factoryController;
   late AnimationController _animationController;

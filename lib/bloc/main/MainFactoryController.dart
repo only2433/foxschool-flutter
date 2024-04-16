@@ -9,19 +9,19 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
-import 'package:foxschool/common/PageNaviagator.dart' as Page;
+import 'package:foxschool/common/PageNavigator.dart' as Page;
 import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:foxschool/view/screen/SearchScreen.dart';
 import 'package:foxschool/view/screen/SeriesContentListScreen.dart';
 import 'package:foxschool/view/screen/StoryCategoryListScreen.dart';
 
-import '../../../common/Common.dart';
-import '../../../data/main/MainInformationResult.dart';
-import '../../../data/main/my_book/MyBookshelfResult.dart';
-import '../../../data/main/my_vocabulary/MyVocabularyResult.dart';
-import '../../../data/main/series/SeriesInformationResult.dart';
-import '../../../enum/SeriesType.dart';
+import '../../common/Common.dart';
+import '../../data/main/MainInformationResult.dart';
+import '../../data/main/my_book/MyBookshelfResult.dart';
+import '../../data/main/my_vocabulary/MyVocabularyResult.dart';
+import '../../data/main/series/SeriesInformationResult.dart';
+import '../../enum/SeriesType.dart';
 import 'package:page_transition/page_transition.dart';
 
 class MainFactoryController extends BlocController
@@ -151,15 +151,14 @@ class MainFactoryController extends BlocController
     );
   }
 
-  void onClickLogout()
+  void onClickLogout() async
   {
-    Navigator.pushReplacement(
+    await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+    await Preference.setObject(Common.PARAMS_USER_API_INFORMATION, null);
+    Navigator.pushAndRemoveUntil(
         context,
-        Page.getLogoutTransition(context)
+        Page.getLogoutTransition(context),
+       (route) => false,
     );
   }
-
-
-
-
 }

@@ -26,7 +26,7 @@ import '../../bloc/intro/api/event/MainInformationEvent.dart';
 import '../../bloc/intro/api/state/AuthMeLoadedState.dart';
 import '../../bloc/intro/api/state/MainInformationLoadedState.dart';
 import '../../bloc/intro/api/state/VersionLoadedState.dart';
-import '../../bloc/intro/factory/IntroFactoryController.dart';
+import '../../bloc/intro/IntroFactoryController.dart';
 import '../../common/Common.dart';
 import '../dialog/LoadingDialog.dart' as LoadingDialog;
 import '../../common/Preference.dart' as Preference;

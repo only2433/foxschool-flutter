@@ -7,7 +7,7 @@ import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/bloc/category_contents_list/api/state/CategoryContentsLoadedState.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
-import 'package:foxschool/common/PageNaviagator.dart' as Page;
+import 'package:foxschool/common/PageNavigator.dart' as Page;
 import '../../common/Common.dart';
 import '../../data/main/series/SeriesInformationResult.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
@@ -85,9 +85,6 @@ class CategoryContentsListController extends BlocController
   @override
   void dispose() {
     _subscription.cancel();
-
   }
-
-
 
 }

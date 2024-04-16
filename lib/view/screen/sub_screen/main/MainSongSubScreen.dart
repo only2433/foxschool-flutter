@@ -4,7 +4,7 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/view/widget/ThumbnailView.dart';
 
-import '../../../../bloc/main/factory/MainFactoryController.dart';
+import '../../../../bloc/main/MainFactoryController.dart';
 import '../../../../bloc/main/factory/state/SongCategoryListState.dart';
 import '../../../../common/CommonUtils.dart';
 import '../../../../values/AppColors.dart';

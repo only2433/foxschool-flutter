@@ -10,18 +10,18 @@ import 'package:foxschool/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart
 import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
 import 'package:foxschool/bloc/login/factory/state/AutoLoginCheckState.dart';
 
-import '../../../common/Common.dart';
-import '../../../common/CommonUtils.dart';
-import '../../../data/school_data/SchoolData.dart';
-import '../../base/BlocState.dart';
-import '../api/LoginBloc.dart';
-import '../api/event/GetSchoolDataEvent.dart';
+import '../../common/Common.dart';
+import '../../common/CommonUtils.dart';
+import '../../data/school_data/SchoolData.dart';
+import '../base/BlocState.dart';
+import 'api/LoginBloc.dart';
+import 'api/event/GetSchoolDataEvent.dart';
 import 'package:foxschool/view/dialog/LoadingDialog.dart' as LoadingDialog;
 import 'package:foxschool/common/Preference.dart' as Preference;
 
-import '../api/event/LoginEvent.dart';
-import '../api/state/LoginLoadedState.dart';
-import '../api/state/SchoolDataLoadedState.dart';
+import 'api/event/LoginEvent.dart';
+import 'api/state/LoginLoadedState.dart';
+import 'api/state/SchoolDataLoadedState.dart';
 
 class LoginFactoryController extends BlocController {
 
@@ -157,10 +157,10 @@ class LoginFactoryController extends BlocController {
     context.read<LoginFindSchoolListCubit>().setSchoolList(_currentSearchSchoolList);
   }
 
-  void onCheckAutoLogin()
+  void onCheckAutoLogin() async
   {
     _isAutoLoginCheck = !_isAutoLoginCheck;
-    Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, _isAutoLoginCheck);
+    await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, _isAutoLoginCheck);
     context.read<LoginAutoCheckCubit>().setAutoLogin(_isAutoLoginCheck);
   }
 }

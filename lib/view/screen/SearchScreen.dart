@@ -21,39 +21,14 @@ import '../../common/CommonUtils.dart';
 import '../../di/Dependencies.dart';
 import '../../values/AppColors.dart';
 
-
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _State();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _State extends State<SearchScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(
-        create: (context) => SearchItemListCubit(),
-      ),
-      BlocProvider(
-        create: (context) => SearchTypeCubit(),
-      ),
-    ],
-      child: SearchView(),
-    );
-  }
-}
-
-
-class SearchView extends StatefulWidget {
-  const SearchView({super.key});
-
-  @override
-  State<SearchView> createState() => _SearchViewState();
-}
-
-class _SearchViewState extends State<SearchView> {
+class _SearchScreenState extends State<SearchScreen> {
 
   final int MAX_TEXT_FIELD_COUNT = 1;
   final _formKey = GlobalKey<FormState>();
@@ -176,7 +151,7 @@ class _SearchViewState extends State<SearchView> {
 
                                       },
                                       onThumbnailPressed: () {
-
+                                        Logger.d("");
                                       },
                                     ),
                                   );

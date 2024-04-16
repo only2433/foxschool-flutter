@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:foxschool/bloc/main/factory/MainFactoryController.dart';
+import 'package:foxschool/bloc/main/MainFactoryController.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/data/main/MainInformationResult.dart';

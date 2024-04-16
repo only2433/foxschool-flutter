@@ -13,7 +13,7 @@ import 'package:foxschool/view/screen/sub_screen/main/menu/MainMenuDrawerView.da
 import 'package:page_transition/page_transition.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import '../../bloc/main/factory/MainFactoryController.dart';
+import '../../bloc/main/MainFactoryController.dart';
 import '../../common/Common.dart';
 import '../../common/FoxschoolLocalization.dart';
 import '../../data/login/LoginInformationResult.dart';
@@ -25,7 +25,7 @@ import '../widget/MainScreenTitleView.dart';
 import '../widget/TopTitleView.dart';
 import '../../common/Preference.dart' as Preference;
 import '../dialog/FoxSchoolAlertDialog.dart' as FoxSchoolAlertDialog;
-import 'package:foxschool/common/PageNaviagator.dart' as Page;
+import 'package:foxschool/common/PageNavigator.dart' as Page;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -196,8 +196,7 @@ class _MainScreenState extends State<MainScreen> {
               await Future.delayed(Duration(
                   milliseconds: Common.DURATION_LONG
               ));
-              Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
-              Preference.setObject(Common.PARAMS_USER_API_INFORMATION, null);
+
               _factoryController.onClickLogout();
             });
         break;

@@ -60,8 +60,7 @@ PageTransition getLogoutTransition(BuildContext context)
       curve: Curves.decelerate,
       duration: Duration(milliseconds: Common.DURATION_SHORT),
       reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
-      type: PageTransitionType.leftToRightJoined,
-      child: const IntroScreen(),
-      childCurrent: context.widget
+      type: PageTransitionType.rightToLeftWithFade,
+      child: const IntroScreen()
   );
 }

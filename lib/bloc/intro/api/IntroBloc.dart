@@ -6,6 +6,7 @@ import 'package:foxschool/bloc/intro/api/state/MainInformationLoadedState.dart';
 import 'package:foxschool/bloc/intro/api/state/VersionLoadedState.dart';
 
 import 'package:foxschool/common/CommonUtils.dart';
+import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/data/login/LoginInformationResult.dart';
 import 'package:foxschool/data/main/main_story_infomation/MainStoryInformationResult.dart';
@@ -16,6 +17,7 @@ import 'package:foxschool/common/Preference.dart' as Preference;
 import '../../../api/remote_intro/FoxSchoolRepository.dart';
 import '../../../common/Common.dart';
 import '../../../data/main/MainInformationResult.dart';
+import '../../../di/Dependencies.dart';
 import '../../base/BlocEvent.dart';
 import '../../base/BlocState.dart';
 import 'event/AuthMeEvent.dart';
@@ -56,7 +58,7 @@ class IntroBloc extends Bloc<BlocEvent, BlocState>
     }
     catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      emit(ErrorState(message: getIt<FoxschoolLocalization>().data['message_waring_error']));
     }
   }
 
@@ -83,7 +85,7 @@ class IntroBloc extends Bloc<BlocEvent, BlocState>
         }
     }catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      emit(ErrorState(message: getIt<FoxschoolLocalization>().data['message_waring_error']));
     }
   }
 
@@ -107,7 +109,7 @@ class IntroBloc extends Bloc<BlocEvent, BlocState>
     }
     catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      emit(ErrorState(message: getIt<FoxschoolLocalization>().data['message_waring_error']));
     }
   }
 

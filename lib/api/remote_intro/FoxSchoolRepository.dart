@@ -56,8 +56,14 @@ class FoxSchoolRepository extends FoxSchoolDataSource
     return apiClient.getSearchListAsync(type, keyword, Common.PAGE_LOAD_COUNT.toString(), currentPage);
   }
 
+  @override
+  Future<BaseResponse> authContentsPlayAsync(String data) {
+    return apiClient.authContentsPlayAsync(data);
+  }
 
-
-
+  @override
+  Future<BaseResponse> saveMovieStudyAsync(String contentID, String playType, String playTime, int? homeworkNumber) {
+    return apiClient.saveMovieStudyAsync(contentID, playType, playTime, homeworkNumber);
+  }
 
 }

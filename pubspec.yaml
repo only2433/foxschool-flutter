@@ -67,6 +67,7 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   permission_handler: ^11.3.1
   fluttertoast: ^8.2.4
+  video_player: ^2.8.5
 
 dev_dependencies:
   flutter_test:

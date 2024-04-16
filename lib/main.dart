@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,6 +21,7 @@ import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
+import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
 import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchItemListCubit.dart';
@@ -30,6 +33,7 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableSeriesDa
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
+import 'package:foxschool/common/CommonHttpOverrides.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
@@ -42,6 +46,8 @@ import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import '../../common/Preference.dart' as Preference;
 
 import 'bloc/login/api/LoginBloc.dart';
+import 'bloc/movie/factory/cubit/MoviePlayListCubit.dart';
+import 'bloc/movie/factory/cubit/MoviePlayerChangeCubit.dart';
 import 'common/Common.dart';
 import 'data/base/BaseResponse.dart';
 import 'di/Dependencies.dart';
@@ -64,6 +70,7 @@ void main() async {
 
   Bloc.observer = FoxschoolBlocObserver();
   await Dependencies.init();
+  HttpOverrides.global = CommonHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -95,20 +102,16 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => getIt<LoginBloc>(),
           ),
-
+          BlocProvider(create: (context) => LoginAutoCheckCubit()),
+          BlocProvider(create: (context) => LoginFindSchoolListCubit()),
+          BlocProvider(create: (context) => LoginSchoolNameCubit()),
 
           /**
            *  Main
            */
-          BlocProvider(
-            create: (context) => MainStorySelectTypeListCubit(),
-          ),
-          BlocProvider(
-            create: (context) => MainSongCategoryListCubit(),
-          ),
-          BlocProvider(
-            create: (context) => MainMyBooksTypeCubit(),
-          ),
+          BlocProvider(create: (context) => MainStorySelectTypeListCubit()),
+          BlocProvider(create: (context) => MainSongCategoryListCubit()),
+          BlocProvider(create: (context) => MainMyBooksTypeCubit()),
 
           /**
            *  SeriesContentsScreen
@@ -116,6 +119,12 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => getIt<SeriesContentsBloc>(),
           ),
+          BlocProvider(create: (context) => EnableInformationIconViewCubit()),
+          BlocProvider(create: (context) => EnableSeriesDataViewCubit()),
+          BlocProvider(create: (context) => EnableBottomSelectViewCubit()),
+          BlocProvider(create: (context) => LastWatchSeriesItemCubit()),
+          BlocProvider(create: (context) => SeriesItemListCubit()),
+          BlocProvider(create: (context) => SelectItemCountCubit()),
 
           /**
            * StoryCategoryListScreen
@@ -123,6 +132,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) => getIt<CategoryContentsDataBloc>()
           ),
+          BlocProvider(create: (context) => CategoryItemListCubit()),
 
           /**
            * Search
@@ -130,7 +140,17 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) => getIt<SearchContentsBloc>()
           ),
+          BlocProvider(create: (context) => SearchItemListCubit()),
+          BlocProvider(create: (context) => SearchTypeCubit()),
 
+          /**
+           * Movie
+           */
+          BlocProvider(
+              create: (context) => getIt<MovieContentsBloc>()
+          ),
+          BlocProvider(create: (context) => MoviePlayerChangeCubit()),
+          BlocProvider(create: (context) => MoviePlayListCubit())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

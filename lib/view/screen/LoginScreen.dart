@@ -20,7 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_loading_dialog/simple_loading_dialog.dart';
 
 
-import '../../bloc/login/factory/LoginFactoryController.dart';
+import '../../bloc/login/LoginFactoryController.dart';
 import '../../bloc/login/factory/state/FindSchoolListState.dart';
 import '../../common/Common.dart';
 import '../../common/CommonUtils.dart';
@@ -41,36 +41,7 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => LoginAutoCheckCubit(),
-          ),
-          BlocProvider(
-            create: (context) => LoginFindSchoolListCubit(),
-          ),
-          BlocProvider(
-            create: (context) => LoginSchoolNameCubit(),
-          ),
-        ],
-        child: const LoginView()
-    );
-  }
-}
-
-
-
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
-
-  @override
-  State<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView>
+class _LoginScreenState extends State<LoginScreen>
 {
   late LoginFactoryController _factoryController;
   TextEditingController _schoolNameTextController = TextEditingController();
@@ -100,13 +71,7 @@ class _LoginViewState extends State<LoginView>
     Logger.d("activate");
   }
 
-  @override
-  void dispose() {
-    _factoryController.dispose();
-    _schoolNameTextController.dispose();
-    _disposeFocusNode();
-    super.dispose();
-  }
+
 
   void _settingFocusNode() {
     _focusNodeList = List.generate(MAX_TEXT_FIELD_COUNT, (index) => FocusNode());
@@ -520,5 +485,13 @@ class _LoginViewState extends State<LoginView>
                 align: TextAlign.center)
           ],
         ));
+  }
+
+  @override
+  void dispose() {
+    _factoryController.dispose();
+    _schoolNameTextController.dispose();
+    _disposeFocusNode();
+    super.dispose();
   }
 }

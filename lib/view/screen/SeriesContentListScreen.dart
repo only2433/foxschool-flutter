@@ -4,10 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/SeriesContentsListFactoryController.dart';
+import 'package:foxschool/bloc/series_contents_list/SeriesContentsListFactoryController.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableBottomSelectViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/EnableBottomSelectViewState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/SelectItemCountState.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -27,6 +28,7 @@ import '../widget/ContentsListItemView.dart';
 
 
 class SeriesContentListScreen extends StatefulWidget {
+
   final SeriesBaseResult seriesBaseResult;
 
   const SeriesContentListScreen({
@@ -34,55 +36,10 @@ class SeriesContentListScreen extends StatefulWidget {
     required this.seriesBaseResult});
 
   @override
-  State<SeriesContentListScreen> createState() => _State();
+  State<SeriesContentListScreen> createState() => _SeriesContentListScreenState();
 }
 
-class _State extends State<SeriesContentListScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => EnableInformationIconViewCubit(),
-        ),
-        BlocProvider(
-          create: (context) => EnableSeriesDataViewCubit(),
-        ),
-        BlocProvider(
-          create: (context) => EnableBottomSelectViewCubit(),
-        ),
-        BlocProvider(
-          create: (context) => LastWatchSeriesItemCubit(),
-        ),
-        BlocProvider(
-          create: (context) => SeriesItemListCubit(),
-        ),
-        BlocProvider(
-          create: (context) => SelectItemCountCubit(),
-        ),
-      ],
-      child: SeriesContentListView(
-        seriesBaseResult: widget.seriesBaseResult,
-      ),
-    );
-  }
-}
-
-
-
-class SeriesContentListView extends StatefulWidget {
-
-  final SeriesBaseResult seriesBaseResult;
-
-  const SeriesContentListView({
-    super.key,
-    required this.seriesBaseResult});
-
-  @override
-  State<SeriesContentListView> createState() => _SeriesContentListViewState();
-}
-
-class _SeriesContentListViewState extends State<SeriesContentListView> with TickerProviderStateMixin  {
+class _SeriesContentListScreenState extends State<SeriesContentListScreen> with TickerProviderStateMixin  {
   late ScrollController _scrollController;
   late SeriesContentsListFactoryController _factoryController;
   late AnimationController _animationController;
@@ -212,7 +169,10 @@ class _SeriesContentListViewState extends State<SeriesContentListView> with Tick
                                       _factoryController.onSelectedItem(index);
                                     },
                                     onThumbnailPressed: () {
-
+                                      _factoryController.onClickThumbnailItem(index);
+                                    },
+                                    onOptionPressed: (){
+                                      Logger.d("Option pressed");
                                     },
                                   ),
                                 ),
@@ -290,15 +250,49 @@ class _SeriesContentListViewState extends State<SeriesContentListView> with Tick
                       onPressed: (){
                         _factoryController.onSelectAll();
                       }) ,
-                  BottomIconTextView(
-                      image: Image.asset('asset/image/bottom_play.png',
-                          width: CommonUtils.getInstance(context).getWidth(210),
-                          height: CommonUtils.getInstance(context).getHeight(90),
-                          fit: BoxFit.cover),
-                      title: getIt<FoxschoolLocalization>().data['text_select_play'],
-                      onPressed: (){
+                  Stack(
+                    children: [
+                      BottomIconTextView(
+                          image: Image.asset('asset/image/bottom_play.png',
+                              width: CommonUtils.getInstance(context).getWidth(210),
+                              height: CommonUtils.getInstance(context).getHeight(90),
+                              fit: BoxFit.cover),
+                          title: getIt<FoxschoolLocalization>().data['text_select_play'],
+                          onPressed: (){
+                            _factoryController.onClickSelectedListPlay();
+                          }),
+                      BlocBuilder<SelectItemCountCubit, SelectItemCountState>(builder: (context, state) {
 
-                      }) ,
+                        if(state.count != 0)
+                          {
+                            return Positioned(
+                              right: state.count < 100 ? CommonUtils.getInstance(context).getWidth(100) : CommonUtils.getInstance(context).getWidth(85),
+                              top: CommonUtils.getInstance(context).getHeight(20),
+                              child: Container(
+                                width: state.count < 100 ? CommonUtils.getInstance(context).getWidth(30) : CommonUtils.getInstance(context).getWidth(45),
+                                height: CommonUtils.getInstance(context).getHeight(30),
+                                decoration: BoxDecoration(
+                                    color: AppColors.color_ffffff,
+                                    borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(30))
+                                ),
+                                alignment: Alignment.center,
+                                child: RobotoBoldText(
+                                  text: '${state.count}',
+                                  fontSize: CommonUtils.getInstance(context).getWidth(20),
+                                  color: AppColors.color_29c8e6,
+                                  align: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          }
+                        else
+                          {
+                            return Container();
+                          }
+                      },)
+                    ],
+
+                  ) ,
                   BottomIconTextView(
                       image: Image.asset('asset/image/bottom_bookshelf.png',
                           width: CommonUtils.getInstance(context).getWidth(210),

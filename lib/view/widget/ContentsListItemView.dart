@@ -14,7 +14,7 @@ class ContentsListItemView extends StatelessWidget {
   final String thumbnailUrl;
   final String title;
   final VoidCallback onItemPressed;
-  final VoidCallback onThumbnailPressed;
+  final VoidCallback  onThumbnailPressed;
   String indexColor;
   int index;
   bool isSelected;
@@ -37,18 +37,19 @@ class ContentsListItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
     return GestureDetector(
-      onTap: onItemPressed,
+      onTap: () {
+        onItemPressed();
+      },
       child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: CommonUtils.getInstance(context).getHeight(244),
-          decoration: BoxDecoration(
+        width: MediaQuery.of(context).size.width,
+        height: CommonUtils.getInstance(context).getHeight(244),
+        decoration: BoxDecoration(
             color: isSelected ? AppColors.color_ffe84d : AppColors.color_ffffff,
             borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10)),
             border: Border.all(
-              color: AppColors.color_f5f5f5,
-              width: CommonUtils.getInstance(context).getWidth(1)
+                color: AppColors.color_f5f5f5,
+                width: CommonUtils.getInstance(context).getWidth(1)
             ),
             boxShadow: [
               BoxShadow(
@@ -57,7 +58,7 @@ class ContentsListItemView extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.5)
               )
             ]
-          ),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -65,7 +66,9 @@ class ContentsListItemView extends StatelessWidget {
               width: CommonUtils.getInstance(context).getWidth(28),
             ),
             GestureDetector(
-              onTap: onThumbnailPressed,
+              onTap: () {
+                onThumbnailPressed(); // 이 부분이 호출되어야 함
+              },
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
                 image: thumbnailUrl,
@@ -81,8 +84,8 @@ class ContentsListItemView extends StatelessWidget {
             GestureDetector(
               onTap: onOptionPressed,
               child: Image.asset('asset/image/icon_learning.png',
-                width: CommonUtils.getInstance(context).getHeight(92),
-                height: CommonUtils.getInstance(context).getHeight(125)),
+                  width: CommonUtils.getInstance(context).getHeight(92),
+                  height: CommonUtils.getInstance(context).getHeight(125)),
             )
           ],
         ),

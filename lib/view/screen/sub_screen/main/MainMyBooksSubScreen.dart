@@ -14,7 +14,7 @@ import 'package:foxschool/enum/UserType.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:foxschool/view/widget/ToggleTextButton.dart';
 
-import '../../../../bloc/main/factory/MainFactoryController.dart';
+import '../../../../bloc/main/MainFactoryController.dart';
 import '../../../../bloc/main/factory/state/MyBooksTypeState.dart';
 import '../../../../common/CommonUtils.dart';
 import '../../../../di/Dependencies.dart';
