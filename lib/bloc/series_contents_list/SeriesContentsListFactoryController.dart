@@ -40,7 +40,7 @@ class SeriesContentsListFactoryController extends BlocController {
     _settingSubscriptions();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
-      context.read<SeriesContentsBloc>().add(
+      BlocProvider.of<SeriesContentsBloc>(context).add(
           GetSeriesContentsDataEvent(displayID: currentSeriesBaseResult.id)
       );
     });
@@ -48,10 +48,7 @@ class SeriesContentsListFactoryController extends BlocController {
 
   void _settingSubscriptions() {
     var blocState;
-    _subscription = context
-        .read<SeriesContentsBloc>()
-        .stream
-        .listen((state) async {
+    _subscription = BlocProvider.of<SeriesContentsBloc>(context).stream.listen((state) async {
       switch (state.runtimeType) {
         case SeriesContentsDataLoadedState:
           blocState = state as SeriesContentsDataLoadedState;
@@ -202,7 +199,7 @@ class SeriesContentsListFactoryController extends BlocController {
     {
       if(_currentContentsItemList[i].isSelected)
       {
-        list.add(_currentContentsItemList[i]);
+        list.add(_currentContentsItemList[i].setSelected(false));
       }
     }
 

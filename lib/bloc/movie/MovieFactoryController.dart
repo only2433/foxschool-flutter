@@ -11,6 +11,7 @@ import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/bloc/movie/api/event/MovieContentsEvent.dart';
 import 'package:foxschool/bloc/movie/api/state/MovieContentsLoadedState.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayListCubit.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerChangeCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/data/movie/MovieItemResult.dart';
@@ -41,8 +42,9 @@ class MovieFactoryController extends BlocController
   {
     Logger.d("");
     _settingSubscription();
+    _setCurrentPlayItem(_currentPlayIndex);
     await Future.delayed(Duration(milliseconds: Common.DURATION_LONGEST), () {
-      context.read<MovieContentsBloc>().add(
+      BlocProvider.of<MovieContentsBloc>(context).add(
           MovieContentsEvent(data: playList[_currentPlayIndex].id)
       );
     },);
@@ -50,9 +52,8 @@ class MovieFactoryController extends BlocController
   }
 
 
-  void initVideoController() async
+  void _initVideoController() async
   {
-    context.read<MoviePlayListCubit>().setMoviePlayList(playList);
     await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
       _controller = VideoPlayerController.networkUrl(Uri.parse(
           '${_currentItemResult!.movieMP4Url}'));
@@ -72,14 +73,14 @@ class MovieFactoryController extends BlocController
   void _settingSubscription()
   {
     var blocState;
-    _subscription = context.read<MovieContentsBloc>().stream.listen((state) async {
+    _subscription = BlocProvider.of<MovieContentsBloc>(context).stream.listen((state) async {
       Logger.d("state.runtimeType : ${state.runtimeType}");
       switch(state.runtimeType)
       {
         case MovieContentsLoadedState:
           blocState = state as MovieContentsLoadedState;
           _currentItemResult = blocState.data;
-          initVideoController();
+          _initVideoController();
           break;
         case LoadingState:
           break;
@@ -96,6 +97,23 @@ class MovieFactoryController extends BlocController
           break;
       }
     });
+  }
+
+  void _setCurrentPlayItem(int index)
+  {
+    for(int i = 0; i < playList.length; i++)
+    {
+      if(i == index)
+        {
+          playList[i] = playList[i].setSelected(true);
+          context.read<MoviePlayTitleCubit>().setTitle(playList[i].getContentsName());
+        }
+      else
+        {
+          playList[i] = playList[i].setSelected(false);
+        }
+    }
+    context.read<MoviePlayListCubit>().setMoviePlayList(playList);
   }
 
 

@@ -53,7 +53,7 @@ class SearchContentsListFactoryController extends BlocController
   void _settingSubscription()
   {
     var blocState;
-    _subscription = context.read<SearchContentsBloc>().stream.listen((state) async{
+    _subscription = BlocProvider.of<SearchContentsBloc>(context).stream.listen((state) async{
 
       Logger.d("state.runtimeType : ${state.runtimeType}");
       switch(state.runtimeType)
@@ -131,7 +131,7 @@ class SearchContentsListFactoryController extends BlocController
         }
     }
 
-    context.read<SearchContentsBloc>().add(
+    BlocProvider.of<SearchContentsBloc>(context).add(
       SearchContentsListEvent(
           type: _getSearchTypeText(_currentSearchType),
           keyword: _currentKeyword,

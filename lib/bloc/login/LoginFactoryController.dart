@@ -42,14 +42,14 @@ class LoginFactoryController extends BlocController {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
 
       await Future.delayed(Duration(milliseconds: Common.DURATION_NORMAL));
-      context.read<LoginBloc>().add(GetSchoolDataEvent());
+      BlocProvider.of<LoginBloc>(context).add(GetSchoolDataEvent());
     });
     _settingSubscriptions();
   }
 
   void _settingSubscriptions() {
     var blocState;
-    _subscription = context.read<LoginBloc>().stream.listen((state) {
+    _subscription = BlocProvider.of<LoginBloc>(context).stream.listen((state) {
       switch (state.runtimeType) {
         case LoadingState:
           {
@@ -121,7 +121,7 @@ class LoginFactoryController extends BlocController {
   }
 
   void onClickLogin(String userID, String password, String schoolCode) {
-    context.read<LoginBloc>().add(
+    BlocProvider.of<LoginBloc>(context).add(
         LoginEvent(
             loginID: userID,
             password: password,

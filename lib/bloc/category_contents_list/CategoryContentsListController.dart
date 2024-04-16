@@ -34,7 +34,7 @@ class CategoryContentsListController extends BlocController
     _settingSubscription();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
       await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
-      context.read<CategoryContentsDataBloc>().add(
+      BlocProvider.of<CategoryContentsDataBloc>(context).add(
         GetCategoryContentsEvent(displayID: currentSeriesBaseResult.id)
       );
     });
@@ -44,7 +44,7 @@ class CategoryContentsListController extends BlocController
   void _settingSubscription()
   {
     var blocState;
-    _subscription = context.read<CategoryContentsDataBloc>().stream.listen((state) async {
+    _subscription = BlocProvider.of<CategoryContentsDataBloc>(context).stream.listen((state) async {
       switch(state.runtimeType)
       {
         case CategoryContentsLoadedState:

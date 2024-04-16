@@ -4,8 +4,10 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/MoviePlayerBaseState.dart';
 import 'package:foxschool/bloc/movie/MovieFactoryController.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayListCubit.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerChangeCubit.dart';
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayListState.dart';
+import 'package:foxschool/bloc/movie/factory/state/MoviePlayTitleState.dart';
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayerReadyState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -106,39 +108,41 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> {
 
   Widget _getPlayerTitleLayout()
   {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: CommonUtils.getInstance(context).getHeight(205),
-      color: AppColors.color_ffffff,
-      child: Stack(
-        children: [
-          Positioned(
-              left: CommonUtils.getInstance(context).getWidth(45),
-              top: CommonUtils.getInstance(context).getHeight(5),
-              width: CommonUtils.getInstance(context).getWidth(950),
-              height: CommonUtils.getInstance(context).getHeight(200),
-              child: Center(
-                child: RobotoNormalText(
-                  text: 'Tire Town School 1 : Eddy`s First Day',
-                  fontSize: CommonUtils.getInstance(context).getWidth(46),
-                  color: AppColors.color_000000,
-                  align: TextAlign.center,
-                  maxLines: 2,
-                ),
-              )
-          ),
-          Positioned(
-              top: CommonUtils.getInstance(context).getHeight(40),
-              right: CommonUtils.getInstance(context).getWidth(30),
-              child: Image.asset(
-                'asset/image/icon_learning.png',
-                width: CommonUtils.getInstance(context).getWidth(92),
-                height: CommonUtils.getInstance(context).getHeight(125),
-              )
-          )
-        ],
-      ),
-    );
+    return BlocBuilder<MoviePlayTitleCubit, MoviePlayTitleState>(builder: (context, state) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: CommonUtils.getInstance(context).getHeight(205),
+        color: AppColors.color_ffffff,
+        child: Stack(
+          children: [
+            Positioned(
+                left: CommonUtils.getInstance(context).getWidth(45),
+                top: CommonUtils.getInstance(context).getHeight(5),
+                width: CommonUtils.getInstance(context).getWidth(950),
+                height: CommonUtils.getInstance(context).getHeight(200),
+                child: Center(
+                  child: RobotoNormalText(
+                    text: state.title,
+                    fontSize: CommonUtils.getInstance(context).getWidth(46),
+                    color: AppColors.color_000000,
+                    align: TextAlign.center,
+                    maxLines: 2,
+                  ),
+                )
+            ),
+            Positioned(
+                top: CommonUtils.getInstance(context).getHeight(40),
+                right: CommonUtils.getInstance(context).getWidth(30),
+                child: Image.asset(
+                  'asset/image/icon_learning.png',
+                  width: CommonUtils.getInstance(context).getWidth(92),
+                  height: CommonUtils.getInstance(context).getHeight(125),
+                )
+            )
+          ],
+        ),
+      );
+    });
   }
 
   Widget _getPlayListView()

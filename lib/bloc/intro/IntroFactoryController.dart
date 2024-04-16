@@ -57,7 +57,7 @@ class IntroFactoryController extends BlocController
   void _settingSubscriptions()
   {
     var blocState;
-    _subscription = context.read<IntroBloc>().stream.listen((state) async {
+    _subscription = BlocProvider.of<IntroBloc>(context).stream.listen((state) async {
       switch(state.runtimeType)
       {
         case VersionLoadedState:
@@ -70,7 +70,7 @@ class IntroFactoryController extends BlocController
           await Future.delayed(const Duration(
               milliseconds: Common.DURATION_LONGEST
           ));
-          context.read<IntroBloc>().add(
+          BlocProvider.of<IntroBloc>(context).add(
               AuthMeEvent()
           );
           break;
@@ -83,7 +83,7 @@ class IntroFactoryController extends BlocController
           await Future.delayed(const Duration(
               milliseconds: Common.DURATION_LONGEST
           ));
-          context.read<IntroBloc>().add(
+          BlocProvider.of<IntroBloc>(context).add(
               MainInformationEvent()
           );
           break;
@@ -188,7 +188,7 @@ class IntroFactoryController extends BlocController
     ));
     String androidID = await Preference.getString(Common.PARAMS_SECURE_ANDROID_ID);
     String token = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
-    context.read<IntroBloc>().add(
+    BlocProvider.of<IntroBloc>(context).add(
         GetVersionEvent(
             deviceType: androidID,
             pushAddress: token,
