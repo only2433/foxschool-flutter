@@ -42,8 +42,9 @@ class MovieFactoryController extends BlocController
   {
     Logger.d("");
     _settingSubscription();
+    context.read<MoviePlayerChangeCubit>().showLoading();
     _setCurrentPlayItem(_currentPlayIndex);
-    await Future.delayed(Duration(milliseconds: Common.DURATION_LONGEST), () {
+    await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
       BlocProvider.of<MovieContentsBloc>(context).add(
           MovieContentsEvent(data: playList[_currentPlayIndex].id)
       );
@@ -132,11 +133,26 @@ class MovieFactoryController extends BlocController
   void dispose() {
     _subscription?.cancel();
     _subscription = null;
+    _controller.dispose();
+
     Logger.d("_subscription cancel");
   }
   @override
   void onBackPressed() {
     Navigator.of(context).pop();
+  }
+
+  void onClickPlayItem(int index) async
+  {
+    _currentPlayIndex = index;
+    _controller.pause();
+    _setCurrentPlayItem(_currentPlayIndex);
+    context.read<MoviePlayerChangeCubit>().showLoading();
+    await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
+      BlocProvider.of<MovieContentsBloc>(context).add(
+          MovieContentsEvent(data: playList[_currentPlayIndex].id)
+      );
+    },);
   }
 
 

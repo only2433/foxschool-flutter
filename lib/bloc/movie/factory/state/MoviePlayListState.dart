@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:equatable/equatable.dart';
 
 import '../../../../data/contents/contents_base/ContentsBaseResult.dart';
@@ -11,5 +13,5 @@ class MoviePlayListState extends Equatable
   });
 
   @override
-  List<Object> get props => [list];
+  List<Object> get props => [list, Random().nextInt(DateTime.now().millisecond)];
 }

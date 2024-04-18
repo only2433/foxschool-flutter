@@ -56,7 +56,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> {
                 {
                     return Container(
                         width: MediaQuery.of(context).size.width,
-                        height: CommonUtils.getInstance(context).getHeight(602),
+                        height: CommonUtils.getInstance(context).getHeight(552),
                         color: AppColors.color_000000,
                         child: const Center(
                             child: CircularProgressIndicator(
@@ -66,9 +66,10 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> {
                 }
                 else if(state is MoviePlayerReadyState)
                 {
-                    return AspectRatio(
-                        aspectRatio: state.controller.value.aspectRatio,
-                        child: VideoPlayer(state.controller)
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: CommonUtils.getInstance(context).getHeight(552),
+                      child: VideoPlayer(state.controller)
                     );
                 }
                 else
@@ -155,7 +156,8 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> {
             child: ListView.builder(
               itemCount: state.list.length,
               itemBuilder: (context, index) {
-              return Padding(
+                Logger.d("index : ${index}, isSelected : ${state.list[index].isSelected}");
+                return Padding(
                   padding: EdgeInsets.only(
                       left: CommonUtils.getInstance(context).getWidth(25),
                       right: CommonUtils.getInstance(context).getWidth(25),
@@ -169,7 +171,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> {
 
                   },
                   onItemPressed: () {
-
+                    _factoryController.onClickPlayItem(index);
                   },
                 ),
               );
