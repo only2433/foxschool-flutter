@@ -7,6 +7,6 @@ abstract class MoviePlayerBaseState extends Equatable
   List<Object> get props => [];
 }
 
-class LoadingState extends MoviePlayerBaseState {}
+class MovieLoadingState extends MoviePlayerBaseState {}
 
-class PlayCompleteState extends MoviePlayerBaseState {}
+

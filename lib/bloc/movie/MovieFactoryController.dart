@@ -10,9 +10,11 @@ import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/bloc/movie/api/event/MovieContentsEvent.dart';
 import 'package:foxschool/bloc/movie/api/state/MovieContentsLoadedState.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayListCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
-import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerChangeCubit.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/data/movie/MovieItemResult.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
@@ -23,15 +25,16 @@ import '../../common/Common.dart';
 import '../../data/contents/contents_base/ContentsBaseResult.dart';
 import '../base/BlocState.dart';
 
-class MovieFactoryController extends BlocController
-{
-  late VideoPlayerController _controller;
+class MovieFactoryController extends BlocController {
+  VideoPlayerController? _controller;
   StreamSubscription? _subscription;
   int _currentPlayIndex = 0;
   MovieItemResult? _currentItemResult;
+  Timer? _progressTimer;
 
   final BuildContext context;
   final List<ContentsBaseResult> playList;
+
   MovieFactoryController({
     required this.context,
     required this.playList
@@ -42,14 +45,7 @@ class MovieFactoryController extends BlocController
   {
     Logger.d("");
     _settingSubscription();
-    context.read<MoviePlayerChangeCubit>().showLoading();
-    _setCurrentPlayItem(_currentPlayIndex);
-    await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
-      BlocProvider.of<MovieContentsBloc>(context).add(
-          MovieContentsEvent(data: playList[_currentPlayIndex].id)
-      );
-    },);
-
+    _readyToPlay();
   }
 
 
@@ -61,23 +57,42 @@ class MovieFactoryController extends BlocController
     },);
 
 
-    _controller.initialize().then((value) async{
-      context.read<MoviePlayerChangeCubit>().setController(_controller);
+    _controller!.initialize().then((value) async {
+      _controller!.addListener(_initVideoListener);
+      context.read<MoviePlayerSettingCubit>().setController(_controller!);
       await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
-        _controller.play();
+        _controller!.play();
+        _enableTimer(isEnable: true);
       },);
-
     });
   }
 
+  void _initVideoListener() {
 
-  void _settingSubscription()
-  {
-    var blocState;
-    _subscription = BlocProvider.of<MovieContentsBloc>(context).stream.listen((state) async {
-      Logger.d("state.runtimeType : ${state.runtimeType}");
-      switch(state.runtimeType)
+    if (_controller?.value.isPlaying == false && _controller?.value.position == _controller?.value.duration)
+    {
+      _enableTimer(isEnable: false);
+      if (_currentPlayIndex == playList.length - 1)
       {
+        Logger.d("플레이가 종료 되었습니다.");
+        context.read<MovieSeekProgressCubit>().setInvisible();
+        context.read<MoviePlayCompleteCubit>().showPlayCompleteView(true);
+      }
+      else {
+        _currentPlayIndex++;
+        _readyToPlay();
+      }
+    }
+  }
+
+  void _settingSubscription() {
+    var blocState;
+    _subscription = BlocProvider
+        .of<MovieContentsBloc>(context)
+        .stream
+        .listen((state) async {
+      Logger.d("state.runtimeType : ${state.runtimeType}");
+      switch (state.runtimeType) {
         case MovieContentsLoadedState:
           blocState = state as MovieContentsLoadedState;
           _currentItemResult = blocState.data;
@@ -100,21 +115,53 @@ class MovieFactoryController extends BlocController
     });
   }
 
-  void _setCurrentPlayItem(int index)
+  void _readyToPlay() async
   {
-    for(int i = 0; i < playList.length; i++)
-    {
-      if(i == index)
-        {
-          playList[i] = playList[i].setSelected(true);
-          context.read<MoviePlayTitleCubit>().setTitle(playList[i].getContentsName());
-        }
-      else
-        {
-          playList[i] = playList[i].setSelected(false);
-        }
+    Logger.d("_currentPlayIndex : $_currentPlayIndex");
+    _controller?.removeListener(_initVideoListener);
+    context.read<MovieSeekProgressCubit>().setPercent(0);
+    context.read<MoviePlayCompleteCubit>().showPlayCompleteView(false);
+    context.read<MoviePlayerSettingCubit>().showLoading();
+    _setCurrentPlayItem(_currentPlayIndex);
+    await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
+      BlocProvider.of<MovieContentsBloc>(context).add(
+          MovieContentsEvent(data: playList[_currentPlayIndex].id)
+      );
+    },);
+  }
+
+  void _setCurrentPlayItem(int index) {
+    for (int i = 0; i < playList.length; i++) {
+      if (i == index) {
+        playList[i] = playList[i].setSelected(true);
+        context.read<MoviePlayTitleCubit>().setTitle(playList[i].getContentsName());
+      }
+      else {
+        playList[i] = playList[i].setSelected(false);
+      }
     }
     context.read<MoviePlayListCubit>().setMoviePlayList(playList);
+  }
+
+  void _enableTimer({required bool isEnable})
+  {
+    if(isEnable)
+    {
+      _progressTimer = Timer.periodic(Duration(milliseconds: Common.DURATION_SHORTEST), (timer) {
+        _updateUI();
+      });
+    }
+    else
+    {
+      _progressTimer?.cancel();
+      _progressTimer = null;
+    }
+  }
+
+  void _updateUI()
+  {
+    double percent = (_controller!.value.position.inSeconds/_controller!.value.duration.inSeconds) * 100;
+    context.read<MovieSeekProgressCubit>().setPercent(percent);
   }
 
 
@@ -131,28 +178,50 @@ class MovieFactoryController extends BlocController
 
   @override
   void dispose() {
+    _enableTimer(isEnable: false);
     _subscription?.cancel();
     _subscription = null;
-    _controller.dispose();
-
+    _controller?.removeListener(_initVideoListener);
+    _controller?.dispose();
     Logger.d("_subscription cancel");
   }
+
   @override
   void onBackPressed() {
     Navigator.of(context).pop();
   }
 
-  void onClickPlayItem(int index) async
-  {
+  void onClickPlayItem(int index) {
+    Logger.d("index : $index");
     _currentPlayIndex = index;
-    _controller.pause();
-    _setCurrentPlayItem(_currentPlayIndex);
-    context.read<MoviePlayerChangeCubit>().showLoading();
-    await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
-      BlocProvider.of<MovieContentsBloc>(context).add(
-          MovieContentsEvent(data: playList[_currentPlayIndex].id)
-      );
-    },);
+    _controller?.pause();
+    _readyToPlay();
+  }
+
+  void onClickReplay() {
+    Logger.d("");
+    _readyToPlay();
+  }
+
+  void onStartSeekProgress()
+  {
+    Logger.d("");
+    _enableTimer(isEnable: false);
+  }
+
+  void onChangeSeekProgress(double value)
+  {
+    Logger.d("value : $value");
+    context.read<MovieSeekProgressCubit>().setPercent(value);
+  }
+
+  void onEndSeekProgress(double value)
+  {
+    Logger.d("value : $value");
+    double totalTime = _controller!.value.duration.inMilliseconds.toDouble();
+    double seekTime = totalTime * (value / 100);
+    _enableTimer(isEnable: true);
+    _controller?.seekTo(Duration(milliseconds: seekTime.toInt()));
   }
 
 

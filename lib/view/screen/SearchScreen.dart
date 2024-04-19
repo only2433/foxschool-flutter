@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:foxschool/bloc/base/SeachListBaseState.dart';
+import 'package:foxschool/bloc/search/factory/state/base/SeachListBaseState.dart';
 import 'package:foxschool/bloc/search/SearchContentsListFactoryController.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchItemListCubit.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchTypeCubit.dart';

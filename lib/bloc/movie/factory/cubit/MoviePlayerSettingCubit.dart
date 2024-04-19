@@ -1,18 +1,18 @@
 
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/bloc/base/MoviePlayerBaseState.dart';
+import 'package:foxschool/bloc/movie/factory/state/base/MoviePlayerBaseState.dart';
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayerReadyState.dart';
 import 'package:video_player/video_player.dart';
 
 
-class MoviePlayerChangeCubit extends Cubit<MoviePlayerBaseState>
+class MoviePlayerSettingCubit extends Cubit<MoviePlayerBaseState>
 {
-  MoviePlayerChangeCubit() : super(LoadingState());
+  MoviePlayerSettingCubit() : super(MovieLoadingState());
 
   void showLoading()
   {
-    emit(LoadingState());
+    emit(MovieLoadingState());
   }
 
   void setController(VideoPlayerController controller)

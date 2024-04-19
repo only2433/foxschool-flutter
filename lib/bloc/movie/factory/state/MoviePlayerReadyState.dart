@@ -2,7 +2,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../base/MoviePlayerBaseState.dart';
+import 'base/MoviePlayerBaseState.dart';
 
 class MoviePlayerReadyState extends MoviePlayerBaseState
 {

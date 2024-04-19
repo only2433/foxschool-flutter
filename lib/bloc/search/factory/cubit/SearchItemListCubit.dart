@@ -1,7 +1,7 @@
 
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/bloc/base/SeachListBaseState.dart';
+import 'package:foxschool/bloc/search/factory/state/base/SeachListBaseState.dart';
 import '../../../../data/contents/contents_base/ContentsBaseResult.dart';
 import '../state/SearchItemListState.dart';
 
