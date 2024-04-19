@@ -1,10 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-abstract class ContentsListBaseState extends Equatable
+abstract class ContentsListBaseState
 {
   const ContentsListBaseState();
-  @override
-  List<Object> get props => [];
 }
 
 class LoadingState extends ContentsListBaseState {}

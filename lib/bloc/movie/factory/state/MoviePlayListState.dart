@@ -5,13 +5,11 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../data/contents/contents_base/ContentsBaseResult.dart';
 
-class MoviePlayListState extends Equatable
+class MoviePlayListState
 {
   final List<ContentsBaseResult> list;
   MoviePlayListState({
     required this.list
   });
 
-  @override
-  List<Object> get props => [list, Random().nextInt(DateTime.now().millisecond)];
 }

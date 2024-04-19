@@ -406,7 +406,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with SingleTicker
         overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
       ),
       child: BlocBuilder<MovieSeekProgressCubit, MovieSeekProgressState>(builder: (context, state) {
-        Logger.d("state isvisible : ${state.isVisible}");
+        Logger.d("state isvisible : ${state.isVisible} , percent : ${state.percent}");
         return Visibility(
           visible: state.isVisible,
           child: Slider(

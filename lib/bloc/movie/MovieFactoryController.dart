@@ -160,6 +160,7 @@ class MovieFactoryController extends BlocController {
 
   void _updateUI()
   {
+    Logger.d("position : ${_controller!.value.position.inSeconds}, duration : ${_controller!.value.duration.inSeconds}");
     double percent = (_controller!.value.position.inSeconds/_controller!.value.duration.inSeconds) * 100;
     context.read<MovieSeekProgressCubit>().setPercent(percent);
   }
@@ -195,6 +196,7 @@ class MovieFactoryController extends BlocController {
     Logger.d("index : $index");
     _currentPlayIndex = index;
     _controller?.pause();
+    _enableTimer(isEnable: false);
     _readyToPlay();
   }
 

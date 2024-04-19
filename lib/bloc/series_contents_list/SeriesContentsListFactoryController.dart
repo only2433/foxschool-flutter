@@ -151,6 +151,9 @@ class SeriesContentsListFactoryController extends BlocController {
     {
       _currentContentsItemList[index] = _currentContentsItemList[index].setSelected(true);
     }
+
+
+
     context.read<SeriesItemListCubit>().showSeriesItemList(
         _getSeriesColor(),
         _seriesContentsData.isSingleSeries() ? true : false,
