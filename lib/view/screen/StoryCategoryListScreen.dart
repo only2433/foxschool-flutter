@@ -115,7 +115,7 @@ class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with 
                 ),
                 BlocBuilder<CategoryItemListCubit, ContentsListBaseState>(
                   builder: (context, state) {
-                    Logger.d("state : ${state.toString()}");
+
                     if (state is CategoryItemListState) {
                       _animationController.forward();
                       return SliverPadding(

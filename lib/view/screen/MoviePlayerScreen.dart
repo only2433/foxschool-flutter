@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
 import 'package:foxschool/bloc/movie/factory/state/base/MoviePlayerBaseState.dart';
 import 'package:foxschool/bloc/movie/MovieFactoryController.dart';
@@ -13,6 +14,7 @@ import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart'
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayListState.dart';
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayTitleState.dart';
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayerReadyState.dart';
+import 'package:foxschool/bloc/movie/factory/state/menu/MoviePlayerMenuState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/view/widget/ContentsListItemView.dart';
@@ -38,29 +40,33 @@ class MoviePlayerScreen extends StatefulWidget {
   State<MoviePlayerScreen> createState() => _MoviePlayerScreenState();
 }
 
-class _MoviePlayerScreenState extends State<MoviePlayerScreen> with SingleTickerProviderStateMixin {
+class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProviderStateMixin {
   late MovieFactoryController _factoryController;
   late AnimationController _aniPlayCompleteController;
   late Animation<double> _playCompleteAnimation;
+
+  late AnimationController _aniMenuController;
+  late Animation<double> _menuAnimation;
+
+  bool _isMenuVisible = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _initPlayCompleteAnimation(); // 애니메이션 초기화 메서드 호출
+    _initMenuAnimation();
   }
 
   @override
-  void initState() 
-  {
+  void initState() {
     super.initState();
     _factoryController = MovieFactoryController(context: context, playList: widget.playList);
     _factoryController.init();
   }
 
-  void _initPlayCompleteAnimation()
-  {
+  void _initPlayCompleteAnimation() {
     _aniPlayCompleteController = AnimationController(
-      duration: Duration(milliseconds: 500), // 애니메이션 지속 시간
+      duration: const Duration(milliseconds: Common.DURATION_NORMAL), // 애니메이션 지속 시간
       vsync: this,
     );
 
@@ -70,7 +76,23 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with SingleTicker
     ).animate(_aniPlayCompleteController);
   }
 
-  double test = 0.0;
+  void _initMenuAnimation() {
+    _aniMenuController = AnimationController(
+        duration: const Duration(milliseconds: Common.DURATION_NORMAL),
+        vsync: this);
+
+    final curvedAnimation = CurvedAnimation(
+      parent: _aniMenuController,
+      curve: Curves.fastOutSlowIn,
+    );
+
+    _menuAnimation = Tween<double>(
+      begin: -CommonUtils.getInstance(context).getHeight(100),
+      end: CommonUtils.getInstance(context).getHeight(30)
+    ).animate(curvedAnimation);
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +132,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with SingleTicker
                       return Container();
                     }
                   }),
+                  _getMenuLayout(),
                   BlocBuilder<MoviePlayCompleteCubit, MoviePlayCompleteState>(builder: (context, state) {
                     Logger.d("state.isComplete : ${state.isComplete}");
                     return _getPlayerEndLayout(state.isComplete);
@@ -359,8 +382,8 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with SingleTicker
 
   Widget _getPlayListView()
   {
-    return BlocBuilder<MoviePlayListCubit, MoviePlayListState>(builder: (context, state) {
-
+    return BlocBuilder<MoviePlayListCubit, MoviePlayListState>(
+      builder: (context, state) {
       if(state.list.isNotEmpty)
         {
           return Expanded(
@@ -394,6 +417,160 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with SingleTicker
           return Container();
         }
     },);
+  }
+
+  Widget _getMenuLayout()
+  {
+    return Stack(
+      children: [
+        BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
+          buildWhen: (previous, current) {
+            if(current is EnableMenu)
+              {
+                if(current.isEnable)
+                  {
+                    _aniMenuController.forward();
+                  }
+                else
+                  {
+                    _aniMenuController.reverse();
+                  }
+                return true;
+              }
+            return false;
+          },
+          builder: (context, state) {
+            return AnimatedOpacity(
+              opacity: (state is EnableMenu && state.isEnable) ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: Common.DURATION_NORMAL),
+              child: GestureDetector(
+                onTap: () {
+                  _factoryController.onClickMenu();
+                  },
+                child: Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: CommonUtils.getInstance(context).getHeight(552),
+                      color: AppColors.color_alpha_07_black,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: CommonUtils.getInstance(context).getHeight(552),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Image.asset('asset/image/player__previous.png',
+                              width: CommonUtils.getInstance(context).getWidth(49),
+                              height: CommonUtils.getInstance(context).getHeight(58),
+                              fit: BoxFit.cover),
+                          SizedBox(
+                            width: CommonUtils.getInstance(context).getWidth(20),
+                          ),
+                          BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
+                            buildWhen: (previous, current) => current is ChangePlayButton ? true : false,
+                            builder: (context, state) {
+                            return GestureDetector(
+                              onTap: () {
+                                _factoryController.onClickPlayButton();
+                              },
+                              child: Image.asset((state is ChangePlayButton && state.isMoviePlaying) ? 'asset/image/player__pause.png' : 'asset/image/player__play.png',
+                                  width: CommonUtils.getInstance(context).getWidth(98),
+                                  height: CommonUtils.getInstance(context).getHeight(109),
+                                  fit: BoxFit.cover),
+                            );
+                          },),
+                          SizedBox(
+                            width: CommonUtils.getInstance(context).getWidth(20),
+                          ),
+                          Image.asset('asset/image/player__next.png',
+                              width: CommonUtils.getInstance(context).getWidth(49),
+                              height: CommonUtils.getInstance(context).getHeight(58),
+                              fit: BoxFit.cover),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+           ),
+         );
+        },),
+        AnimatedBuilder(
+            animation: _aniMenuController,
+            builder: (context, child) {
+              return Positioned(
+                  left: CommonUtils.getInstance(context).getWidth(812),
+                  top: _menuAnimation.value,
+                  child: Row(
+                    children: [
+                      BlocSelector<MoviePlayerMenuCubit, MoviePlayerMenuState, bool>(
+                        selector: (state) => state is EnableCaptionButton ? state.isEnable : false,
+                        builder: (context, isEnable) {
+                          return GestureDetector(
+                            onTap: () {
+                              _factoryController.onClickCaptionButton();
+                            },
+                            child: SizedBox(
+                              width: CommonUtils.getInstance(context).getWidth(90),
+                              height: CommonUtils.getInstance(context).getHeight(90),
+                              child: Center(
+                                child: Image.asset(isEnable ? 'asset/image/player__caption_on.png' : 'asset/image/player__caption_off.png',
+                                  width: CommonUtils.getInstance(context).getWidth(73),
+                                  height: CommonUtils.getInstance(context).getHeight(57),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        width: CommonUtils.getInstance(context).getWidth(80),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _factoryController.onBackPressed();
+                        },
+                        child: Image.asset('asset/image/player_btn_close.png',
+                          width: CommonUtils.getInstance(context).getWidth(58),
+                          height: CommonUtils.getInstance(context).getHeight(58),),
+                      ),
+                    ],
+                  )
+              );
+            },
+        ),
+        AnimatedBuilder(
+          animation: _aniMenuController,
+          builder: (context, child) {
+            return Positioned(
+                left: 0,
+                bottom: _menuAnimation.value,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(30)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Image.asset('asset/image/player__replay_off.png',
+                          width: CommonUtils.getInstance(context).getWidth(58),
+                          height: CommonUtils.getInstance(context).getHeight(62),
+                        ),
+                        Image.asset('asset/image/btn_zoomout.png',
+                          width: CommonUtils.getInstance(context).getWidth(62),
+                          height: CommonUtils.getInstance(context).getHeight(51),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+            );
+          },
+        ),
+
+      ],
+    );
   }
 
   Widget _getSeekProgressView()
@@ -435,6 +612,8 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with SingleTicker
   void dispose() {
     Logger.d("dispose");
     _factoryController.dispose();
+    _aniPlayCompleteController.dispose();
+    _aniMenuController.dispose();
     super.dispose();
   }
 }

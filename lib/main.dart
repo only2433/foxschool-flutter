@@ -24,6 +24,7 @@ import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.d
 import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
 import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
@@ -156,7 +157,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => MoviePlayListCubit()),
           BlocProvider(create: (context) => MoviePlayTitleCubit()),
           BlocProvider(create: (context) => MoviePlayCompleteCubit()),
-          BlocProvider(create: (context) => MovieSeekProgressCubit())
+          BlocProvider(create: (context) => MovieSeekProgressCubit()),
+          BlocProvider(create: (context) => MoviePlayerMenuCubit())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

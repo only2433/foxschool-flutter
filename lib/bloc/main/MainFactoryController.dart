@@ -100,7 +100,9 @@ class MainFactoryController extends BlocController
   void onResume() {}
 
   @override
-  void dispose() {}
+  void dispose() {
+
+  }
 
   @override
   void onBackPressed() {

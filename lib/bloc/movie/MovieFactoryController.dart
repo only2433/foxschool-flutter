@@ -13,6 +13,7 @@ import 'package:foxschool/bloc/movie/api/state/MovieContentsLoadedState.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayListCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
@@ -31,6 +32,9 @@ class MovieFactoryController extends BlocController {
   int _currentPlayIndex = 0;
   MovieItemResult? _currentItemResult;
   Timer? _progressTimer;
+  bool _isMenuVisible = false;
+  bool _isCaptionEnable = false;
+
 
   final BuildContext context;
   final List<ContentsBaseResult> playList;
@@ -60,7 +64,9 @@ class MovieFactoryController extends BlocController {
     _controller!.initialize().then((value) async {
       _controller!.addListener(_initVideoListener);
       context.read<MoviePlayerSettingCubit>().setController(_controller!);
+      _changePlayerButton(true);
       await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
+
         _controller!.play();
         _enableTimer(isEnable: true);
       },);
@@ -119,6 +125,7 @@ class MovieFactoryController extends BlocController {
   {
     Logger.d("_currentPlayIndex : $_currentPlayIndex");
     _controller?.removeListener(_initVideoListener);
+    context.read<MoviePlayerMenuCubit>().enableMenu(isEnable: false);
     context.read<MovieSeekProgressCubit>().setPercent(0);
     context.read<MoviePlayCompleteCubit>().showPlayCompleteView(false);
     context.read<MoviePlayerSettingCubit>().showLoading();
@@ -160,9 +167,13 @@ class MovieFactoryController extends BlocController {
 
   void _updateUI()
   {
-    Logger.d("position : ${_controller!.value.position.inSeconds}, duration : ${_controller!.value.duration.inSeconds}");
     double percent = (_controller!.value.position.inSeconds/_controller!.value.duration.inSeconds) * 100;
     context.read<MovieSeekProgressCubit>().setPercent(percent);
+  }
+
+  void _changePlayerButton(bool isMoviePlaying)
+  {
+    context.read<MoviePlayerMenuCubit>().changePlayButton(isMoviePlaying: isMoviePlaying);
   }
 
 
@@ -224,6 +235,32 @@ class MovieFactoryController extends BlocController {
     double seekTime = totalTime * (value / 100);
     _enableTimer(isEnable: true);
     _controller?.seekTo(Duration(milliseconds: seekTime.toInt()));
+  }
+
+  void onClickMenu()
+  {
+    _isMenuVisible = !_isMenuVisible;
+    context.read<MoviePlayerMenuCubit>().enableMenu(isEnable: _isMenuVisible);
+  }
+
+  void onClickCaptionButton()
+  {
+    _isCaptionEnable = !_isCaptionEnable;
+    context.read<MoviePlayerMenuCubit>().enableCaptionButton(isEnable: _isCaptionEnable);
+  }
+
+  void onClickPlayButton()
+  {
+    if(_controller!.value.isPlaying)
+      {
+        _controller!.pause();
+        _changePlayerButton(false);
+      }
+    else
+      {
+        _controller!.play();
+        _changePlayerButton(true);
+      }
   }
 
 
