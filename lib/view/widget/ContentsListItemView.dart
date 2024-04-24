@@ -141,6 +141,7 @@ class ContentsListItemView extends StatelessWidget {
         text: title,
         fontSize: CommonUtils.getInstance(context).getWidth(40),
         color: AppColors.color_444444,
+        maxLines: 3,
       ),
     );
   }

@@ -5,7 +5,7 @@ class FoxschoolBlocObserver extends BlocObserver
 {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    Logger.d('bloc: ${bloc.runtimeType}, event: ${change}');
+    //Logger.d('bloc: ${bloc.runtimeType}, event: ${change}');
     super.onChange(bloc, change);
   }
 

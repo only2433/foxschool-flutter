@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+
+import 'package:foxschool/bloc/movie/factory/cubit/MovieCaptionTextCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
@@ -14,11 +17,14 @@ import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart'
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayListState.dart';
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayTitleState.dart';
 import 'package:foxschool/bloc/movie/factory/state/MoviePlayerReadyState.dart';
+import 'package:foxschool/bloc/movie/factory/state/menu/MovieCaptionTextState.dart';
 import 'package:foxschool/bloc/movie/factory/state/menu/MoviePlayerMenuState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/view/widget/ContentsListItemView.dart';
+import 'package:foxschool/view/widget/HtmlTextWidget.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
+
 import 'package:video_player/video_player.dart';
 
 import '../../bloc/movie/factory/state/MoviePlayCompleteState.dart';
@@ -48,6 +54,9 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
   late AnimationController _aniMenuController;
   late Animation<double> _menuAnimation;
 
+  late AnimationController _aniCaptionController;
+  late Animation<double> _captionAnimation;
+
   bool _isMenuVisible = false;
 
   @override
@@ -55,6 +64,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
     super.didChangeDependencies();
     _initPlayCompleteAnimation(); // 애니메이션 초기화 메서드 호출
     _initMenuAnimation();
+    _initCaptionAnimation();
   }
 
   @override
@@ -90,7 +100,18 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
       begin: -CommonUtils.getInstance(context).getHeight(100),
       end: CommonUtils.getInstance(context).getHeight(30)
     ).animate(curvedAnimation);
+  }
 
+  void _initCaptionAnimation()
+  {
+    _aniCaptionController = AnimationController(
+        duration: const Duration(milliseconds: Common.DURATION_NORMAL),
+        vsync: this);
+
+    _captionAnimation = Tween<double>(
+        begin: -CommonUtils.getInstance(context).getHeight(112),
+        end: 0
+    ).animate(_aniCaptionController);
   }
 
 
@@ -133,6 +154,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                     }
                   }),
                   _getMenuLayout(),
+
                   BlocBuilder<MoviePlayCompleteCubit, MoviePlayCompleteState>(builder: (context, state) {
                     Logger.d("state.isComplete : ${state.isComplete}");
                     return _getPlayerEndLayout(state.isComplete);
@@ -224,6 +246,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
   {
     if(isComplete)
       {
+        _aniPlayCompleteController.reset();
         _aniPlayCompleteController.forward();
       }
     double endLayoutYOffset = -CommonUtils.getInstance(context).getHeight(552);
@@ -423,153 +446,218 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
   {
     return Stack(
       children: [
-        BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
-          buildWhen: (previous, current) {
-            if(current is EnableMenu)
-              {
-                if(current.isEnable)
-                  {
-                    _aniMenuController.forward();
-                  }
-                else
-                  {
-                    _aniMenuController.reverse();
-                  }
-                return true;
-              }
-            return false;
-          },
-          builder: (context, state) {
-            return AnimatedOpacity(
-              opacity: (state is EnableMenu && state.isEnable) ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: Common.DURATION_NORMAL),
-              child: GestureDetector(
-                onTap: () {
-                  _factoryController.onClickMenu();
-                  },
-                child: Stack(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: CommonUtils.getInstance(context).getHeight(552),
-                      color: AppColors.color_alpha_07_black,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: CommonUtils.getInstance(context).getHeight(552),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Image.asset('asset/image/player__previous.png',
-                              width: CommonUtils.getInstance(context).getWidth(49),
-                              height: CommonUtils.getInstance(context).getHeight(58),
-                              fit: BoxFit.cover),
-                          SizedBox(
-                            width: CommonUtils.getInstance(context).getWidth(20),
-                          ),
-                          BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
-                            buildWhen: (previous, current) => current is ChangePlayButton ? true : false,
-                            builder: (context, state) {
-                            return GestureDetector(
-                              onTap: () {
-                                _factoryController.onClickPlayButton();
-                              },
-                              child: Image.asset((state is ChangePlayButton && state.isMoviePlaying) ? 'asset/image/player__pause.png' : 'asset/image/player__play.png',
-                                  width: CommonUtils.getInstance(context).getWidth(98),
-                                  height: CommonUtils.getInstance(context).getHeight(109),
-                                  fit: BoxFit.cover),
-                            );
-                          },),
-                          SizedBox(
-                            width: CommonUtils.getInstance(context).getWidth(20),
-                          ),
-                          Image.asset('asset/image/player__next.png',
-                              width: CommonUtils.getInstance(context).getWidth(49),
-                              height: CommonUtils.getInstance(context).getHeight(58),
-                              fit: BoxFit.cover),
-                        ],
-                      ),
-                    )
-                  ],
+        _getCaptionTextView(),
+        _buildMainMenuControl(),
+        _buildTopMenuControl(),
+        _buildBottomMeniControl(),
+      ],
+    );
+  }
+
+  Widget _buildMainMenuControl()
+  {
+    return BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
+      buildWhen: (previous, current) {
+        if(current is EnableMenuState)
+        {
+          if(current.isEnable)
+          {
+            _aniMenuController.forward();
+          }
+          else
+          {
+            _aniMenuController.reverse();
+          }
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      },
+      builder: (context, state) {
+        return AnimatedOpacity(
+          opacity: (state is EnableMenuState && state.isEnable) ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: Common.DURATION_NORMAL),
+          child: GestureDetector(
+            onTap: () {
+              _factoryController.onClickMenu();
+            },
+            child: Stack(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: CommonUtils.getInstance(context).getHeight(552),
+                  color: AppColors.color_alpha_07_black,
                 ),
-           ),
-         );
-        },),
-        AnimatedBuilder(
-            animation: _aniMenuController,
-            builder: (context, child) {
-              return Positioned(
-                  left: CommonUtils.getInstance(context).getWidth(812),
-                  top: _menuAnimation.value,
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: CommonUtils.getInstance(context).getHeight(552),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      BlocSelector<MoviePlayerMenuCubit, MoviePlayerMenuState, bool>(
-                        selector: (state) => state is EnableCaptionButton ? state.isEnable : false,
-                        builder: (context, isEnable) {
-                          return GestureDetector(
+                      BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
+                        buildWhen: (previous, current) => current is EnablePrevButtonState,
+                        builder: (context, state) {
+                          return (state is EnablePrevButtonState && state.isEnable) ?
+                          GestureDetector(
                             onTap: () {
-                              _factoryController.onClickCaptionButton();
+                              _factoryController.onClickPrevButton();
                             },
-                            child: SizedBox(
-                              width: CommonUtils.getInstance(context).getWidth(90),
-                              height: CommonUtils.getInstance(context).getHeight(90),
-                              child: Center(
-                                child: Image.asset(isEnable ? 'asset/image/player__caption_on.png' : 'asset/image/player__caption_off.png',
-                                  width: CommonUtils.getInstance(context).getWidth(73),
-                                  height: CommonUtils.getInstance(context).getHeight(57),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
+                            child: Image.asset('asset/image/player__previous.png',
+                                width: CommonUtils.getInstance(context).getWidth(49),
+                                height: CommonUtils.getInstance(context).getHeight(58),
+                                fit: BoxFit.cover),
+                          ) :
+                          SizedBox(
+                              width: CommonUtils.getInstance(context).getWidth(49),
+                              height: CommonUtils.getInstance(context).getHeight(58)
                           );
-                        },
-                      ),
+                      },),
                       SizedBox(
-                        width: CommonUtils.getInstance(context).getWidth(80),
+                        width: CommonUtils.getInstance(context).getWidth(20),
                       ),
                       GestureDetector(
                         onTap: () {
-                          _factoryController.onBackPressed();
+                          _factoryController.onClickPlayButton();
                         },
-                        child: Image.asset('asset/image/player_btn_close.png',
-                          width: CommonUtils.getInstance(context).getWidth(58),
-                          height: CommonUtils.getInstance(context).getHeight(58),),
+                        child: BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
+                          buildWhen: (previous, current) => current is ChangePlayButtonState,
+                          builder: (context, state) {
+                            return Image.asset((state is ChangePlayButtonState && state.isMoviePlaying) ? 'asset/image/player__pause.png' : 'asset/image/player__play.png',
+                                width: CommonUtils.getInstance(context).getWidth(98),
+                                height: CommonUtils.getInstance(context).getHeight(109),
+                                fit: BoxFit.cover);
+                          },),
                       ),
+                      SizedBox(
+                        width: CommonUtils.getInstance(context).getWidth(20),
+                      ),
+                      BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
+                        buildWhen: (previous, current) => current is EnableNextButtonState,
+                        builder: (context, state) {
+                          return (state is EnableNextButtonState && state.isEnable) ?
+                          GestureDetector(
+                            onTap: () {
+                              _factoryController.onClickNextButton();
+                            },
+                            child: Image.asset('asset/image/player__next.png',
+                                width: CommonUtils.getInstance(context).getWidth(49),
+                                height: CommonUtils.getInstance(context).getHeight(58),
+                                fit: BoxFit.cover),
+                          ) :
+                          SizedBox(
+                              width: CommonUtils.getInstance(context).getWidth(49),
+                              height: CommonUtils.getInstance(context).getHeight(58)
+                          );
+                      },),
                     ],
-                  )
-              );
-            },
-        ),
-        AnimatedBuilder(
-          animation: _aniMenuController,
-          builder: (context, child) {
-            return Positioned(
-                left: 0,
-                bottom: _menuAnimation.value,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(30)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Image.asset('asset/image/player__replay_off.png',
-                          width: CommonUtils.getInstance(context).getWidth(58),
-                          height: CommonUtils.getInstance(context).getHeight(62),
-                        ),
-                        Image.asset('asset/image/btn_zoomout.png',
-                          width: CommonUtils.getInstance(context).getWidth(62),
-                          height: CommonUtils.getInstance(context).getHeight(51),
-                        ),
-                      ],
-                    ),
                   ),
                 )
-            );
-          },
-        ),
+              ],
+            ),
+          ),
+        );
+      },);
+  }
 
-      ],
+  Widget _buildTopMenuControl()
+  {
+    return AnimatedBuilder(
+      animation: _aniMenuController,
+      builder: (context, child) {
+        return Positioned(
+            left: CommonUtils.getInstance(context).getWidth(812),
+            top: _menuAnimation.value,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _factoryController.onClickCaptionButton();
+                  },
+                  child: SizedBox(
+                    width: CommonUtils.getInstance(context).getWidth(90),
+                    height: CommonUtils.getInstance(context).getHeight(90),
+                    child: Center(
+                      child: BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
+                        buildWhen: (previous, current) {
+                          if(current is EnableCaptionButtonState)
+                            {
+                              Logger.d("current.isEnable : ${current.isEnable}");
+                              if(current.isEnable)
+                                {
+                                  _aniCaptionController.forward();
+                                }
+                              else
+                                {
+                                  _aniCaptionController.reverse();
+                                }
+                              return true;
+                            }
+                          else
+                            {
+                              return false;
+                            }
+
+                        },
+                        builder: (context, state) {
+                          return Image.asset((state is EnableCaptionButtonState && state.isEnable) ? 'asset/image/player__caption_on.png' : 'asset/image/player__caption_off.png',
+                            width: CommonUtils.getInstance(context).getWidth(73),
+                            height: CommonUtils.getInstance(context).getHeight(57),
+                            fit: BoxFit.contain,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: CommonUtils.getInstance(context).getWidth(80),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _factoryController.onBackPressed();
+                  },
+                  child: Image.asset('asset/image/player_btn_close.png',
+                    width: CommonUtils.getInstance(context).getWidth(58),
+                    height: CommonUtils.getInstance(context).getHeight(58),),
+                ),
+              ],
+            )
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomMeniControl()
+  {
+    return AnimatedBuilder(
+      animation: _aniMenuController,
+      builder: (context, child) {
+        return Positioned(
+            left: 0,
+            bottom: _menuAnimation.value,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(30)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset('asset/image/player__replay_off.png',
+                      width: CommonUtils.getInstance(context).getWidth(58),
+                      height: CommonUtils.getInstance(context).getHeight(62),
+                    ),
+                    Image.asset('asset/image/btn_zoomout.png',
+                      width: CommonUtils.getInstance(context).getWidth(62),
+                      height: CommonUtils.getInstance(context).getHeight(51),
+                    ),
+                  ],
+                ),
+              ),
+            )
+        );
+      },
     );
   }
 
@@ -583,7 +671,6 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
         overlayShape: RoundSliderOverlayShape(overlayRadius: 0.0),
       ),
       child: BlocBuilder<MovieSeekProgressCubit, MovieSeekProgressState>(builder: (context, state) {
-        Logger.d("state isvisible : ${state.isVisible} , percent : ${state.percent}");
         return Visibility(
           visible: state.isVisible,
           child: Slider(
@@ -606,6 +693,34 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
         );
       },
     ));
+  }
+  
+  Widget _getCaptionTextView()
+  {
+    return AnimatedBuilder(
+      animation: _aniCaptionController,
+      builder: (context, child) {
+        return Positioned(
+          left: 0,
+          bottom: _captionAnimation.value,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: CommonUtils.getInstance(context).getHeight(112),
+            color: AppColors.color_alpha_black,
+            child: Center(
+              child: BlocBuilder<MovieCaptionTextCubit, MovieCaptionTextState>(builder: (context, state) {
+                return HtmlTextWidget(
+                    text: state.text,
+                    fontSize: CommonUtils.getInstance(context).getWidth(28),
+                    color: AppColors.color_ffffff,
+                );
+              },
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override

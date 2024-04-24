@@ -1,18 +1,68 @@
 
 
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-part 'MoviePlayerMenuState.freezed.dart';
-
-@freezed
-sealed class MoviePlayerMenuState with _$MoviePlayerMenuState
+abstract class MoviePlayerMenuState extends Equatable
 {
-  const MoviePlayerMenuState._();
-  const factory MoviePlayerMenuState.init() = Init;
-  const factory MoviePlayerMenuState.enableMenu(bool isEnable) = EnableMenu;
-  const factory MoviePlayerMenuState.enablePrevButton(bool isEnable) = EnablePrevButton;
-  const factory MoviePlayerMenuState.enableNextButton(bool isEnable) = EnableNextButton;
-  const factory MoviePlayerMenuState.changePlayButton(bool isMoviePlaying) = ChangePlayButton;
-  const factory MoviePlayerMenuState.enableCaptionButton(bool isEnable) = EnableCaptionButton;
+  const MoviePlayerMenuState();
 
+  @override
+  List<Object> get props => [];
+}
+
+class InitState extends MoviePlayerMenuState {}
+
+class EnableMenuState extends MoviePlayerMenuState
+{
+  final bool isEnable;
+  EnableMenuState({
+   required this.isEnable
+  });
+
+  @override
+  List<Object> get props => [isEnable];
+}
+
+class EnablePrevButtonState extends MoviePlayerMenuState
+{
+  final bool isEnable;
+  EnablePrevButtonState({
+    required this.isEnable
+  });
+
+  @override
+  List<Object> get props => [isEnable];
+}
+
+class EnableNextButtonState extends MoviePlayerMenuState
+{
+  final bool isEnable;
+  EnableNextButtonState({
+    required this.isEnable
+  });
+
+  @override
+  List<Object> get props => [isEnable];
+}
+
+class ChangePlayButtonState extends MoviePlayerMenuState
+{
+  final bool isMoviePlaying;
+  ChangePlayButtonState({
+    required this.isMoviePlaying
+  });
+
+  @override
+  List<Object> get props => [isMoviePlaying];
+}
+
+class EnableCaptionButtonState extends MoviePlayerMenuState
+{
+  final bool isEnable;
+  EnableCaptionButtonState({
+    required this.isEnable
+  });
+
+  @override
+  List<Object> get props => [isEnable];
 }

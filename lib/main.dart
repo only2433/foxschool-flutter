@@ -22,6 +22,7 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MovieCaptionTextCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
@@ -158,7 +159,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => MoviePlayTitleCubit()),
           BlocProvider(create: (context) => MoviePlayCompleteCubit()),
           BlocProvider(create: (context) => MovieSeekProgressCubit()),
-          BlocProvider(create: (context) => MoviePlayerMenuCubit())
+          BlocProvider(create: (context) => MoviePlayerMenuCubit()),
+          BlocProvider(create: (context) => MovieCaptionTextCubit())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

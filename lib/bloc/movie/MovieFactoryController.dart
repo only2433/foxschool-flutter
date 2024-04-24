@@ -10,6 +10,7 @@ import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/bloc/movie/api/event/MovieContentsEvent.dart';
 import 'package:foxschool/bloc/movie/api/state/MovieContentsLoadedState.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MovieCaptionTextCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayListCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
@@ -30,6 +31,7 @@ class MovieFactoryController extends BlocController {
   VideoPlayerController? _controller;
   StreamSubscription? _subscription;
   int _currentPlayIndex = 0;
+  int _currentCaptionIndex = 0;
   MovieItemResult? _currentItemResult;
   Timer? _progressTimer;
   bool _isMenuVisible = false;
@@ -65,6 +67,7 @@ class MovieFactoryController extends BlocController {
       _controller!.addListener(_initVideoListener);
       context.read<MoviePlayerSettingCubit>().setController(_controller!);
       _changePlayerButton(true);
+      _settingMoviePrepared();
       await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
 
         _controller!.play();
@@ -121,11 +124,14 @@ class MovieFactoryController extends BlocController {
     });
   }
 
+
   void _readyToPlay() async
   {
     Logger.d("_currentPlayIndex : $_currentPlayIndex");
+    _currentCaptionIndex = 0;
     _controller?.removeListener(_initVideoListener);
-    context.read<MoviePlayerMenuCubit>().enableMenu(isEnable: false);
+    _setMenuVisible(false);
+    context.read<MovieCaptionTextCubit>().setText("");
     context.read<MovieSeekProgressCubit>().setPercent(0);
     context.read<MoviePlayCompleteCubit>().showPlayCompleteView(false);
     context.read<MoviePlayerSettingCubit>().showLoading();
@@ -169,6 +175,12 @@ class MovieFactoryController extends BlocController {
   {
     double percent = (_controller!.value.position.inSeconds/_controller!.value.duration.inSeconds) * 100;
     context.read<MovieSeekProgressCubit>().setPercent(percent);
+
+    if(_isTimeForCaption())
+      {
+        context.read<MovieCaptionTextCubit>().setText(_currentItemResult!.captionList[_currentCaptionIndex].text);
+        _currentCaptionIndex++;
+      }
   }
 
   void _changePlayerButton(bool isMoviePlaying)
@@ -176,7 +188,101 @@ class MovieFactoryController extends BlocController {
     context.read<MoviePlayerMenuCubit>().changePlayButton(isMoviePlaying: isMoviePlaying);
   }
 
+  void _setMenuVisible(bool isVisible)
+  {
+    _isMenuVisible = isVisible;
+    context.read<MoviePlayerMenuCubit>().enableMenu(isEnable: _isMenuVisible);
+  }
 
+  void _settingMoviePrepared()
+  {
+    if(playList.length == 1)
+      {
+        context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: false);
+        context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: false);
+      }
+    else
+      {
+        if(_currentPlayIndex == 0)
+          {
+            context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: false);
+            context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: true);
+          }
+        else if(_currentPlayIndex == playList.length - 1)
+          {
+            context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: true);
+            context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: false);
+          }
+        else
+          {
+            context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: true);
+            context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: true);
+          }
+      }
+  }
+
+  bool _isTimeForCaption()
+  {
+    try
+    {
+      if(_currentCaptionIndex >= _currentItemResult!.captionList.length
+          || _currentCaptionIndex == -1
+          || _currentItemResult!.captionList.length <= 0)
+      {
+        return false;
+      }
+      int visibleTime = _currentItemResult!.captionList[_currentCaptionIndex].startTime;
+
+      if(visibleTime <= _controller!.value.position.inMilliseconds)
+      {
+        return true;
+      }
+    }
+    catch(e)
+    {
+      return false;
+    }
+    return false;
+  }
+
+  int _getCurrentCaptionIndex(int currentTime)
+  {
+    int startTime = 0;
+    int endTime = 0;
+
+    if(_currentItemResult!.captionList.isEmpty)
+      {
+        return -1;
+      }
+    startTime = _currentItemResult!.captionList[0].startTime;
+
+    Logger.d("startTime : $startTime, position : ${currentTime}");
+    if(startTime > currentTime)
+      {
+        return 0;
+      }
+
+    for(int i = 0 ; i < _currentItemResult!.captionList.length; i++)
+      {
+        startTime = _currentItemResult!.captionList[i].startTime;
+        endTime = _currentItemResult!.captionList[i].endTime;
+        if(startTime <= currentTime
+            && endTime >= currentTime)
+          {
+            return i;
+          }
+      }
+
+    for(int i = 0 ; i < _currentItemResult!.captionList.length; i++)
+      {
+        startTime = _currentItemResult!.captionList[i].startTime;
+        if(startTime >= currentTime)
+          {
+            return i;
+          }
+      }
+    return -1;
+  }
 
   @override
   void onPause() {
@@ -220,6 +326,7 @@ class MovieFactoryController extends BlocController {
   {
     Logger.d("");
     _enableTimer(isEnable: false);
+    context.read<MovieCaptionTextCubit>().setText("");
   }
 
   void onChangeSeekProgress(double value)
@@ -235,12 +342,13 @@ class MovieFactoryController extends BlocController {
     double seekTime = totalTime * (value / 100);
     _enableTimer(isEnable: true);
     _controller?.seekTo(Duration(milliseconds: seekTime.toInt()));
+    _currentCaptionIndex = _getCurrentCaptionIndex(seekTime.toInt());
+    Logger.d("_currentCaptionIndex : $_currentCaptionIndex");
   }
 
   void onClickMenu()
   {
-    _isMenuVisible = !_isMenuVisible;
-    context.read<MoviePlayerMenuCubit>().enableMenu(isEnable: _isMenuVisible);
+    _setMenuVisible(!_isMenuVisible);
   }
 
   void onClickCaptionButton()
@@ -261,6 +369,22 @@ class MovieFactoryController extends BlocController {
         _controller!.play();
         _changePlayerButton(true);
       }
+  }
+
+  void onClickPrevButton()
+  {
+    _currentPlayIndex = _currentPlayIndex > 0 ? _currentPlayIndex - 1 : 0;
+    _controller?.pause();
+    _enableTimer(isEnable: false);
+    _readyToPlay();
+  }
+
+  void onClickNextButton()
+  {
+    _currentPlayIndex = _currentPlayIndex < playList.length - 1 ? _currentPlayIndex + 1 : playList.length - 1;
+    _controller?.pause();
+    _enableTimer(isEnable: false);
+    _readyToPlay();
   }
 
 
