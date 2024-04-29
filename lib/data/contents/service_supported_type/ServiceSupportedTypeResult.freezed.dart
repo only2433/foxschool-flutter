@@ -26,7 +26,7 @@ mixin _$ServiceSupportedTypeResult {
   @JsonKey(name: 'service')
   String get serviceSupportType => throw _privateConstructorUsedError;
   @JsonKey(name: 'original_text')
-  String get OriginalTextSupportType => throw _privateConstructorUsedError;
+  String get originalTextSupportType => throw _privateConstructorUsedError;
   @JsonKey(name: 'vocabulary')
   String get vocabularySupportType => throw _privateConstructorUsedError;
   @JsonKey(name: 'quiz')
@@ -58,7 +58,7 @@ abstract class $ServiceSupportedTypeResultCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'story') String storySupportType,
       @JsonKey(name: 'service') String serviceSupportType,
-      @JsonKey(name: 'original_text') String OriginalTextSupportType,
+      @JsonKey(name: 'original_text') String originalTextSupportType,
       @JsonKey(name: 'vocabulary') String vocabularySupportType,
       @JsonKey(name: 'quiz') String quizSupportType,
       @JsonKey(name: 'ebook') String ebookSupportType,
@@ -84,7 +84,7 @@ class _$ServiceSupportedTypeResultCopyWithImpl<$Res,
   $Res call({
     Object? storySupportType = null,
     Object? serviceSupportType = null,
-    Object? OriginalTextSupportType = null,
+    Object? originalTextSupportType = null,
     Object? vocabularySupportType = null,
     Object? quizSupportType = null,
     Object? ebookSupportType = null,
@@ -102,9 +102,9 @@ class _$ServiceSupportedTypeResultCopyWithImpl<$Res,
           ? _value.serviceSupportType
           : serviceSupportType // ignore: cast_nullable_to_non_nullable
               as String,
-      OriginalTextSupportType: null == OriginalTextSupportType
-          ? _value.OriginalTextSupportType
-          : OriginalTextSupportType // ignore: cast_nullable_to_non_nullable
+      originalTextSupportType: null == originalTextSupportType
+          ? _value.originalTextSupportType
+          : originalTextSupportType // ignore: cast_nullable_to_non_nullable
               as String,
       vocabularySupportType: null == vocabularySupportType
           ? _value.vocabularySupportType
@@ -150,7 +150,7 @@ abstract class _$$ServiceSupportedTypeResultImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'story') String storySupportType,
       @JsonKey(name: 'service') String serviceSupportType,
-      @JsonKey(name: 'original_text') String OriginalTextSupportType,
+      @JsonKey(name: 'original_text') String originalTextSupportType,
       @JsonKey(name: 'vocabulary') String vocabularySupportType,
       @JsonKey(name: 'quiz') String quizSupportType,
       @JsonKey(name: 'ebook') String ebookSupportType,
@@ -175,7 +175,7 @@ class __$$ServiceSupportedTypeResultImplCopyWithImpl<$Res>
   $Res call({
     Object? storySupportType = null,
     Object? serviceSupportType = null,
-    Object? OriginalTextSupportType = null,
+    Object? originalTextSupportType = null,
     Object? vocabularySupportType = null,
     Object? quizSupportType = null,
     Object? ebookSupportType = null,
@@ -193,9 +193,9 @@ class __$$ServiceSupportedTypeResultImplCopyWithImpl<$Res>
           ? _value.serviceSupportType
           : serviceSupportType // ignore: cast_nullable_to_non_nullable
               as String,
-      OriginalTextSupportType: null == OriginalTextSupportType
-          ? _value.OriginalTextSupportType
-          : OriginalTextSupportType // ignore: cast_nullable_to_non_nullable
+      originalTextSupportType: null == originalTextSupportType
+          ? _value.originalTextSupportType
+          : originalTextSupportType // ignore: cast_nullable_to_non_nullable
               as String,
       vocabularySupportType: null == vocabularySupportType
           ? _value.vocabularySupportType
@@ -235,7 +235,7 @@ class _$ServiceSupportedTypeResultImpl implements _ServiceSupportedTypeResult {
   _$ServiceSupportedTypeResultImpl(
       {@JsonKey(name: 'story') this.storySupportType = "",
       @JsonKey(name: 'service') this.serviceSupportType = "",
-      @JsonKey(name: 'original_text') this.OriginalTextSupportType = "",
+      @JsonKey(name: 'original_text') this.originalTextSupportType = "",
       @JsonKey(name: 'vocabulary') this.vocabularySupportType = "",
       @JsonKey(name: 'quiz') this.quizSupportType = "",
       @JsonKey(name: 'ebook') this.ebookSupportType = "",
@@ -256,7 +256,7 @@ class _$ServiceSupportedTypeResultImpl implements _ServiceSupportedTypeResult {
   final String serviceSupportType;
   @override
   @JsonKey(name: 'original_text')
-  final String OriginalTextSupportType;
+  final String originalTextSupportType;
   @override
   @JsonKey(name: 'vocabulary')
   final String vocabularySupportType;
@@ -281,7 +281,7 @@ class _$ServiceSupportedTypeResultImpl implements _ServiceSupportedTypeResult {
 
   @override
   String toString() {
-    return 'ServiceSupportedTypeResult(storySupportType: $storySupportType, serviceSupportType: $serviceSupportType, OriginalTextSupportType: $OriginalTextSupportType, vocabularySupportType: $vocabularySupportType, quizSupportType: $quizSupportType, ebookSupportType: $ebookSupportType, crosswordSupportType: $crosswordSupportType, starwordsSupportType: $starwordsSupportType, flashcardSupportType: $flashcardSupportType, recordSupportType: $recordSupportType)';
+    return 'ServiceSupportedTypeResult(storySupportType: $storySupportType, serviceSupportType: $serviceSupportType, originalTextSupportType: $originalTextSupportType, vocabularySupportType: $vocabularySupportType, quizSupportType: $quizSupportType, ebookSupportType: $ebookSupportType, crosswordSupportType: $crosswordSupportType, starwordsSupportType: $starwordsSupportType, flashcardSupportType: $flashcardSupportType, recordSupportType: $recordSupportType)';
   }
 
   @override
@@ -294,8 +294,8 @@ class _$ServiceSupportedTypeResultImpl implements _ServiceSupportedTypeResult {
             (identical(other.serviceSupportType, serviceSupportType) ||
                 other.serviceSupportType == serviceSupportType) &&
             (identical(
-                    other.OriginalTextSupportType, OriginalTextSupportType) ||
-                other.OriginalTextSupportType == OriginalTextSupportType) &&
+                    other.originalTextSupportType, originalTextSupportType) ||
+                other.originalTextSupportType == originalTextSupportType) &&
             (identical(other.vocabularySupportType, vocabularySupportType) ||
                 other.vocabularySupportType == vocabularySupportType) &&
             (identical(other.quizSupportType, quizSupportType) ||
@@ -318,7 +318,7 @@ class _$ServiceSupportedTypeResultImpl implements _ServiceSupportedTypeResult {
       runtimeType,
       storySupportType,
       serviceSupportType,
-      OriginalTextSupportType,
+      originalTextSupportType,
       vocabularySupportType,
       quizSupportType,
       ebookSupportType,
@@ -347,7 +347,7 @@ abstract class _ServiceSupportedTypeResult
   factory _ServiceSupportedTypeResult(
           {@JsonKey(name: 'story') final String storySupportType,
           @JsonKey(name: 'service') final String serviceSupportType,
-          @JsonKey(name: 'original_text') final String OriginalTextSupportType,
+          @JsonKey(name: 'original_text') final String originalTextSupportType,
           @JsonKey(name: 'vocabulary') final String vocabularySupportType,
           @JsonKey(name: 'quiz') final String quizSupportType,
           @JsonKey(name: 'ebook') final String ebookSupportType,
@@ -368,7 +368,7 @@ abstract class _ServiceSupportedTypeResult
   String get serviceSupportType;
   @override
   @JsonKey(name: 'original_text')
-  String get OriginalTextSupportType;
+  String get originalTextSupportType;
   @override
   @JsonKey(name: 'vocabulary')
   String get vocabularySupportType;

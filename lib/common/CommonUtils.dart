@@ -1,9 +1,12 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:foxschool/enum/BookColor.dart';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../enum/DeviceType.dart';
 
 class CommonUtils
 {
@@ -162,5 +165,16 @@ class CommonUtils
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 
+  Future<int> getSDKInt() async
+  {
+    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    final androidInfo = await deviceInfoPlugin.androidInfo;
+    return androidInfo.version.sdkInt;
+  }
+
+  DeviceType getDeviceType() {
+    final data = MediaQueryData.fromView(WidgetsBinding.instance.window);
+    return data.size.shortestSide < 550 ? DeviceType.PHONE : DeviceType.TABLET;
+  }
 
 }

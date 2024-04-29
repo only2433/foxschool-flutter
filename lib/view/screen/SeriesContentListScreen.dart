@@ -175,6 +175,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                                     },
                                     onOptionPressed: (){
                                       Logger.d("Option pressed");
+                                      _factoryController.onClickOption(index);
                                     },
                                   ),
                                 ),

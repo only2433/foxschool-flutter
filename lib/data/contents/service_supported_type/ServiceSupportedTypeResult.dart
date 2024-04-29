@@ -19,7 +19,7 @@ class ServiceSupportedTypeResult with _$ServiceSupportedTypeResult
 
     @JsonKey(name:'original_text')
     @Default("")
-    String OriginalTextSupportType,
+    String originalTextSupportType,
 
     @JsonKey(name:'vocabulary')
     @Default("")

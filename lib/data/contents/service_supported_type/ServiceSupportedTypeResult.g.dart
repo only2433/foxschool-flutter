@@ -11,7 +11,7 @@ _$ServiceSupportedTypeResultImpl _$$ServiceSupportedTypeResultImplFromJson(
     _$ServiceSupportedTypeResultImpl(
       storySupportType: json['story'] as String? ?? "",
       serviceSupportType: json['service'] as String? ?? "",
-      OriginalTextSupportType: json['original_text'] as String? ?? "",
+      originalTextSupportType: json['original_text'] as String? ?? "",
       vocabularySupportType: json['vocabulary'] as String? ?? "",
       quizSupportType: json['quiz'] as String? ?? "",
       ebookSupportType: json['ebook'] as String? ?? "",
@@ -26,7 +26,7 @@ Map<String, dynamic> _$$ServiceSupportedTypeResultImplToJson(
     <String, dynamic>{
       'story': instance.storySupportType,
       'service': instance.serviceSupportType,
-      'original_text': instance.OriginalTextSupportType,
+      'original_text': instance.originalTextSupportType,
       'vocabulary': instance.vocabularySupportType,
       'quiz': instance.quizSupportType,
       'ebook': instance.ebookSupportType,

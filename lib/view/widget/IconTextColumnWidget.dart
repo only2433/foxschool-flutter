@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 
 import '../../common/CommonUtils.dart';
 import '../../values/AppColors.dart';
@@ -24,11 +25,11 @@ class IconTextColumnWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger.d("imagePath : $imagePath");
     return Container(
       width: width,
       height: height,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(

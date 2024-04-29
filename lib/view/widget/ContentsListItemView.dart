@@ -31,7 +31,7 @@ class ContentsListItemView extends StatelessWidget {
     this.index = 0,
     this.isSelected = false,
     this.isStoryViewComplete = false,
-    onOptionPressed
+    this.onOptionPressed
   });
 
   @override
@@ -82,10 +82,16 @@ class ContentsListItemView extends StatelessWidget {
             ),
             indexColor == "" ? _getTitleWidget(context) : _getTitleAndIndexWidget(context),
             GestureDetector(
-              onTap: onOptionPressed,
-              child: Image.asset('asset/image/icon_learning.png',
-                  width: CommonUtils.getInstance(context).getHeight(92),
-                  height: CommonUtils.getInstance(context).getHeight(125)),
+              onTap: () {
+                onOptionPressed!();
+              },
+              child: Container(
+                width: CommonUtils.getInstance(context).getWidth(92),
+                height: CommonUtils.getInstance(context).getHeight(125),
+                child: Image.asset('asset/image/icon_learning.png',
+                    width: CommonUtils.getInstance(context).getHeight(92),
+                    height: CommonUtils.getInstance(context).getHeight(125)),
+              ),
             )
           ],
         ),

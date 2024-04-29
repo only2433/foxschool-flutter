@@ -19,6 +19,7 @@ import '../../data/contents/contents_base/ContentsBaseResult.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
 import 'factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/common/PageNavigator.dart' as Page;
+import 'package:foxschool/view/dialog/BottomContentItemDialog.dart' as BottomContentDialog;
 
 class SeriesContentsListFactoryController extends BlocController {
   late StreamSubscription _subscription;
@@ -213,5 +214,13 @@ class SeriesContentsListFactoryController extends BlocController {
             MoviePlayerScreen(playList: list)
         )
     );
+  }
+
+  void onClickOption(int index)
+  {
+    BottomContentDialog.showBottomContentItemDialog(
+        context: context, data: _currentContentsItemList[index], onItemTypeSelected: (type) {
+          Logger.d("type : ${type}");
+        },);
   }
 }
