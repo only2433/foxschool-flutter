@@ -6,6 +6,7 @@ import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/enum/MainMenuDrawerType.dart';
 import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/view/widget/GreenOutlinedTextButton.dart';
+import 'package:foxschool/view/widget/IconTextColumnWidget.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 
 import '../../../../../common/CommonUtils.dart';
@@ -111,7 +112,7 @@ class MainMenuDrawerView extends StatelessWidget {
                 onTap: () {
                   onSelected(MainMenuDrawerType.STUDY_LOG);
                 },
-                child: _IconTextWidget(context,
+                child: _iconTextWidget(context,
                     'asset/image/main_option_icon_1.png',
                     getIt<FoxschoolLocalization>().data['text_learning_log']
                 ),
@@ -121,7 +122,7 @@ class MainMenuDrawerView extends StatelessWidget {
                 width: CommonUtils.getInstance(context).getWidth(1),
                 height: CommonUtils.getInstance(context).getHeight(200),
               ),
-              _IconTextWidget(context,
+              _iconTextWidget(context,
                   'asset/image/main_option_icon_2.png',
                   getIt<FoxschoolLocalization>().data['text_record_history']
               ),
@@ -130,7 +131,7 @@ class MainMenuDrawerView extends StatelessWidget {
                 width: CommonUtils.getInstance(context).getWidth(1),
                 height: CommonUtils.getInstance(context).getHeight(200),
               ),
-              _IconTextWidget(context,
+              _iconTextWidget(context,
                   'asset/image/main_option_icon_3.png',
                   getIt<FoxschoolLocalization>().data['text_homework_manage']
               ),
@@ -156,15 +157,15 @@ class MainMenuDrawerView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _IconTextWidget(context,
+                _iconTextWidget(context,
                     'asset/image/main_option_icon_5.png',
                     getIt<FoxschoolLocalization>().data['text_foxschool_news']
                 ),
-                _IconTextWidget(context,
+                _iconTextWidget(context,
                     'asset/image/main_option_icon_6.png',
                     getIt<FoxschoolLocalization>().data['text_faqs']
                 ),
-                _IconTextWidget(context,
+                _iconTextWidget(context,
                     'asset/image/main_option_icon_7.png',
                     getIt<FoxschoolLocalization>().data['text_1_1_ask']
                 )
@@ -176,16 +177,17 @@ class MainMenuDrawerView extends StatelessWidget {
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-              _IconTextWidget(context,
-                  'asset/image/main_option_icon_8.png',
-                  getIt<FoxschoolLocalization>().data['text_about_app']
-              ),
-              _IconTextWidget(context,
-                  'asset/image/main_option_icon_9.png',
-                  getIt<FoxschoolLocalization>().data['text_teacher_manual']),
-              _IconTextWidget(context,
-                  'asset/image/main_option_icon_10.png',
-                  getIt<FoxschoolLocalization>().data['text_home_newspaper']
+                  _iconTextWidget(context,
+                      'asset/image/main_option_icon_8.png',
+                      getIt<FoxschoolLocalization>().data['text_about_app']),
+
+                  _iconTextWidget(context,
+                      'asset/image/main_option_icon_9.png',
+                      getIt<FoxschoolLocalization>().data['text_teacher_manual']),
+
+                  _iconTextWidget(context,
+                      'asset/image/main_option_icon_10.png',
+                      getIt<FoxschoolLocalization>().data['text_home_newspaper']
               )
             ]),
           ],
@@ -194,26 +196,15 @@ class MainMenuDrawerView extends StatelessWidget {
     );
   }
 
-  Widget _IconTextWidget(BuildContext context, String imagePath, String title) {
-    return Container(
-      width: CommonUtils.getInstance(context).getWidth(237),
-      height: CommonUtils.getInstance(context).getWidth(200),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            imagePath,
-            width: CommonUtils.getInstance(context).getWidth(76),
-            height: CommonUtils.getInstance(context).getHeight(85),
-            alignment: Alignment.center,
-          ),
-          SizedBox(
-            height: CommonUtils.getInstance(context).getHeight(10),
-          ),
-          RobotoNormalText(text: title, fontSize: CommonUtils.getInstance(context).getHeight(34), color: AppColors.color_444444)
-        ],
-      ),
+  Widget _iconTextWidget(BuildContext context, String imagePath, String title)
+  {
+    return IconTextColumnWidget(
+        width: CommonUtils.getInstance(context).getWidth(237),
+        height: CommonUtils.getInstance(context).getWidth(200),
+        imageWidth: CommonUtils.getInstance(context).getWidth(76),
+        imageHeight: CommonUtils.getInstance(context).getHeight(85),
+        imagePath: imagePath,
+        title: title
     );
   }
 }

@@ -48,6 +48,8 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
   @override
   void initState() {
     super.initState();
+
+    Logger.d("initState");
     _factoryController = SeriesContentsListFactoryController(
         context: context, currentSeriesBaseResult: widget.seriesBaseResult);
     _factoryController.init();

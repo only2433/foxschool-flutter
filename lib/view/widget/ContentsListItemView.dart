@@ -80,7 +80,7 @@ class ContentsListItemView extends StatelessWidget {
             SizedBox(
               width: CommonUtils.getInstance(context).getWidth(36),
             ),
-            indexColor == "" ? getTitleWidget(context) : getTitleAndIndexWidget(context),
+            indexColor == "" ? _getTitleWidget(context) : _getTitleAndIndexWidget(context),
             GestureDetector(
               onTap: onOptionPressed,
               child: Image.asset('asset/image/icon_learning.png',
@@ -94,7 +94,7 @@ class ContentsListItemView extends StatelessWidget {
   }
 
 
-  Widget getTitleAndIndexWidget(BuildContext context)
+  Widget _getTitleAndIndexWidget(BuildContext context)
   {
     return Container(
       width: CommonUtils.getInstance(context).getWidth(530),
@@ -106,7 +106,7 @@ class ContentsListItemView extends StatelessWidget {
             height: CommonUtils.getInstance(context).getHeight(182),
             alignment: Alignment.centerLeft,
             child: RobotoBoldText(
-                text: getIndexText(index),
+                text: _getIndexText(index),
                 fontSize: CommonUtils.getInstance(context).getWidth(40),
                 color: indexColor == "" ?
                 AppColors.color_ffffff
@@ -131,7 +131,7 @@ class ContentsListItemView extends StatelessWidget {
   }
 
 
-  Widget getTitleWidget(BuildContext context)
+  Widget _getTitleWidget(BuildContext context)
   {
     return Container(
       width: CommonUtils.getInstance(context).getWidth(500),
@@ -146,7 +146,7 @@ class ContentsListItemView extends StatelessWidget {
     );
   }
 
-  String getIndexText(int index)
+  String _getIndexText(int index)
   {
     if(index < 10)
       {

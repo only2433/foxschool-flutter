@@ -1,0 +1,13 @@
+
+enum ContentsItemType
+{
+  EBOOK,
+  QUIZ,
+  VOCABULARY,
+  FLASHCARD,
+  STARWORDS,
+  CROSSWORD,
+  RECORDER,
+  TRANSLATE,
+  BOOKSHELF
+}

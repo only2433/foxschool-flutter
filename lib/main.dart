@@ -52,6 +52,7 @@ import '../../common/Preference.dart' as Preference;
 
 import 'bloc/login/api/LoginBloc.dart';
 import 'bloc/movie/factory/cubit/MoviePlayListCubit.dart';
+import 'bloc/movie/factory/cubit/MoviePlayTimeCubit.dart';
 import 'bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart';
 import 'common/Common.dart';
 import 'data/base/BaseResponse.dart';
@@ -160,7 +161,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => MoviePlayCompleteCubit()),
           BlocProvider(create: (context) => MovieSeekProgressCubit()),
           BlocProvider(create: (context) => MoviePlayerMenuCubit()),
-          BlocProvider(create: (context) => MovieCaptionTextCubit())
+          BlocProvider(create: (context) => MovieCaptionTextCubit()),
+          BlocProvider(create: (context) => MoviePlayTimeCubit())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

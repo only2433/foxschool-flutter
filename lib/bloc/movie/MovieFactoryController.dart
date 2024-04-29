@@ -2,6 +2,8 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,6 +15,7 @@ import 'package:foxschool/bloc/movie/api/state/MovieContentsLoadedState.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieCaptionTextCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayListCubit.dart';
+import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTimeCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart';
@@ -25,6 +28,7 @@ import 'package:foxschool/common/PageNavigator.dart' as Page;
 import 'package:foxschool/common/Preference.dart' as Preference;
 import '../../common/Common.dart';
 import '../../data/contents/contents_base/ContentsBaseResult.dart';
+import '../../view/widget/BottomContentLayoutWidget.dart';
 import '../base/BlocState.dart';
 
 class MovieFactoryController extends BlocController {
@@ -36,6 +40,7 @@ class MovieFactoryController extends BlocController {
   Timer? _progressTimer;
   bool _isMenuVisible = false;
   bool _isCaptionEnable = false;
+  bool _isFullScreen = false;
 
 
   final BuildContext context;
@@ -66,18 +71,16 @@ class MovieFactoryController extends BlocController {
     _controller!.initialize().then((value) async {
       _controller!.addListener(_initVideoListener);
       context.read<MoviePlayerSettingCubit>().setController(_controller!);
-      _changePlayerButton(true);
-      _settingMoviePrepared();
-      await Future.delayed(Duration(milliseconds: Common.DURATION_LONG), () {
 
+      await Future.delayed(Duration(milliseconds: Common.DURATION_NORMAL), () {
         _controller!.play();
+        _settingPreparedView();
         _enableTimer(isEnable: true);
       },);
     });
   }
 
   void _initVideoListener() {
-
     if (_controller?.value.isPlaying == false && _controller?.value.position == _controller?.value.duration)
     {
       _enableTimer(isEnable: false);
@@ -176,11 +179,28 @@ class MovieFactoryController extends BlocController {
     double percent = (_controller!.value.position.inSeconds/_controller!.value.duration.inSeconds) * 100;
     context.read<MovieSeekProgressCubit>().setPercent(percent);
 
+    var tempData = _controller!.value;
+    Duration currentDuration = tempData.position;
+    Duration remainDuration = tempData.duration;
+    context.read<MoviePlayTimeCubit>().setPlayTime(
+        CommonUtils.getInstance(context).getFormatDuration(currentDuration),
+        CommonUtils.getInstance(context).getFormatDuration(remainDuration)
+    );
+
     if(_isTimeForCaption())
       {
         context.read<MovieCaptionTextCubit>().setText(_currentItemResult!.captionList[_currentCaptionIndex].text);
         _currentCaptionIndex++;
       }
+  }
+
+  bool isMoviePlaying()
+  {
+    if(_controller!.value.isPlaying)
+      {
+        return true;
+      }
+    return false;
   }
 
   void _changePlayerButton(bool isMoviePlaying)
@@ -194,31 +214,65 @@ class MovieFactoryController extends BlocController {
     context.read<MoviePlayerMenuCubit>().enableMenu(isEnable: _isMenuVisible);
   }
 
-  void _settingMoviePrepared()
+  void _setOrientation(bool isFullScreen) async
   {
-    if(playList.length == 1)
+    _isFullScreen = isFullScreen;
+    if(_isFullScreen)
       {
-        context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: false);
-        context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: false);
+        await SystemChrome.setPreferredOrientations([
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight
+        ]);
       }
     else
       {
-        if(_currentPlayIndex == 0)
-          {
-            context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: false);
-            context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: true);
-          }
-        else if(_currentPlayIndex == playList.length - 1)
-          {
-            context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: true);
-            context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: false);
-          }
-        else
-          {
-            context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: true);
-            context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: true);
-          }
+        await SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
       }
+
+    _setMenuVisible(false);
+    await Future.delayed(Duration(milliseconds: Common.DURATION_SHORT), () {
+      _settingPreparedView();
+    },);
+  }
+
+  void _settingPreparedView()
+  {
+    context.read<MoviePlayerMenuCubit>().changePlayButton(isMoviePlaying: isMoviePlaying());
+    context.read<MoviePlayerMenuCubit>().enableCaptionButton(isEnable: _isCaptionEnable);
+    context.read<MoviePlayTimeCubit>().setPlayTime(
+        "--:--",
+        "--:--"
+    );
+    _checkPrevNextButton();
+  }
+
+  void _checkPrevNextButton()
+  {
+    if(playList.length == 1)
+    {
+      context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: false);
+      context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: false);
+    }
+    else
+    {
+      if(_currentPlayIndex == 0)
+      {
+        context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: false);
+        context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: true);
+      }
+      else if(_currentPlayIndex == playList.length - 1)
+      {
+        context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: true);
+        context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: false);
+      }
+      else
+      {
+        context.read<MoviePlayerMenuCubit>().enablePrevButton(isEnable: true);
+        context.read<MoviePlayerMenuCubit>().enableNextButton(isEnable: true);
+      }
+    }
   }
 
   bool _isTimeForCaption()
@@ -261,7 +315,6 @@ class MovieFactoryController extends BlocController {
       {
         return 0;
       }
-
     for(int i = 0 ; i < _currentItemResult!.captionList.length; i++)
       {
         startTime = _currentItemResult!.captionList[i].startTime;
@@ -272,7 +325,6 @@ class MovieFactoryController extends BlocController {
             return i;
           }
       }
-
     for(int i = 0 ; i < _currentItemResult!.captionList.length; i++)
       {
         startTime = _currentItemResult!.captionList[i].startTime;
@@ -284,18 +336,17 @@ class MovieFactoryController extends BlocController {
     return -1;
   }
 
-  @override
-  void onPause() {
-    // TODO: implement onPause
-  }
+
 
   @override
-  void onResume() {
-    // TODO: implement onResume
-  }
+  void onPause() {}
+
+  @override
+  void onResume() {}
 
   @override
   void dispose() {
+    _setOrientation(false);
     _enableTimer(isEnable: false);
     _subscription?.cancel();
     _subscription = null;
@@ -305,8 +356,22 @@ class MovieFactoryController extends BlocController {
   }
 
   @override
-  void onBackPressed() {
-    Navigator.of(context).pop();
+  void onBackPressed() async {
+
+    Logger.d("MediaQuery.of(context).orientation :  ${MediaQuery.of(context).orientation}");
+    if(MediaQuery.of(context).orientation == Orientation.landscape)
+      {
+        await SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
+        await Future.delayed(Duration(milliseconds: Common.DURATION_NORMAL),() {
+          Navigator.of(context).pop();
+        },);
+      }
+    else
+      {
+        Navigator.of(context).pop();
+      }
   }
 
   void onClickPlayItem(int index) {
@@ -387,5 +452,8 @@ class MovieFactoryController extends BlocController {
     _readyToPlay();
   }
 
-
+  void onClickZoomButton()
+  {
+    _setOrientation(!_isFullScreen);
+  }
 }

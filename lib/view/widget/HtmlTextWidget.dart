@@ -23,6 +23,8 @@ class HtmlTextWidget extends StatelessWidget {
         fontFamily: 'Roboto',
         fontSize: fontSize,
       ),
+
+
     );
   }
 }

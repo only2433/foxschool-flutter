@@ -19,6 +19,15 @@ class CommonUtils
     return _instance!;
   }
 
+  String _twoDigits(int n)
+  {
+    if(n >= 10)
+      {
+        return "$n";
+      }
+    return "0$n";
+  }
+
   void showErrorMessage(String errorMessage)
   {
     ScaffoldMessenger.of(_context).showSnackBar(
@@ -66,15 +75,28 @@ class CommonUtils
 
   double getWidth(dynamic size)
   {
-    double displayFactor = MediaQuery.of(_context).size.width/1080;
+
+    double displayFactor = MediaQuery.of(_context).orientation == Orientation.portrait ?
+      MediaQuery.of(_context).size.width/1080 :
+      MediaQuery.of(_context).size.width/1920;
     return size * displayFactor;
   }
 
   double getHeight(dynamic size)
   {
-    double displayFactor = MediaQuery.of(_context).size.height/1920;
+    double displayFactor = MediaQuery.of(_context).orientation == Orientation.portrait ?
+      MediaQuery.of(_context).size.height/1920 :
+      MediaQuery.of(_context).size.height/1080;
     return size * displayFactor;
   }
+
+  String getFormatDuration(Duration duration)
+  {
+    String twoDigitMinutes = _twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = _twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
+  }
+
 
   BookColor getBookColorType(String color)
   {
