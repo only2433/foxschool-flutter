@@ -66,4 +66,9 @@ class FoxSchoolRepository extends FoxSchoolDataSource
     return apiClient.saveMovieStudyAsync(contentID, playType, playTime, homeworkNumber);
   }
 
+  @override
+  Future<BaseResponse> quizInformationAsync(String contentID) {
+    return apiClient.quizInformationAsync(contentID);
+  }
+
 }

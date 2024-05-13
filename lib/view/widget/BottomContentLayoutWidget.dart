@@ -175,7 +175,6 @@ class BottomContentLayoutWidget extends StatelessWidget {
       return GestureDetector(
         onTap: () {
           onItemTypeSelected(itemType);
-          Navigator.of(context).pop();
         },
         child: IconTextColumnWidget(
           width: CommonUtils.getInstance(context).getWidth(282),

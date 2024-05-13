@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -78,7 +80,6 @@ class CommonUtils
 
   double getWidth(dynamic size)
   {
-
     double displayFactor = MediaQuery.of(_context).orientation == Orientation.portrait ?
       MediaQuery.of(_context).size.width/1080 :
       MediaQuery.of(_context).size.width/1920;
@@ -98,6 +99,19 @@ class CommonUtils
     String twoDigitMinutes = _twoDigits(duration.inMinutes.remainder(60));
     String twoDigitSeconds = _twoDigits(duration.inSeconds.remainder(60));
     return "$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+  String getFormatTimeText(int time) {
+    // 시간과 분 계산
+    int hours = time ~/ 60; // 정수 나눗셈으로 시간 계산
+    int minutes = time % 60; // 분 계산
+
+    // 시간과 분을 "00" 형식의 문자열로 변환
+    String hoursStr = hours.toString().padLeft(2, '0');
+    String minutesStr = minutes.toString().padLeft(2, '0');
+
+    // 시간과 분을 합쳐서 시간 문자열 생성
+    return '$hoursStr:$minutesStr';
   }
 
 
@@ -175,6 +189,19 @@ class CommonUtils
   DeviceType getDeviceType() {
     final data = MediaQueryData.fromView(WidgetsBinding.instance.window);
     return data.size.shortestSide < 550 ? DeviceType.PHONE : DeviceType.TABLET;
+  }
+
+  int getRandomNumber(int maxCount, int exceptNumber)
+  {
+    int seedNumber = -1;
+    Random rand = Random(DateTime.now().microsecondsSinceEpoch);
+    do
+    {
+      seedNumber = rand.nextInt(maxCount);
+    } while(seedNumber == exceptNumber);
+
+    return seedNumber;
+
   }
 
 }

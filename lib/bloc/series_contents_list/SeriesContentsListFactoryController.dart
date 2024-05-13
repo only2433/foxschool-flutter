@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
@@ -13,6 +14,7 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableBottomSe
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 import 'package:foxschool/view/screen/MoviePlayerScreen.dart';
+import 'package:foxschool/view/screen/QuizScreen.dart';
 
 import '../../common/Common.dart';
 import '../../data/contents/contents_base/ContentsBaseResult.dart';
@@ -219,8 +221,23 @@ class SeriesContentsListFactoryController extends BlocController {
   void onClickOption(int index)
   {
     BottomContentDialog.showBottomContentItemDialog(
-        context: context, data: _currentContentsItemList[index], onItemTypeSelected: (type) {
+        context: context, data: _currentContentsItemList[index], onItemTypeSelected: (type) async {
           Logger.d("type : ${type}");
+
+          Navigator.of(context).pop();
+
+          await Future.delayed(const Duration(milliseconds: Common.DURATION_SHORT), () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return QuizScreen(
+                      contentID: _currentContentsItemList[index].id,
+                      title: _currentContentsItemList[index].name,
+                      subTitle: _currentContentsItemList[index].subName
+                  );
+                },)
+            );
+          },);
         },);
   }
 }

@@ -69,4 +69,11 @@ abstract class ApiClient
       @Field('hw_no') int? homeworkNumber
       );
 
+  @GET('contents/quiz/{contentID}')
+  Future<BaseResponse> quizInformationAsync(
+      @Path('contentID') String requestID
+      );
+
+
+
 }

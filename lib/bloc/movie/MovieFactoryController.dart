@@ -99,10 +99,7 @@ class MovieFactoryController extends BlocController {
 
   void _settingSubscription() {
     var blocState;
-    _subscription = BlocProvider
-        .of<MovieContentsBloc>(context)
-        .stream
-        .listen((state) async {
+    _subscription = BlocProvider.of<MovieContentsBloc>(context).stream.listen((state) async {
       Logger.d("state.runtimeType : ${state.runtimeType}");
       switch (state.runtimeType) {
         case MovieContentsLoadedState:
@@ -117,6 +114,7 @@ class MovieFactoryController extends BlocController {
           blocState = state as ErrorState;
           Fluttertoast.showToast(msg: blocState.message);
           await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+          await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
           Navigator.pushAndRemoveUntil(
             context,
             Page.getLogoutTransition(context),

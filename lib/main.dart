@@ -28,6 +28,13 @@ import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
+import 'package:foxschool/bloc/quiz/api/QuizInformationBloc.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/ConstituteWidgetCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/EnableTaskboxCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizCorrectCountCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizReadyDataCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizRemainTimeCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/UserInteractionCubit.dart';
 import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchItemListCubit.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchTypeCubit.dart';
@@ -73,10 +80,17 @@ void main() async {
   final String androidId = await _androidIdPlugin.getId() ?? "";
   await Preference.setString(Common.PARAMS_SECURE_ANDROID_ID, androidId);
   Logger.d("secureID : ${androidId}");
-
   Bloc.observer = FoxschoolBlocObserver();
   await Dependencies.init();
   HttpOverrides.global = CommonHttpOverrides();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarIconBrightness: Brightness.light,
+  ));
   runApp(const MyApp());
 }
 
@@ -162,7 +176,18 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => MovieSeekProgressCubit()),
           BlocProvider(create: (context) => MoviePlayerMenuCubit()),
           BlocProvider(create: (context) => MovieCaptionTextCubit()),
-          BlocProvider(create: (context) => MoviePlayTimeCubit())
+          BlocProvider(create: (context) => MoviePlayTimeCubit()),
+
+          /**
+           * QUIZ
+           */
+          BlocProvider(
+              create: (context) => getIt<QuizInformationBloc>()),
+          BlocProvider(create: (context) => QuizReadyDataCubit()),
+          BlocProvider(create: (context) => EnableTaskboxCubit()),
+          BlocProvider(create: (context) => ConstituteWidgetCubit()),
+          BlocProvider(create: (context) => QuizRemainTimeCubit()),
+          BlocProvider(create: (context) => QuizCorrectCountCubit()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
