@@ -87,7 +87,7 @@ class _IntroScreenState extends State<IntroScreen>  with WidgetsBindingObserver{
                     child: Column(
                       children: [
                         Image.asset(
-                          'asset/image/intro_logo.png',
+                          'assets/image/intro_logo.png',
                           width: CommonUtils.getInstance(context).getWidth(194),
                           height: CommonUtils.getInstance(context).getHeight(100),
                         ),
@@ -95,7 +95,7 @@ class _IntroScreenState extends State<IntroScreen>  with WidgetsBindingObserver{
                           height: CommonUtils.getInstance(context).getHeight(20),
                         ),
                         Image.asset(
-                          'asset/image/foxschool_logo.png',
+                          'assets/image/foxschool_logo.png',
                           width: CommonUtils.getInstance(context).getWidth(620),
                           height: CommonUtils.getInstance(context).getHeight(100),
                         ),

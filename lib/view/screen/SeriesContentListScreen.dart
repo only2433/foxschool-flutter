@@ -211,7 +211,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                         onPressed: () {
                           _factoryController.enableBottomSelectViewMode();
                         },
-                        child: Image.asset('asset/image/btn_plus.png'),
+                        child: Image.asset('assets/image/btn_plus.png'),
                         shape: CircleBorder(),
                       ),
                     )
@@ -245,7 +245,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
               child: Row(
                 children: [
                   BottomIconTextView(
-                      image: Image.asset('asset/image/bottom_all.png',
+                      image: Image.asset('assets/image/bottom_all.png',
                           width: CommonUtils.getInstance(context).getWidth(210),
                           height: CommonUtils.getInstance(context).getHeight(90),
                           fit: BoxFit.cover),
@@ -256,7 +256,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                   Stack(
                     children: [
                       BottomIconTextView(
-                          image: Image.asset('asset/image/bottom_play.png',
+                          image: Image.asset('assets/image/bottom_play.png',
                               width: CommonUtils.getInstance(context).getWidth(210),
                               height: CommonUtils.getInstance(context).getHeight(90),
                               fit: BoxFit.cover),
@@ -297,7 +297,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
 
                   ) ,
                   BottomIconTextView(
-                      image: Image.asset('asset/image/bottom_bookshelf.png',
+                      image: Image.asset('assets/image/bottom_bookshelf.png',
                           width: CommonUtils.getInstance(context).getWidth(210),
                           height: CommonUtils.getInstance(context).getHeight(90),
                           fit: BoxFit.cover),
@@ -306,7 +306,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
 
                       }) ,
                   BottomIconTextView(
-                      image: Image.asset('asset/image/bottom_close.png',
+                      image: Image.asset('assets/image/bottom_close.png',
                           width: CommonUtils.getInstance(context).getWidth(210),
                           height: CommonUtils.getInstance(context).getHeight(90),
                           fit: BoxFit.cover),

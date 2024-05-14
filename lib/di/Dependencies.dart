@@ -21,7 +21,7 @@ import '../common/Common.dart';
 final getIt = GetIt.instance;
 Future<void> init() async
 {
-  final FoxschoolLocalization foxschoolLocalization = FoxschoolLocalization(filePath: 'asset/json/string_kr.json');
+  final FoxschoolLocalization foxschoolLocalization = FoxschoolLocalization(filePath: 'assets/json/string_kr.json');
   await foxschoolLocalization.onSetting();
   getIt.registerSingleton(foxschoolLocalization);
 

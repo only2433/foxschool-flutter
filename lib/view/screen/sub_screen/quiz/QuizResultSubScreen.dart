@@ -30,7 +30,7 @@ class QuizResultSubScreen extends StatelessWidget {
             height: CommonUtils.getInstance(context).getHeight(730),
             child: Stack(
               children: [
-                Image.asset('asset/image/img_quiz_result_bg.png',
+                Image.asset('assets/image/img_quiz_result_bg.png',
                   width: MediaQuery.of(context).size.width,
                   height: CommonUtils.getInstance(context).getHeight(276),
                   fit: BoxFit.cover,
@@ -38,7 +38,7 @@ class QuizResultSubScreen extends StatelessWidget {
                 Positioned(
                   left: CommonUtils.getInstance(context).getWidth(573),
                   top: CommonUtils.getInstance(context).getHeight(21),
-                  child: Image.asset('asset/image/img_excellent.png',
+                  child: Image.asset('assets/image/img_excellent.png',
                     width: CommonUtils.getInstance(context).getWidth(774),
                     height: CommonUtils.getInstance(context).getHeight(322),
                     fit: BoxFit.cover,
@@ -52,7 +52,7 @@ class QuizResultSubScreen extends StatelessWidget {
                       height: CommonUtils.getInstance(context).getHeight(127),
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('asset/image/img_quiz_result_box.png'),
+                          image: AssetImage('assets/image/img_quiz_result_box.png'),
                           fit: BoxFit.fill
                         )
                       ),
@@ -61,7 +61,7 @@ class QuizResultSubScreen extends StatelessWidget {
                           SizedBox(
                             width: CommonUtils.getInstance(context).getWidth(40),
                           ),
-                          Image.asset('asset/image/ic_result_correct.png', 
+                          Image.asset('assets/image/ic_result_correct.png',
                           width: CommonUtils.getInstance(context).getWidth(64),
                           height: CommonUtils.getInstance(context).getHeight(68),
                             fit: BoxFit.contain,
@@ -95,7 +95,7 @@ class QuizResultSubScreen extends StatelessWidget {
                       height: CommonUtils.getInstance(context).getHeight(127),
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage('asset/image/img_quiz_result_box.png'),
+                              image: AssetImage('assets/image/img_quiz_result_box.png'),
                               fit: BoxFit.fill
                           )
                       ),
@@ -104,7 +104,7 @@ class QuizResultSubScreen extends StatelessWidget {
                           SizedBox(
                             width: CommonUtils.getInstance(context).getWidth(40),
                           ),
-                          Image.asset('asset/image/ic_result_incorrect.png',
+                          Image.asset('assets/image/ic_result_incorrect.png',
                             width: CommonUtils.getInstance(context).getWidth(64),
                             height: CommonUtils.getInstance(context).getHeight(68),
                             fit: BoxFit.contain,
@@ -149,7 +149,7 @@ class QuizResultSubScreen extends StatelessWidget {
           height: CommonUtils.getInstance(context).getHeight(92),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('asset/image/btn_quiz_n.png'),
+              image: AssetImage('assets/image/btn_quiz_n.png'),
               fit: BoxFit.contain
             )
           ),
@@ -165,7 +165,7 @@ class QuizResultSubScreen extends StatelessWidget {
           height: CommonUtils.getInstance(context).getHeight(92),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('asset/image/btn_quiz_n.png'),
+                  image: AssetImage('assets/image/btn_quiz_n.png'),
                   fit: BoxFit.contain
               )
           ),

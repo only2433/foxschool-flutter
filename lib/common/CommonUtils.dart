@@ -140,17 +140,17 @@ class CommonUtils
     switch(color)
     {
       case BookColor.RED:
-        return 'asset/image/bookshelf_01.png';
+        return 'assets/image/bookshelf_01.png';
       case BookColor.ORANGE:
-        return 'asset/image/bookshelf_02.png';
+        return 'assets/image/bookshelf_02.png';
       case BookColor.GREEN:
-        return 'asset/image/bookshelf_03.png';
+        return 'assets/image/bookshelf_03.png';
       case BookColor.BLUE:
-        return 'asset/image/bookshelf_04.png';
+        return 'assets/image/bookshelf_04.png';
       case BookColor.PURPLE:
-        return 'asset/image/bookshelf_05.png';
+        return 'assets/image/bookshelf_05.png';
       case BookColor.PINK:
-        return 'asset/image/bookshelf_06.png';
+        return 'assets/image/bookshelf_06.png';
     }
   }
 

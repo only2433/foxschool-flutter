@@ -145,7 +145,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
             onTap: () {
               widget.quizController.onClickPlayAudioButton();
             },
-            child: Image.asset('asset/image/icon_speaker.png',
+            child: Image.asset('assets/image/icon_speaker.png',
                 width: CommonUtils.getInstance(context).getWidth(70),
                 height: CommonUtils.getInstance(context).getWidth(70),
                 fit: BoxFit.cover),
@@ -220,6 +220,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
                 {
                   context.read<UserInteractionCubit>().selectPictureQuiz(0, false);
                 }
+                widget.quizController.onPlayCorrectSound(widget.data.exampleList[0].isAnswer);
                 widget.quizController.onSelectPictureQuizData(0, widget.data);
               },
               child: Container(
@@ -254,6 +255,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
                 {
                   context.read<UserInteractionCubit>().selectPictureQuiz(1, false);
                 }
+                widget.quizController.onPlayCorrectSound(widget.data.exampleList[1].isAnswer);
                 widget.quizController.onSelectPictureQuizData(1, widget.data);
               },
               child: Container(
@@ -292,7 +294,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
               height: CommonUtils.getInstance(context).getHeight(92),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('asset/image/btn_quiz_n.png'),
+                    image: AssetImage('assets/image/btn_quiz_n.png'),
                     fit: BoxFit.contain,
                 ),
               ),
@@ -335,7 +337,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
                       transform: Matrix4.rotationY(_animationController.value * 2 * 3.14159),
                       child: Opacity(
                         opacity: state.isSelectedComplete ? 1.0 : 0.0,
-                        child: Image.asset(state.isCorrect ? 'asset/image/img_correct.png' : 'asset/image/img_incorrect.png' ,
+                        child: Image.asset(state.isCorrect ? 'assets/image/img_correct.png' : 'assets/image/img_incorrect.png' ,
                             width: CommonUtils.getInstance(context).getWidth(436),
                             height: CommonUtils.getInstance(context).getHeight(419),
                             fit: BoxFit.contain

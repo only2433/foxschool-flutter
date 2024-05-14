@@ -169,7 +169,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                           child: CircularProgressIndicator(color: AppColors.color_47e1ad)),
                                     ) :
                                     Center(
-                                      child: Image.asset('asset/image/footer_logo132.png',
+                                      child: Image.asset('assets/image/footer_logo132.png',
                                       width: CommonUtils.getInstance(context).getWidth(187),
                                       height: CommonUtils.getInstance(context).getHeight(97),
                                       fit: BoxFit.cover,),
@@ -216,7 +216,7 @@ class _SearchScreenState extends State<SearchScreen> {
               height: CommonUtils.getInstance(context).getHeight(120),
               child: Row(
                 children: [
-                  Image.asset( state.type == SearchType.ALL ? 'asset/image/check_on.png' : 'asset/image/check_off.png',
+                  Image.asset( state.type == SearchType.ALL ? 'assets/image/check_on.png' : 'assets/image/check_off.png',
                     width: CommonUtils.getInstance(context).getWidth(60),
                     height: CommonUtils.getInstance(context).getHeight(60),
                   ),
@@ -240,7 +240,7 @@ class _SearchScreenState extends State<SearchScreen> {
               height: CommonUtils.getInstance(context).getHeight(120),
               child: Row(
                 children: [
-                  Image.asset(state.type == SearchType.STORY ? 'asset/image/check_on.png' : 'asset/image/check_off.png',
+                  Image.asset(state.type == SearchType.STORY ? 'assets/image/check_on.png' : 'assets/image/check_off.png',
                     width: CommonUtils.getInstance(context).getWidth(60),
                     height: CommonUtils.getInstance(context).getHeight(60),
                   ),
@@ -264,7 +264,7 @@ class _SearchScreenState extends State<SearchScreen> {
               height: CommonUtils.getInstance(context).getHeight(120),
               child: Row(
                 children: [
-                  Image.asset(state.type == SearchType.SONG ? 'asset/image/check_on.png' : 'asset/image/check_off.png',
+                  Image.asset(state.type == SearchType.SONG ? 'assets/image/check_on.png' : 'assets/image/check_off.png',
                     width: CommonUtils.getInstance(context).getWidth(60),
                     height: CommonUtils.getInstance(context).getHeight(60),
                   ),
@@ -306,7 +306,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   fillColor: AppColors.color_ffffff,
                   suffixIcon: Padding(
                     padding: EdgeInsets.all(CommonUtils.getInstance(context).getWidth(30)),
-                    child: Image.asset('asset/image/btn_tex_del.png',
+                    child: Image.asset('assets/image/btn_tex_del.png',
                       width: CommonUtils.getInstance(context).getWidth(60),
                       height: CommonUtils.getInstance(context).getHeight(60),),
                   ),
@@ -363,7 +363,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 padding: EdgeInsets.all(
                     CommonUtils.getInstance(context).getWidth(30)
                 ),
-                child: Image.asset('asset/image/icon_search_3.png',
+                child: Image.asset('assets/image/icon_search_3.png',
                     width: CommonUtils.getInstance(context).getWidth(58),
                     height: CommonUtils.getInstance(context).getHeight(60),
                     fit: BoxFit.contain),

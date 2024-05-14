@@ -26,15 +26,15 @@ class ThumbnailView extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final List<String> RESOURCE_INDEX_IMAGE = [
-      'asset/image/level01.png',
-      'asset/image/level02.png',
-      'asset/image/level03.png',
-      'asset/image/level04.png',
-      'asset/image/level05.png',
-      'asset/image/level06.png',
-      'asset/image/level07.png',
-      'asset/image/level08.png',
-      'asset/image/level09.png'
+      'assets/image/level01.png',
+      'assets/image/level02.png',
+      'assets/image/level03.png',
+      'assets/image/level04.png',
+      'assets/image/level05.png',
+      'assets/image/level06.png',
+      'assets/image/level07.png',
+      'assets/image/level08.png',
+      'assets/image/level09.png'
     ];
 
     return Container(

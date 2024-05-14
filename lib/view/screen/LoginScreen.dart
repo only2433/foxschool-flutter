@@ -159,9 +159,9 @@ class _LoginScreenState extends State<LoginScreen>
                                               _factoryController.onCheckAutoLogin();
                                             },
                                             child: state.isAutoLogin == false
-                                                ? Image.asset('asset/image/radio_off.png', width: CommonUtils.getInstance(context).getWidth(60), height: CommonUtils.getInstance(context).getWidth(60))
+                                                ? Image.asset('assets/image/radio_off.png', width: CommonUtils.getInstance(context).getWidth(60), height: CommonUtils.getInstance(context).getWidth(60))
                                                 : Image.asset(
-                                              'asset/image/radio_on.png',
+                                              'assets/image/radio_on.png',
                                               width: CommonUtils.getInstance(context).getWidth(60),
                                               height: CommonUtils.getInstance(context).getWidth(60),
                                             ),
@@ -276,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen>
                     prefixIcon: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Image.asset(
-                        'asset/image/icon_search_2.png',
+                        'assets/image/icon_search_2.png',
                         width: CommonUtils.getInstance(context).getWidth(45),
                         height: CommonUtils.getInstance(context).getHeight(53),
                         fit: BoxFit.contain,
@@ -293,7 +293,7 @@ class _LoginScreenState extends State<LoginScreen>
                       child: Padding(
                         padding: const EdgeInsets.all(14.0),
                         child: Image.asset(
-                          'asset/image/btn_tex_del.png',
+                          'assets/image/btn_tex_del.png',
                           width: CommonUtils.getInstance(context).getWidth(60),
                           height: CommonUtils.getInstance(context).getWidth(60),
                           fit: BoxFit.contain,
@@ -339,7 +339,7 @@ class _LoginScreenState extends State<LoginScreen>
                           right: CommonUtils.getInstance(context).getWidth(34),
                           bottom: CommonUtils.getInstance(context).getWidth(32)),
                       child: Image.asset(
-                        'asset/image/icon_id.png',
+                        'assets/image/icon_id.png',
                         width: CommonUtils.getInstance(context).getWidth(50),
                         height: CommonUtils.getInstance(context).getWidth(52),
                         fit: BoxFit.contain,
@@ -390,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen>
                           right: CommonUtils.getInstance(context).getWidth(34),
                           bottom: CommonUtils.getInstance(context).getWidth(32)),
                       child: Image.asset(
-                        'asset/image/icon_lock.png',
+                        'assets/image/icon_lock.png',
                         width: CommonUtils.getInstance(context).getWidth(50),
                         height: CommonUtils.getInstance(context).getWidth(57),
                         fit: BoxFit.contain,

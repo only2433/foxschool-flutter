@@ -88,7 +88,7 @@ class ContentsListItemView extends StatelessWidget {
               child: Container(
                 width: CommonUtils.getInstance(context).getWidth(92),
                 height: CommonUtils.getInstance(context).getHeight(125),
-                child: Image.asset('asset/image/icon_learning.png',
+                child: Image.asset('assets/image/icon_learning.png',
                     width: CommonUtils.getInstance(context).getHeight(92),
                     height: CommonUtils.getInstance(context).getHeight(125)),
               ),

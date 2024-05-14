@@ -113,7 +113,7 @@ class MainMenuDrawerView extends StatelessWidget {
                   onSelected(MainMenuDrawerType.STUDY_LOG);
                 },
                 child: _iconTextWidget(context,
-                    'asset/image/main_option_icon_1.png',
+                    'assets/image/main_option_icon_1.png',
                     getIt<FoxschoolLocalization>().data['text_learning_log']
                 ),
               ),
@@ -123,7 +123,7 @@ class MainMenuDrawerView extends StatelessWidget {
                 height: CommonUtils.getInstance(context).getHeight(200),
               ),
               _iconTextWidget(context,
-                  'asset/image/main_option_icon_2.png',
+                  'assets/image/main_option_icon_2.png',
                   getIt<FoxschoolLocalization>().data['text_record_history']
               ),
               Container(
@@ -132,7 +132,7 @@ class MainMenuDrawerView extends StatelessWidget {
                 height: CommonUtils.getInstance(context).getHeight(200),
               ),
               _iconTextWidget(context,
-                  'asset/image/main_option_icon_3.png',
+                  'assets/image/main_option_icon_3.png',
                   getIt<FoxschoolLocalization>().data['text_homework_manage']
               ),
             ],
@@ -158,15 +158,15 @@ class MainMenuDrawerView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _iconTextWidget(context,
-                    'asset/image/main_option_icon_5.png',
+                    'assets/image/main_option_icon_5.png',
                     getIt<FoxschoolLocalization>().data['text_foxschool_news']
                 ),
                 _iconTextWidget(context,
-                    'asset/image/main_option_icon_6.png',
+                    'assets/image/main_option_icon_6.png',
                     getIt<FoxschoolLocalization>().data['text_faqs']
                 ),
                 _iconTextWidget(context,
-                    'asset/image/main_option_icon_7.png',
+                    'assets/image/main_option_icon_7.png',
                     getIt<FoxschoolLocalization>().data['text_1_1_ask']
                 )
               ],
@@ -178,15 +178,15 @@ class MainMenuDrawerView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _iconTextWidget(context,
-                      'asset/image/main_option_icon_8.png',
+                      'assets/image/main_option_icon_8.png',
                       getIt<FoxschoolLocalization>().data['text_about_app']),
 
                   _iconTextWidget(context,
-                      'asset/image/main_option_icon_9.png',
+                      'assets/image/main_option_icon_9.png',
                       getIt<FoxschoolLocalization>().data['text_teacher_manual']),
 
                   _iconTextWidget(context,
-                      'asset/image/main_option_icon_10.png',
+                      'assets/image/main_option_icon_10.png',
                       getIt<FoxschoolLocalization>().data['text_home_newspaper']
               )
             ]),

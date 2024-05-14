@@ -324,7 +324,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                             onTap: () {
                               _factoryController.onClickPrevButton();
                             },
-                            child: Image.asset('asset/image/player__previous.png',
+                            child: Image.asset('assets/image/player__previous.png',
                                 width: CommonUtils.getInstance(context).getWidth(49),
                                 height: CommonUtils.getInstance(context).getHeight(58),
                                 fit: BoxFit.cover),
@@ -344,7 +344,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                         child: BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
                           buildWhen: (previous, current) => current is ChangePlayButtonState,
                           builder: (context, state) {
-                            return Image.asset((state is ChangePlayButtonState && state.isMoviePlaying) ? 'asset/image/player__pause.png' : 'asset/image/player__play.png',
+                            return Image.asset((state is ChangePlayButtonState && state.isMoviePlaying) ? 'assets/image/player__pause.png' : 'assets/image/player__play.png',
                                 width: CommonUtils.getInstance(context).getWidth(98),
                                 height: CommonUtils.getInstance(context).getHeight(109),
                                 fit: BoxFit.cover);
@@ -361,7 +361,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                             onTap: () {
                               _factoryController.onClickNextButton();
                             },
-                            child: Image.asset('asset/image/player__next.png',
+                            child: Image.asset('assets/image/player__next.png',
                                 width: CommonUtils.getInstance(context).getWidth(49),
                                 height: CommonUtils.getInstance(context).getHeight(58),
                                 fit: BoxFit.cover),
@@ -421,7 +421,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
 
                         },
                         builder: (context, state) {
-                          return Image.asset((state is EnableCaptionButtonState && state.isEnable) ? 'asset/image/player__caption_on.png' : 'asset/image/player__caption_off.png',
+                          return Image.asset((state is EnableCaptionButtonState && state.isEnable) ? 'assets/image/player__caption_on.png' : 'assets/image/player__caption_off.png',
                             width: CommonUtils.getInstance(context).getWidth(73),
                             height: CommonUtils.getInstance(context).getHeight(57),
                             fit: BoxFit.contain,
@@ -438,7 +438,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                   onTap: () {
                     _factoryController.onBackPressed();
                   },
-                  child: Image.asset('asset/image/player_btn_close.png',
+                  child: Image.asset('assets/image/player_btn_close.png',
                     width: CommonUtils.getInstance(context).getWidth(58),
                     height: CommonUtils.getInstance(context).getHeight(58),),
                 ),
@@ -464,7 +464,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset('asset/image/player__replay_off.png',
+                    Image.asset('assets/image/player__replay_off.png',
                       width: CommonUtils.getInstance(context).getWidth(58),
                       height: CommonUtils.getInstance(context).getHeight(62),
                     ),
@@ -472,7 +472,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                       onTap: () async {
                         _factoryController.onClickZoomButton();
                       },
-                      child: Image.asset('asset/image/btn_zoomout.png',
+                      child: Image.asset('assets/image/btn_zoomout.png',
                         width: CommonUtils.getInstance(context).getWidth(62),
                         height: CommonUtils.getInstance(context).getHeight(51),
                       ),
@@ -517,7 +517,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                         onTap: () {
                           _factoryController.onBackPressed();
                         },
-                        child: Image.asset('asset/image/player_btn_close.png',
+                        child: Image.asset('assets/image/player_btn_close.png',
                           width: CommonUtils.getInstance(context).getWidth(58),
                           height: CommonUtils.getInstance(context).getHeight(58),),
                       )
@@ -531,37 +531,37 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                           crossAxisAlignment: CrossAxisAlignment.center,
 
                           children: [
-                            Image.asset('asset/image/icon_ebook_player.png',
+                            Image.asset('assets/image/icon_ebook_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(114),
                                 height: CommonUtils.getInstance(context).getHeight(114)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(20),
                             ),
-                            Image.asset('asset/image/icon_quiz_player.png',
+                            Image.asset('assets/image/icon_quiz_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(114),
                                 height: CommonUtils.getInstance(context).getHeight(114)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(20),
                             ),
-                            Image.asset('asset/image/icon_voca_player.png',
+                            Image.asset('assets/image/icon_voca_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(114),
                                 height: CommonUtils.getInstance(context).getHeight(114)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(20),
                             ),
-                            Image.asset('asset/image/icon_flashcard_player.png',
+                            Image.asset('assets/image/icon_flashcard_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(114),
                                 height: CommonUtils.getInstance(context).getHeight(114)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(20),
                             ),
-                            Image.asset('asset/image/icon_starwords_player.png',
+                            Image.asset('assets/image/icon_starwords_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(114),
                                 height: CommonUtils.getInstance(context).getHeight(114)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(20),
                             ),
-                            Image.asset('asset/image/icon_org_player.png',
+                            Image.asset('assets/image/icon_org_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(114),
                                 height: CommonUtils.getInstance(context).getHeight(114)),
                           ],
@@ -593,7 +593,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset('asset/image/btn_icon_again.png',
+                                    Image.asset('assets/image/btn_icon_again.png',
                                         width: CommonUtils.getInstance(context).getWidth(51),
                                         height: CommonUtils.getInstance(context).getHeight(58)),
                                     SizedBox(
@@ -623,7 +623,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset('asset/image/btn_icon_next_end.png',
+                                  Image.asset('assets/image/btn_icon_next_end.png',
                                       width: CommonUtils.getInstance(context).getWidth(51),
                                       height: CommonUtils.getInstance(context).getHeight(58)),
                                   SizedBox(
@@ -813,7 +813,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                             onTap: () {
                               _factoryController.onClickPrevButton();
                             },
-                            child: Image.asset('asset/image/player__previous.png',
+                            child: Image.asset('assets/image/player__previous.png',
                                 width: CommonUtils.getInstance(context).getWidth(68),
                                 height: CommonUtils.getInstance(context).getHeight(81),
                                 fit: BoxFit.contain),
@@ -833,7 +833,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                         child: BlocBuilder<MoviePlayerMenuCubit, MoviePlayerMenuState>(
                           buildWhen: (previous, current) => current is ChangePlayButtonState,
                           builder: (context, state) {
-                            return Image.asset((state is ChangePlayButtonState && state.isMoviePlaying) ? 'asset/image/player__pause.png' : 'asset/image/player__play.png',
+                            return Image.asset((state is ChangePlayButtonState && state.isMoviePlaying) ? 'assets/image/player__pause.png' : 'assets/image/player__play.png',
                                 width: CommonUtils.getInstance(context).getWidth(146),
                                 height: CommonUtils.getInstance(context).getHeight(165),
                                 fit: BoxFit.contain);
@@ -850,7 +850,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                             onTap: () {
                               _factoryController.onClickNextButton();
                             },
-                            child: Image.asset('asset/image/player__next.png',
+                            child: Image.asset('assets/image/player__next.png',
                                 width: CommonUtils.getInstance(context).getWidth(68),
                                 height: CommonUtils.getInstance(context).getHeight(81),
                                 fit: BoxFit.contain),
@@ -927,7 +927,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
 
                         },
                         builder: (context, state) {
-                          return Image.asset((state is EnableCaptionButtonState && state.isEnable) ? 'asset/image/player__caption_on.png' : 'asset/image/player__caption_off.png',
+                          return Image.asset((state is EnableCaptionButtonState && state.isEnable) ? 'assets/image/player__caption_on.png' : 'assets/image/player__caption_off.png',
                             width: CommonUtils.getInstance(context).getWidth(70),
                             height: CommonUtils.getInstance(context).getHeight(55),
                             fit: BoxFit.contain,
@@ -944,7 +944,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                   onTap: () {
                     _factoryController.onBackPressed();
                   },
-                  child: Image.asset('asset/image/player_btn_close.png',
+                  child: Image.asset('assets/image/player_btn_close.png',
                     width: CommonUtils.getInstance(context).getWidth(58),
                     height: CommonUtils.getInstance(context).getHeight(58),),
                 ),
@@ -970,7 +970,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('asset/image/player__replay_off.png',
+                    Image.asset('assets/image/player__replay_off.png',
                       width: CommonUtils.getInstance(context).getWidth(71),
                       height: CommonUtils.getInstance(context).getHeight(62),
                       fit: BoxFit.contain,
@@ -1017,7 +1017,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                       onTap: () async {
                         _factoryController.onClickZoomButton();
                       },
-                      child: Image.asset('asset/image/btn_zoomout.png',
+                      child: Image.asset('assets/image/btn_zoomout.png',
                         width: CommonUtils.getInstance(context).getWidth(62),
                         height: CommonUtils.getInstance(context).getHeight(51),
                       ),
@@ -1063,7 +1063,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                         onTap: () {
                           _factoryController.onBackPressed();
                         },
-                        child: Image.asset('asset/image/player_btn_close.png',
+                        child: Image.asset('assets/image/player_btn_close.png',
                           width: CommonUtils.getInstance(context).getWidth(58),
                           height: CommonUtils.getInstance(context).getHeight(58)),
                       )
@@ -1077,37 +1077,37 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                           crossAxisAlignment: CrossAxisAlignment.center,
 
                           children: [
-                            Image.asset('asset/image/icon_ebook_player.png',
+                            Image.asset('assets/image/icon_ebook_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(150),
                                 height: CommonUtils.getInstance(context).getHeight(150)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(30),
                             ),
-                            Image.asset('asset/image/icon_quiz_player.png',
+                            Image.asset('assets/image/icon_quiz_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(150),
                                 height: CommonUtils.getInstance(context).getHeight(150)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(30),
                             ),
-                            Image.asset('asset/image/icon_voca_player.png',
+                            Image.asset('assets/image/icon_voca_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(150),
                                 height: CommonUtils.getInstance(context).getHeight(150)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(30),
                             ),
-                            Image.asset('asset/image/icon_flashcard_player.png',
+                            Image.asset('assets/image/icon_flashcard_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(150),
                                 height: CommonUtils.getInstance(context).getHeight(150)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(30),
                             ),
-                            Image.asset('asset/image/icon_starwords_player.png',
+                            Image.asset('assets/image/icon_starwords_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(150),
                                 height: CommonUtils.getInstance(context).getHeight(150)),
                             SizedBox(
                               width: CommonUtils.getInstance(context).getWidth(30),
                             ),
-                            Image.asset('asset/image/icon_org_player.png',
+                            Image.asset('assets/image/icon_org_player.png',
                                 width: CommonUtils.getInstance(context).getWidth(150),
                                 height: CommonUtils.getInstance(context).getHeight(150)),
                           ],
@@ -1139,7 +1139,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset('asset/image/btn_icon_again.png',
+                                    Image.asset('assets/image/btn_icon_again.png',
                                         width: CommonUtils.getInstance(context).getWidth(69),
                                         height: CommonUtils.getInstance(context).getHeight(69)),
                                     SizedBox(
@@ -1169,7 +1169,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset('asset/image/btn_icon_next_end.png',
+                                  Image.asset('assets/image/btn_icon_next_end.png',
                                       width: CommonUtils.getInstance(context).getWidth(69),
                                       height: CommonUtils.getInstance(context).getHeight(69)),
                                   SizedBox(
@@ -1223,7 +1223,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                 top: CommonUtils.getInstance(context).getHeight(40),
                 right: CommonUtils.getInstance(context).getWidth(30),
                 child: Image.asset(
-                  'asset/image/icon_learning.png',
+                  'assets/image/icon_learning.png',
                   width: CommonUtils.getInstance(context).getWidth(92),
                   height: CommonUtils.getInstance(context).getHeight(125),
                 )

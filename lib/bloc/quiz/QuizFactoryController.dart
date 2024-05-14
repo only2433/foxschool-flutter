@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
@@ -49,10 +50,10 @@ class QuizFactoryController extends BlocController {
   ];
 
   final String MEDIA_EXCELLENT_PATH = "mp3/quiz_excellent.mp3";
-  final String MEDIA_VERYGOOD_PATH = "mp3/quiz_verygood.mp3";
-  final String MEDIA_GOODS_PATH = "mp3/quiz_good.mp3";
-  final String MEDIA_POOL_PATH = "mp3/quiz_tryagain.mp3";
-  final String MEDIA_CORRECT_PATH = "mp3/quiz_correct.mp3";
+  final String MEDIA_VERYGOOD_PATH  = "mp3/quiz_verygood.mp3";
+  final String MEDIA_GOODS_PATH     = "mp3/quiz_good.mp3";
+  final String MEDIA_POOL_PATH      = "mp3/quiz_tryagain.mp3";
+  final String MEDIA_CORRECT_PATH   = "mp3/quiz_correct.mp3";
   final String MEDIA_INCORRECT_PATH = "mp3/quiz_incorrect.mp3";
 
   final int QUIZ_IMAGE_WIDTH = 479;
@@ -69,6 +70,7 @@ class QuizFactoryController extends BlocController {
   List<QuizUserInteractionData> _userSelectDataList = [];
   late Directory _currentDocumentDirectory;
   late AudioPlayer _audioPlayer;
+  late AudioPlayer _effectPlayer;
   int _maxPageCount = 0;
   int _currentPageIndex = 0;
   int _correctQuizCount = 0;
@@ -107,6 +109,7 @@ class QuizFactoryController extends BlocController {
 
   void _initAudioPlayer() {
     _audioPlayer = AudioPlayer();
+    _effectPlayer = AudioPlayer();
   }
 
   void _settingSubscription() {
@@ -405,6 +408,22 @@ class QuizFactoryController extends BlocController {
     }
   }
 
+  void _playEffectAudio(bool isCorrect) async
+  {
+    if(_effectPlayer.state == PlayerState.playing)
+    {
+      await _effectPlayer.stop();
+    }
+    if(isCorrect)
+    {
+      await _effectPlayer.play(AssetSource(MEDIA_CORRECT_PATH));
+    }
+    else
+    {
+      await _effectPlayer.play(AssetSource(MEDIA_INCORRECT_PATH));
+    }
+  }
+
   void _playAudio(String url) async
   {
     if (_audioPlayer.state == PlayerState.playing) {
@@ -575,6 +594,7 @@ class QuizFactoryController extends BlocController {
   }
   @override
   void dispose() {
+    _enableTimer(false);
     _subscription.cancel();
     pageController.removeListener(_handlePageChange);
     pageController.dispose();
@@ -607,6 +627,11 @@ class QuizFactoryController extends BlocController {
   void onClickPlayAudioButton()
   {
     _playAudio(_originQuizItemList[_currentQuizIndex].questionSoundUrl);
+  }
+
+  void onPlayCorrectSound(bool isCorrect)
+  {
+    _playEffectAudio(isCorrect);
   }
 
   void onClickNextButton()

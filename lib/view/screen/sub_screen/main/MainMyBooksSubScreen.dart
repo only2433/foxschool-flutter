@@ -131,7 +131,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                         Positioned(
                           top: CommonUtils.getInstance(context).getWidth(19),
                           left: CommonUtils.getInstance(context).getWidth(25),
-                          child: Image.asset('asset/image/icon_bookshelf.png',
+                          child: Image.asset('assets/image/icon_bookshelf.png',
                               width: CommonUtils.getInstance(context).getWidth(54),
                               height: CommonUtils.getInstance(context).getHeight(54),
                               fit: BoxFit.cover),
@@ -153,7 +153,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                   SizedBox(
                     width: CommonUtils.getInstance(context).getWidth(40),
                   ),
-                  Image.asset('asset/image/icon_setting_g.png',
+                  Image.asset('assets/image/icon_setting_g.png',
                     width: CommonUtils.getInstance(context).getWidth(63),
                     height: CommonUtils.getInstance(context).getHeight(63),
                     fit: BoxFit.cover,)
@@ -202,7 +202,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                         Positioned(
                           top: CommonUtils.getInstance(context).getWidth(19),
                           left: CommonUtils.getInstance(context).getWidth(25),
-                          child: Image.asset('asset/image/icon_voca.png',
+                          child: Image.asset('assets/image/icon_voca.png',
                               width: CommonUtils.getInstance(context).getWidth(54),
                               height: CommonUtils.getInstance(context).getHeight(54),
                               fit: BoxFit.cover),
@@ -224,7 +224,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                   SizedBox(
                     width: CommonUtils.getInstance(context).getWidth(40),
                   ),
-                  Image.asset('asset/image/icon_setting_g.png',
+                  Image.asset('assets/image/icon_setting_g.png',
                     width: CommonUtils.getInstance(context).getWidth(63),
                     height: CommonUtils.getInstance(context).getHeight(63),
                     fit: BoxFit.cover,)
@@ -256,7 +256,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(40),
           ),
-          Image.asset('asset/image/btn_add.png',
+          Image.asset('assets/image/btn_add.png',
           width: CommonUtils.getInstance(context).getWidth(87),
           height: CommonUtils.getInstance(context).getHeight(87)
           ),

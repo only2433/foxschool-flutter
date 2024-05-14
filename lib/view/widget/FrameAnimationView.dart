@@ -20,11 +20,11 @@ class FrameAnimationView extends StatefulWidget {
 class _FrameAnimationViewState extends State<FrameAnimationView> with SingleTickerProviderStateMixin {
 
   final List<String> ANIMATION_PATH = [
-    "asset/image/intro_img01.png",
-    "asset/image/intro_img02.png",
-    "asset/image/intro_img03.png",
-    "asset/image/intro_img04.png",
-    "asset/image/intro_img05.png"
+    "assets/image/intro_img01.png",
+    "assets/image/intro_img02.png",
+    "assets/image/intro_img03.png",
+    "assets/image/intro_img04.png",
+    "assets/image/intro_img05.png"
   ];
 
   late AnimationController _controller;

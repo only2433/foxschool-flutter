@@ -32,7 +32,7 @@ class QuizIntroSubScreen extends StatelessWidget {
       child: Column(
         children: [
           subtitle == "" ? _buildTitleView(context) : _buildFullTitleView(context),
-          Image.asset('asset/image/img_quiz_main.png',
+          Image.asset('assets/image/img_quiz_main.png',
               width: CommonUtils.getInstance(context).getWidth(1920),
               height: CommonUtils.getInstance(context).getHeight(398)
           ),
@@ -54,7 +54,7 @@ class QuizIntroSubScreen extends StatelessWidget {
                       height: CommonUtils.getInstance(context).getHeight(120),
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('asset/image/btn_quiz_start_o.png'),
+                            image: AssetImage('assets/image/btn_quiz_start_o.png'),
                             fit: BoxFit.contain
                         ),
                       ),

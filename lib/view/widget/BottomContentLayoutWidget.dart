@@ -259,25 +259,25 @@ class BottomContentLayoutWidget extends StatelessWidget {
     switch(type)
     {
       case ContentsItemType.EBOOK:
-        return 'asset/image/learning_06.png';
+        return 'assets/image/learning_06.png';
       case ContentsItemType.QUIZ:
-        return 'asset/image/learning_01.png';
+        return 'assets/image/learning_01.png';
       case ContentsItemType.VOCABULARY:
-        return 'asset/image/learning_03.png';
+        return 'assets/image/learning_03.png';
       case ContentsItemType.FLASHCARD:
-        return 'asset/image/learning_08.png';
+        return 'assets/image/learning_08.png';
       case ContentsItemType.STARWORDS:
-        return 'asset/image/learning_07.png';
+        return 'assets/image/learning_07.png';
       case ContentsItemType.CROSSWORD:
-        return 'asset/image/learning_09.png';
+        return 'assets/image/learning_09.png';
       case ContentsItemType.RECORDER:
-        return 'asset/image/learning_10.png';
+        return 'assets/image/learning_10.png';
       case ContentsItemType.TRANSLATE:
-        return 'asset/image/learning_02.png';
+        return 'assets/image/learning_02.png';
       case ContentsItemType.BOOKSHELF:
-        return isDeleteItemInBookshelf ? 'asset/image/learning_05.png' : 'asset/image/learning_04.png';
+        return isDeleteItemInBookshelf ? 'assets/image/learning_05.png' : 'assets/image/learning_04.png';
       default:
-        return 'asset/image/learning_01.png';
+        return 'assets/image/learning_01.png';
     }
   }
 
