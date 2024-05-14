@@ -26,6 +26,7 @@ import 'package:foxschool/data/quiz/quiz_data/picture/QuizPictureData.dart';
 import 'package:foxschool/data/quiz/quiz_data/text/QuizPhonicsTextData.dart';
 import 'package:foxschool/data/quiz/quiz_data/text/QuizTextData.dart';
 import 'package:foxschool/enum/QuizPlayType.dart';
+import 'package:foxschool/view/screen/sub_screen/quiz/QuizPhonicsPlaySubScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/quiz/QuizPicturePlaySubScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/quiz/QuizResultSubScreen.dart';
 import 'package:foxschool/view/screen/sub_screen/quiz/QuizTextPlaySubScreen.dart';
@@ -39,6 +40,14 @@ import '../../data/quiz/quiz_item/QuizItemResult.dart';
 import 'factory/cubit/QuizRemainTimeCubit.dart';
 
 class QuizFactoryController extends BlocController {
+
+  final List<String> INDEX_SOUND_LIST = [
+          "cdn.littlefox.co.kr/contents/quiz/data/a.mp3",
+          "cdn.littlefox.co.kr/contents/quiz/data/b.mp3"
+          "cdn.littlefox.co.kr/contents/quiz/data/c.mp3"
+          "cdn.littlefox.co.kr/contents/quiz/data/d.mp3"
+  ];
+
   final String MEDIA_EXCELLENT_PATH = "mp3/quiz_excellent.mp3";
   final String MEDIA_VERYGOOD_PATH = "mp3/quiz_verygood.mp3";
   final String MEDIA_GOODS_PATH = "mp3/quiz_good.mp3";
@@ -163,12 +172,13 @@ class QuizFactoryController extends BlocController {
         context.read<QuizReadyDataCubit>().loadingComplete();
         break;
       case Common.QUIZ_CODE_TEXT:
+      case Common.QUIZ_CODE_SOUND_TEXT:
         _makeTextQuizData();
         context.read<QuizReadyDataCubit>().loadingComplete();
         break;
-      case Common.QUIZ_CODE_SOUND_TEXT:
-        break;
       case Common.QUIZ_CODE_PHONICS_SOUND_TEXT:
+        _makePhonicsQuestion();
+        context.read<QuizReadyDataCubit>().loadingComplete();
         break;
       default:
         break;
@@ -204,7 +214,19 @@ class QuizFactoryController extends BlocController {
 
   void _makePhonicsQuestion()
   {
-
+    int maxQuizCount = _quizInformationResult.quizCount;
+    _phonicsQuizItemList = [];
+    _originQuizItemList.shuffle(Random(DateTime
+        .now()
+        .microsecondsSinceEpoch));
+    for(int i = 0; i < maxQuizCount ; i++)
+    {
+      _phonicsQuizItemList.add(
+          QuizPhonicsTextData(
+              quizIndex: i, dataList: List<QuizItemResult>.from(_originQuizItemList))
+      );
+    }
+    _constitutePhonicsQuizList();
   }
 
   Future<void> _makePictureQuizData() async
@@ -332,6 +354,25 @@ class QuizFactoryController extends BlocController {
   }
 
 
+  void _constitutePhonicsQuizList()
+  {
+    List<Widget> result = [];
+    for(int i = 0; i < _phonicsQuizItemList.length; i++)
+    {
+      result.add(
+          QuizPhonicsPlaySubScreen(
+              quizController: this,
+              data: _phonicsQuizItemList[i],
+              currentQuizType: _currentQuizType)
+      );
+    }
+    result.add(QuizResultSubScreen(quizFactoryController: this));
+
+    _maxPageCount = result.length;
+    context.read<ConstituteWidgetCubit>().setWidgetList(result);
+  }
+
+
 
   void _handlePageChange() async
   {
@@ -351,9 +392,14 @@ class QuizFactoryController extends BlocController {
           _enableTimer(true);
         }
         _currentQuizIndex = _currentPageIndex - 1;
-        if (_currentQuizType == Common.QUIZ_CODE_PICTURE || _currentQuizType == Common.QUIZ_CODE_PHONICS_SOUND_TEXT) {
+        if (_currentQuizType == Common.QUIZ_CODE_PICTURE || _currentQuizType == Common.QUIZ_CODE_PHONICS_SOUND_TEXT)
+        {
           Logger.d("quizIndex : $_currentQuizIndex , url : ${_originQuizItemList[_currentQuizIndex].questionSoundUrl}");
           _playAudio(_originQuizItemList[_currentQuizIndex].questionSoundUrl);
+        }
+        else if(_currentQuizType == Common.QUIZ_CODE_SOUND_TEXT)
+        {
+          _playAudioList(getQuizExampleSoundList(_currentQuizIndex));
         }
       }
     }
@@ -365,6 +411,19 @@ class QuizFactoryController extends BlocController {
       await _audioPlayer.stop();
     }
     await _audioPlayer.play(UrlSource(url));
+  }
+
+  void _playAudioList(List<String> playList)
+  {
+    int index = 0;
+    _playAudio(playList[index]);
+    _audioPlayer.onPlayerComplete.listen((event) {
+      index++;
+      if(index < playList.length)
+        {
+          _playAudio(playList[index]);
+        }
+    });
   }
 
   void _enableTimer(bool isEnable) {
@@ -397,7 +456,7 @@ class QuizFactoryController extends BlocController {
     _quizLimitTime--;
   }
 
-  QuizUserInteractionData _buildPictureQuizUserInteractionData(int selectIndex, QuizPictureData pictureData)
+  QuizUserInteractionData _makePictureQuizUserSelectData(int selectIndex, QuizPictureData pictureData)
   {
     QuizUserInteractionData result;
     String quizSequence = "";
@@ -436,7 +495,7 @@ class QuizFactoryController extends BlocController {
     return result;
   }
 
-  QuizUserInteractionData _buildTextQuizUserInteractionData(int selectIndex, QuizTextData data)
+  QuizUserInteractionData _makeTextQuizUserSelectData(int selectIndex, QuizTextData data)
   {
     QuizUserInteractionData result;
     String quizSequence = data.serverSequenceIndex.toString();
@@ -451,7 +510,7 @@ class QuizFactoryController extends BlocController {
     return result;
   }
 
-  QuizUserInteractionData _buildPhonicsQuizUserInteractionData(int selectIndex, QuizTextData data)
+  QuizUserInteractionData _makePhonicsQuizUserSelectData(int selectIndex, QuizPhonicsTextData data)
   {
     QuizUserInteractionData result;
     String quizSequence = "";
@@ -474,6 +533,28 @@ class QuizFactoryController extends BlocController {
         correctNo: data.getQuizCorrectIndex(),
         chosenNo: data.exampleList[selectIndex].index.toString()
     );
+    return result;
+  }
+
+  List<String> getQuizExampleSoundList(int index)
+  {
+    List<String> result = [];
+    result.add(_textQuizItemList[index].soundUrl);
+    bool isHttpsUseModel = _textQuizItemList[index].soundUrl.contains('https') ? true : false;
+
+    for(int i = 0 ; i < _textQuizItemList[index].exampleList.length; i ++)
+    {
+      if(isHttpsUseModel)
+      {
+        result.add("https://"+INDEX_SOUND_LIST[i]);
+      }
+      else
+      {
+        result.add("http://"+INDEX_SOUND_LIST[i]);
+      }
+      result.add(_textQuizItemList[index].exampleList[i].soundUrl!);
+      Logger.d("index : $i , url : ${_textQuizItemList[index].exampleList[i].soundUrl}");
+    }
     return result;
   }
 
@@ -501,7 +582,7 @@ class QuizFactoryController extends BlocController {
 
   void onSelectPictureQuizData(int selectIndex, QuizPictureData pictureData)
   {
-    QuizUserInteractionData data = _buildPictureQuizUserInteractionData(selectIndex, pictureData);
+    QuizUserInteractionData data = _makePictureQuizUserSelectData(selectIndex, pictureData);
     _userSelectDataList.add(data);
     _correctQuizCount = data.isCorrect ? _correctQuizCount + 1 : _correctQuizCount;
     context.read<QuizCorrectCountCubit>().setCorrectCount(_correctQuizCount, _totalQuizCount);
@@ -509,7 +590,15 @@ class QuizFactoryController extends BlocController {
 
   void onSelectTextQuizData(int selectIndex, QuizTextData textData)
   {
-    QuizUserInteractionData data = _buildTextQuizUserInteractionData(selectIndex, textData);
+    QuizUserInteractionData data = _makeTextQuizUserSelectData(selectIndex, textData);
+    _userSelectDataList.add(data);
+    _correctQuizCount = data.isCorrect ? _correctQuizCount + 1 : _correctQuizCount;
+    context.read<QuizCorrectCountCubit>().setCorrectCount(_correctQuizCount, _totalQuizCount);
+  }
+
+  void onSelectPhonicsQuizData(int selectIndex, QuizPhonicsTextData phonicsData)
+  {
+    QuizUserInteractionData data = _makePhonicsQuizUserSelectData(selectIndex, phonicsData);
     _userSelectDataList.add(data);
     _correctQuizCount = data.isCorrect ? _correctQuizCount + 1 : _correctQuizCount;
     context.read<QuizCorrectCountCubit>().setCorrectCount(_correctQuizCount, _totalQuizCount);

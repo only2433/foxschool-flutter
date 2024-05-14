@@ -47,4 +47,16 @@ class QuizPhonicsTextData
       }
     exampleList.shuffle(Random(DateTime.now().microsecondsSinceEpoch));
   }
+
+  int getQuizCorrectIndex()
+  {
+    for (int i = 0; i < exampleList.length; i++)
+    {
+      if(exampleList[i].isAnswer)
+        {
+          return exampleList[i].index;
+        }
+    }
+    return 0;
+  }
 }
