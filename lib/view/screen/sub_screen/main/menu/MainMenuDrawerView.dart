@@ -59,8 +59,8 @@ class MainMenuDrawerView extends StatelessWidget {
                  ),
                ),
              ),
-             _CenterSelectItemLayout(context),
-             _BottomSelectItemLayout(context)
+             _buildCenterSelectItemLayout(context),
+             _buildBottomSelectItemLayout(context)
            ],
          ),
          Positioned(
@@ -69,14 +69,14 @@ class MainMenuDrawerView extends StatelessWidget {
                onTap: () {
                  onSelected(MainMenuDrawerType.LOG_OUT);
                },
-                 child: _LogoutButton(context)
+                 child: _buildLogoutButton(context)
              )
          )
        ],
     );
   }
 
-  Widget _LogoutButton(BuildContext context)
+  Widget _buildLogoutButton(BuildContext context)
   {
     return Container(
       width: CommonUtils.getInstance(context).getHeight(824),
@@ -91,7 +91,7 @@ class MainMenuDrawerView extends StatelessWidget {
     );
   }
 
-  Widget _CenterSelectItemLayout(BuildContext context) {
+  Widget _buildCenterSelectItemLayout(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(280),
@@ -112,7 +112,7 @@ class MainMenuDrawerView extends StatelessWidget {
                 onTap: () {
                   onSelected(MainMenuDrawerType.STUDY_LOG);
                 },
-                child: _iconTextWidget(context,
+                child: _buildIconTextWidget(context,
                     'assets/image/main_option_icon_1.png',
                     getIt<FoxschoolLocalization>().data['text_learning_log']
                 ),
@@ -122,7 +122,7 @@ class MainMenuDrawerView extends StatelessWidget {
                 width: CommonUtils.getInstance(context).getWidth(1),
                 height: CommonUtils.getInstance(context).getHeight(200),
               ),
-              _iconTextWidget(context,
+              _buildIconTextWidget(context,
                   'assets/image/main_option_icon_2.png',
                   getIt<FoxschoolLocalization>().data['text_record_history']
               ),
@@ -131,7 +131,7 @@ class MainMenuDrawerView extends StatelessWidget {
                 width: CommonUtils.getInstance(context).getWidth(1),
                 height: CommonUtils.getInstance(context).getHeight(200),
               ),
-              _iconTextWidget(context,
+              _buildIconTextWidget(context,
                   'assets/image/main_option_icon_3.png',
                   getIt<FoxschoolLocalization>().data['text_homework_manage']
               ),
@@ -142,7 +142,7 @@ class MainMenuDrawerView extends StatelessWidget {
     );
   }
 
-  Widget _BottomSelectItemLayout(BuildContext context) {
+  Widget _buildBottomSelectItemLayout(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -157,15 +157,15 @@ class MainMenuDrawerView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _iconTextWidget(context,
+                _buildIconTextWidget(context,
                     'assets/image/main_option_icon_5.png',
                     getIt<FoxschoolLocalization>().data['text_foxschool_news']
                 ),
-                _iconTextWidget(context,
+                _buildIconTextWidget(context,
                     'assets/image/main_option_icon_6.png',
                     getIt<FoxschoolLocalization>().data['text_faqs']
                 ),
-                _iconTextWidget(context,
+                _buildIconTextWidget(context,
                     'assets/image/main_option_icon_7.png',
                     getIt<FoxschoolLocalization>().data['text_1_1_ask']
                 )
@@ -177,15 +177,15 @@ class MainMenuDrawerView extends StatelessWidget {
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _iconTextWidget(context,
+                  _buildIconTextWidget(context,
                       'assets/image/main_option_icon_8.png',
                       getIt<FoxschoolLocalization>().data['text_about_app']),
 
-                  _iconTextWidget(context,
+                  _buildIconTextWidget(context,
                       'assets/image/main_option_icon_9.png',
                       getIt<FoxschoolLocalization>().data['text_teacher_manual']),
 
-                  _iconTextWidget(context,
+                  _buildIconTextWidget(context,
                       'assets/image/main_option_icon_10.png',
                       getIt<FoxschoolLocalization>().data['text_home_newspaper']
               )
@@ -196,7 +196,7 @@ class MainMenuDrawerView extends StatelessWidget {
     );
   }
 
-  Widget _iconTextWidget(BuildContext context, String imagePath, String title)
+  Widget _buildIconTextWidget(BuildContext context, String imagePath, String title)
   {
     return IconTextColumnWidget(
         width: CommonUtils.getInstance(context).getWidth(237),

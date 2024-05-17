@@ -39,6 +39,7 @@ import '../../common/CommonUtils.dart';
 import '../../data/quiz/file/FileData.dart';
 import '../../data/quiz/quiz_item/QuizItemResult.dart';
 import 'factory/cubit/QuizRemainTimeCubit.dart';
+import 'package:foxschool/view/dialog/LoadingDialog.dart' as LoadingDialog;
 
 class QuizFactoryController extends BlocController {
 
@@ -55,6 +56,9 @@ class QuizFactoryController extends BlocController {
   final String MEDIA_POOL_PATH      = "mp3/quiz_tryagain.mp3";
   final String MEDIA_CORRECT_PATH   = "mp3/quiz_correct.mp3";
   final String MEDIA_INCORRECT_PATH = "mp3/quiz_incorrect.mp3";
+
+  final int PLAY_INIT = 0;
+  final int PLAY_REPLAY = 1;
 
   final int QUIZ_IMAGE_WIDTH = 479;
   final int QUIZ_IMAGE_HEIGHT = 361;
@@ -92,6 +96,7 @@ class QuizFactoryController extends BlocController {
   @override
   void init() {
     _currentPageIndex = 0;
+    _maxPageCount = 0;
     pageController.addListener(_handlePageChange);
     context.read<QuizReadyDataCubit>().showLoading();
     context.read<ConstituteWidgetCubit>().setWidgetList([]);
@@ -124,6 +129,7 @@ class QuizFactoryController extends BlocController {
           blocState = state as QuizInformationLoadedState;
           _quizInformationResult = blocState.data;
           _settingQuizData();
+          await _readyToPlay(PLAY_INIT);
         case LoadingState:
           break;
         case ErrorState:
@@ -149,28 +155,37 @@ class QuizFactoryController extends BlocController {
 
   void _settingQuizData() async
   {
+    _userSelectDataList.clear();
     _correctQuizCount = 0;
     _totalQuizCount = _quizInformationResult.quizCount;
     _quizLimitTime = _quizInformationResult.quizLimitTime;
     _currentQuizType = _quizInformationResult.quizType;
     _originQuizItemList = List.from(_quizInformationResult.questions!);
     Logger.d("origin list size : ${_originQuizItemList.length}");
-    if (_currentQuizType == Common.QUIZ_CODE_TEXT && _originQuizItemList[0].questionSoundUrl != "") {
+    if (_currentQuizType == Common.QUIZ_CODE_TEXT && _originQuizItemList[0].questionSoundUrl != "")
+    {
       _currentQuizType = Common.QUIZ_CODE_SOUND_TEXT;
     }
 
+  }
+
+  Future<void> _readyToPlay(int playType) async
+  {
     switch (_currentQuizType) {
       case Common.QUIZ_CODE_PICTURE:
-        List<FileData> fileList = [];
-        fileList.add(
-          FileData(url: _quizInformationResult.correctImageUrl, fileName: _quizInformationResult.getCorrectImageFileName()),
-        );
-        if (_quizInformationResult.incorrectImageUrl != "") {
-          fileList.add(
-            FileData(url: _quizInformationResult.incorrectImageUrl, fileName: _quizInformationResult.getIncorrectImageFileName()),
-          );
-        }
-        await _startFileDownload(fileList);
+        if(playType == PLAY_INIT)
+          {
+            List<FileData> fileList = [];
+            fileList.add(
+              FileData(url: _quizInformationResult.correctImageUrl, fileName: _quizInformationResult.getCorrectImageFileName()),
+            );
+            if (_quizInformationResult.incorrectImageUrl != "") {
+              fileList.add(
+                FileData(url: _quizInformationResult.incorrectImageUrl, fileName: _quizInformationResult.getIncorrectImageFileName()),
+              );
+            }
+            await _startFileDownload(fileList);
+          }
         await _makePictureQuizData();
         context.read<QuizReadyDataCubit>().loadingComplete();
         break;
@@ -380,7 +395,7 @@ class QuizFactoryController extends BlocController {
   void _handlePageChange() async
   {
     final newPageIndex = pageController.page!.round();
-    if (newPageIndex != _currentPageIndex && newPageIndex > _currentPageIndex) {
+    if (newPageIndex != _currentPageIndex) {
       Logger.d("update currentPage : $_currentPageIndex, newPage : $newPageIndex,  maxQuizCount : $_maxPageCount");
       _currentPageIndex = newPageIndex;
       if (_currentPageIndex == _maxPageCount) {
@@ -648,8 +663,12 @@ class QuizFactoryController extends BlocController {
 
   }
 
-  void onClickReplayButton()
-  {
+  bool isLoading = false;
 
+  void onClickReplayButton() async
+  {
+    _settingQuizData();
+    await _readyToPlay(PLAY_REPLAY);
+    pageController.jumpToPage(1);
   }
 }

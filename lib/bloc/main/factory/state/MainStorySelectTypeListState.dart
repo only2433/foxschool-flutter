@@ -5,11 +5,11 @@ import 'package:foxschool/bloc/base/BlocState.dart';
 
 import '../../../../data/main/series/SeriesInformationResult.dart';
 
-class StorySelectTypeListState extends Equatable
+class MainStorySelectTypeListState extends Equatable
 {
   final List<SeriesInformationResult> list;
 
-  StorySelectTypeListState({
+  MainStorySelectTypeListState({
     required this.list
   });
 

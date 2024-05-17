@@ -5,7 +5,7 @@ import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart
 import 'package:foxschool/view/widget/ThumbnailView.dart';
 
 import '../../../../bloc/main/MainFactoryController.dart';
-import '../../../../bloc/main/factory/state/SongCategoryListState.dart';
+import '../../../../bloc/main/factory/state/MainSongCategoryListState.dart';
 import '../../../../common/CommonUtils.dart';
 import '../../../../values/AppColors.dart';
 import '../../../widget/RobotoBoldText.dart';
@@ -29,7 +29,7 @@ class MainSongSubScreen extends StatelessWidget {
             height: CommonUtils.getInstance(context).getHeight(40),
           ),
           Expanded(
-              child: BlocBuilder<MainSongCategoryListCubit, SongCategoryListState>(builder: (context, state)
+              child: BlocBuilder<MainSongCategoryListCubit, MainSongCategoryListState>(builder: (context, state)
               {
                 return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

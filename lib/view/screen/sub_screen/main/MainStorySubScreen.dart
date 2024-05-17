@@ -11,7 +11,7 @@ import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/view/widget/ToggleTextButton.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:foxschool/view/widget/ThumbnailView.dart';
-import '../../../../bloc/main/factory/state/StorySelectTypeListState.dart';
+import '../../../../bloc/main/factory/state/MainStorySelectTypeListState.dart';
 import '../../../../common/Common.dart';
 import '../../../../common/FoxschoolLocalization.dart';
 import '../../../../data/main/series/SeriesInformationResult.dart';
@@ -70,7 +70,7 @@ class MainStorySubScreen extends StatelessWidget {
           Expanded(
               child: Container(
 
-                child: BlocBuilder<MainStorySelectTypeListCubit, StorySelectTypeListState>(builder: (context, state) {
+                child: BlocBuilder<MainStorySelectTypeListCubit, MainStorySelectTypeListState>(builder: (context, state) {
                   return GridView.builder(
 
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

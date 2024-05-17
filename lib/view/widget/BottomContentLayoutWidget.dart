@@ -79,13 +79,13 @@ class BottomContentLayoutWidget extends StatelessWidget {
           SizedBox(
             width: CommonUtils.getInstance(context).getWidth(36),
           ),
-          indexColor == "" ? _getTitleWidget(context) : _getTitleAndIndexWidget(context)
+          indexColor == "" ? _buildTitleWidget(context) : _buildTitleAndIndexWidget(context)
         ],
       ),
     );
   }
 
-  Widget _getTitleAndIndexWidget(BuildContext context)
+  Widget _buildTitleAndIndexWidget(BuildContext context)
   {
     return Container(
       width: CommonUtils.getInstance(context).getWidth(530),
@@ -121,7 +121,7 @@ class BottomContentLayoutWidget extends StatelessWidget {
     );
   }
 
-  Widget _getTitleWidget(BuildContext context)
+  Widget _buildTitleWidget(BuildContext context)
   {
     return Container(
       width: CommonUtils.getInstance(context).getWidth(500),

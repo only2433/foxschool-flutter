@@ -11,7 +11,7 @@ class QuizReadyDataCubit extends Cubit<QuizBaseState>
 
   void showLoading()
   {
-    emit(InitState());
+    emit(LoadingState());
   }
 
   void loadingComplete()

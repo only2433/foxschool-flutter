@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foxschool/bloc/quiz/QuizFactoryController.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizCorrectCountCubit.dart';
@@ -160,20 +161,25 @@ class QuizResultSubScreen extends StatelessWidget {
             color: AppColors.color_000000,
           ),
         ),
-        Container(
-          width: CommonUtils.getInstance(context).getWidth(323),
-          height: CommonUtils.getInstance(context).getHeight(92),
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/image/btn_quiz_n.png'),
-                  fit: BoxFit.contain
-              )
-          ),
-          alignment: Alignment.center,
-          child: RobotoBoldText(
-            text: getIt<FoxschoolLocalization>().data['text_tryagain'],
-            fontSize: CommonUtils.getInstance(context).getWidth(40),
-            color: AppColors.color_000000,
+        GestureDetector(
+          onTap: () {
+            quizFactoryController.onClickReplayButton();
+          },
+          child: Container(
+            width: CommonUtils.getInstance(context).getWidth(323),
+            height: CommonUtils.getInstance(context).getHeight(92),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/image/btn_quiz_n.png'),
+                    fit: BoxFit.contain
+                )
+            ),
+            alignment: Alignment.center,
+            child: RobotoBoldText(
+              text: getIt<FoxschoolLocalization>().data['text_tryagain'],
+              fontSize: CommonUtils.getInstance(context).getWidth(40),
+              color: AppColors.color_000000,
+            ),
           ),
         )
       ],

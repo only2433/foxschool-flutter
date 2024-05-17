@@ -5,11 +5,11 @@ import 'package:foxschool/bloc/base/BlocState.dart';
 
 import '../../../../data/main/series/SeriesInformationResult.dart';
 
-class SongCategoryListState extends Equatable
+class MainSongCategoryListState extends Equatable
 {
   final List<SeriesInformationResult> list;
 
-  SongCategoryListState({
+  MainSongCategoryListState({
     required this.list
   });
 

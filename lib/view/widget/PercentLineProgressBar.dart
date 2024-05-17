@@ -32,7 +32,7 @@ class _PercentLineProgressBarState extends State<PercentLineProgressBar> with Ti
   @override
   void initState() {
     super.initState();
-    settingAnimation();
+    _settingAnimation();
   }
 
   @override
@@ -41,11 +41,11 @@ class _PercentLineProgressBarState extends State<PercentLineProgressBar> with Ti
     if (oldWidget.percent != widget.percent)
     {
       Logger.d("oldWidget.percent : ${oldWidget.percent}, widget.Percent : ${widget.percent}");
-      settingAnimation();
+      _settingAnimation();
     }
   }
 
-  void settingAnimation()
+  void _settingAnimation()
   {
     _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: Common.DURATION_NORMAL));
     _animation = Tween<double>(begin: _oldPercent, end: widget.percent).animate(_controller)
@@ -71,10 +71,10 @@ class _PercentLineProgressBarState extends State<PercentLineProgressBar> with Ti
 
   @override
   Widget build(BuildContext context) {
-    return _ProgressBar();
+    return _buildProgressBar();
   }
 
-  Widget _ProgressBar()
+  Widget _buildProgressBar()
   {
     return Container(
       width: widget.width,

@@ -1,14 +1,14 @@
 
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/bloc/login/factory/state/AutoLoginCheckState.dart';
+import 'package:foxschool/bloc/login/factory/state/LoginAutoCheckState.dart';
 
-class LoginAutoCheckCubit extends Cubit<AutoLoginCheckState>
+class LoginAutoCheckCubit extends Cubit<LoginAutoCheckState>
 {
-  LoginAutoCheckCubit() : super(AutoLoginCheckState(isAutoLogin: false));
+  LoginAutoCheckCubit() : super(LoginAutoCheckState(isAutoLogin: false));
 
   void setAutoLogin(bool enable)
   {
-    emit(AutoLoginCheckState(isAutoLogin: enable));
+    emit(LoginAutoCheckState(isAutoLogin: enable));
   }
 }

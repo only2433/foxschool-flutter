@@ -19,15 +19,15 @@ class TopTitleView extends StatelessWidget {
   {
     if(type == TopTitleButtonType.BACK)
       {
-        return _BackButtonWidget(context);
+        return _buildBackButtonWidget(context);
       }
     else
       {
-        return _CloseButtonWidget(context);
+        return _buildCloseButtonWidget(context);
       }
   }
 
-  Widget _BackButtonWidget(BuildContext context)
+  Widget _buildBackButtonWidget(BuildContext context)
   {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -57,7 +57,7 @@ class TopTitleView extends StatelessWidget {
     );
   }
 
-  Widget _CloseButtonWidget(BuildContext context)
+  Widget _buildCloseButtonWidget(BuildContext context)
   {
     return Container(
       width: MediaQuery.of(context).size.width,

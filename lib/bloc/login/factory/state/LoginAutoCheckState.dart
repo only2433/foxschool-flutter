@@ -4,11 +4,11 @@ import 'package:equatable/equatable.dart';
 
 import '../../../base/BlocState.dart';
 
-class AutoLoginCheckState extends Equatable
+class LoginAutoCheckState extends Equatable
 {
   final bool isAutoLogin;
 
-  AutoLoginCheckState({
+  LoginAutoCheckState({
     required this.isAutoLogin
   });
 

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/bloc/intro/factory/state/ScreenTypeState.dart';
+import 'package:foxschool/bloc/intro/factory/state/IntroScreenTypeState.dart';
 
 import '../../../../enum/IntroScreenType.dart';
 

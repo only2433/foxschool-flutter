@@ -9,8 +9,8 @@ import 'package:foxschool/bloc/base/BlocState.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
-import 'package:foxschool/bloc/login/factory/state/AutoLoginCheckState.dart';
-import 'package:foxschool/bloc/login/factory/state/SchoolNameState.dart';
+import 'package:foxschool/bloc/login/factory/state/LoginAutoCheckState.dart';
+import 'package:foxschool/bloc/login/factory/state/LoginSchoolNameState.dart';
 
 import 'package:foxschool/view/widget/BlueTextButton.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
@@ -21,7 +21,7 @@ import 'package:simple_loading_dialog/simple_loading_dialog.dart';
 
 
 import '../../bloc/login/LoginFactoryController.dart';
-import '../../bloc/login/factory/state/FindSchoolListState.dart';
+import '../../bloc/login/factory/state/LoginFindSchoolListState.dart';
 import '../../common/Common.dart';
 import '../../common/CommonUtils.dart';
 import '../../common/FoxschoolLocalization.dart';
@@ -145,14 +145,14 @@ class _LoginScreenState extends State<LoginScreen>
                                     borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(10))),
                                 child: Column(
                                   children: [
-                                    _InputTextField(),
+                                    _buildInputTextField(),
                                     SizedBox(
                                       height: CommonUtils.getInstance(context).getHeight(50),
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        BlocBuilder<LoginAutoCheckCubit, AutoLoginCheckState>(
+                                        BlocBuilder<LoginAutoCheckCubit, LoginAutoCheckState>(
                                           builder: (context, state) {
                                           return GestureDetector(
                                             onTap: () {
@@ -210,22 +210,24 @@ class _LoginScreenState extends State<LoginScreen>
                                           width: CommonUtils.getInstance(context).getWidth(40),
                                         ),
                                         RobotoNormalText(
-                                            text: getIt<FoxschoolLocalization>().data['text_find_password'], fontSize: CommonUtils.getInstance(context).getWidth(40), color: AppColors.color_444444),
+                                            text: getIt<FoxschoolLocalization>().data['text_find_password'],
+                                            fontSize: CommonUtils.getInstance(context).getWidth(40),
+                                            color: AppColors.color_444444),
                                       ],
                                     )
                                   ],
                                 )),
-                            BlocBuilder<LoginSchoolNameCubit, SchoolNameState>(builder: (context, state) {
+                            BlocBuilder<LoginSchoolNameCubit, LoginSchoolNameState>(builder: (context, state) {
                               if (state.name.length > 0 && _focusNodeList[0].hasFocus)
                                 {
-                                  return _SchoolListView();
+                                  return _buildSchoolListView();
                                 }
                               else
                                 {
                                   return Container();
                                 }
                             },),
-                            _bottomInfoLayout()
+                            _buildBottomInfoLayout()
                           ],
                         ),
                       ),
@@ -234,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen>
                 ]))));
   }
 
-  Widget _InputTextField() {
+  Widget _buildInputTextField() {
     return Form(
       key: _formKey,
       child: Padding(
@@ -414,14 +416,14 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget _SchoolListView() {
+  Widget _buildSchoolListView() {
     return Positioned(
       top: CommonUtils.getInstance(context).getHeight(195),
       left: 0,
       right: 0,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(67)),
-        child: BlocBuilder<LoginFindSchoolListCubit, FindSchoolListState>(
+        child: BlocBuilder<LoginFindSchoolListCubit, LoginFindSchoolListState>(
             builder: (context, state) {
               if(state.schoolList.length > 0)
                 {
@@ -466,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget _bottomInfoLayout() {
+  Widget _buildBottomInfoLayout() {
     return Positioned(
         left: 0,
         right: 0,

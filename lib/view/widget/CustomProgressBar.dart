@@ -22,7 +22,7 @@ class _CustomProgressBarState extends State<CustomProgressBar> {
   }
 
 
-  void updatePercent(double newPercent) {
+  void _updatePercent(double newPercent) {
     setState(() {
       _percent = newPercent;
     });

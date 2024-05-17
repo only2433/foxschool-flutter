@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 
+import "../../values/AppColors.dart";
+
 
 void show(BuildContext context)
 {
@@ -23,6 +25,8 @@ void dismiss(BuildContext context)
 Widget _showLoading()
 {
   return Center(
-    child: CircularProgressIndicator(),
+    child: CircularProgressIndicator(
+        color: AppColors.color_47e1ad
+    ),
   );
 }

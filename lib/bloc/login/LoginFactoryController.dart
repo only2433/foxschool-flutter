@@ -8,7 +8,7 @@ import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
-import 'package:foxschool/bloc/login/factory/state/AutoLoginCheckState.dart';
+import 'package:foxschool/bloc/login/factory/state/LoginAutoCheckState.dart';
 
 import '../../common/Common.dart';
 import '../../common/CommonUtils.dart';
@@ -30,17 +30,15 @@ class LoginFactoryController extends BlocController {
   List<SchoolData> _currentSearchSchoolList = [];
   String _schoolName = "";
   bool _isAutoLoginCheck = false;
-  final BuildContext context;
 
+  final BuildContext context;
   LoginFactoryController({
     required this.context
   });
 
-
   @override
   void init() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-
       await Future.delayed(Duration(milliseconds: Common.DURATION_NORMAL));
       BlocProvider.of<LoginBloc>(context).add(GetSchoolDataEvent());
     });

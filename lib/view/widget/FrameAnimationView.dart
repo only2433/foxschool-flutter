@@ -29,7 +29,7 @@ class _FrameAnimationViewState extends State<FrameAnimationView> with SingleTick
 
   late AnimationController _controller;
   late Animation<int> _animation;
-  late bool isStart;
+  late bool _isStart;
   int _animationIndex = 0;
 
   void _settingAnimation()
@@ -61,9 +61,9 @@ class _FrameAnimationViewState extends State<FrameAnimationView> with SingleTick
     super.didUpdateWidget(oldWidget);
     if (oldWidget.isStart != widget.isStart)
     {
-      isStart = widget.isStart;
+      _isStart = widget.isStart;
 
-      if(isStart)
+      if(_isStart)
       {
         _controller.repeat();
       }

@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
-import 'package:foxschool/bloc/series_contents_list/api/event/GetSeriesContentsDataEvent.dart';
+import 'package:foxschool/bloc/series_contents_list/api/event/SeriesContentsDataEvent.dart';
 import 'package:foxschool/bloc/series_contents_list/api/state/SeriesContentsDataLoadedState.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 import '../../../common/Common.dart';
@@ -17,10 +17,10 @@ class SeriesContentsBloc extends Bloc<BlocEvent, BlocState>
    required this.repository
   }) : super(InitState())
   {
-    on<GetSeriesContentsDataEvent>(_onSeriesContentsData);
+    on<SeriesContentsDataEvent>(_onSeriesContentsData);
   }
 
-  void _onSeriesContentsData(GetSeriesContentsDataEvent event, Emitter<BlocState> emit) async
+  void _onSeriesContentsData(SeriesContentsDataEvent event, Emitter<BlocState> emit) async
   {
     try
     {

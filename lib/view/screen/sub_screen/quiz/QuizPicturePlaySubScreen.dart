@@ -120,7 +120,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
             height: CommonUtils.getInstance(context).getHeight(100),
             alignment: Alignment.centerRight,
             child: RobotoBoldText(
-              text: '${widget.data.currentQuizIndex}.',
+              text: '${widget.data.currentQuizIndex + 1}.',
               fontSize: CommonUtils.getInstance(context).getWidth(45),
               color: AppColors.color_444444,
             ),

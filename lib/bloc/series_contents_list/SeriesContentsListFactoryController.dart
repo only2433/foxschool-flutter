@@ -4,21 +4,25 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
-import 'package:foxschool/bloc/series_contents_list/api/event/GetSeriesContentsDataEvent.dart';
+import 'package:foxschool/bloc/series_contents_list/api/event/SeriesContentsDataEvent.dart';
 import 'package:foxschool/bloc/series_contents_list/api/state/SeriesContentsDataLoadedState.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableBottomSelectViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 import 'package:foxschool/view/screen/MoviePlayerScreen.dart';
 import 'package:foxschool/view/screen/QuizScreen.dart';
 
 import '../../common/Common.dart';
+import '../../common/CommonUtils.dart';
 import '../../data/contents/contents_base/ContentsBaseResult.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
+import '../../values/AppColors.dart';
 import 'factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/common/PageNavigator.dart' as Page;
 import 'package:foxschool/view/dialog/BottomContentItemDialog.dart' as BottomContentDialog;
@@ -30,22 +34,69 @@ class SeriesContentsListFactoryController extends BlocController {
   bool isStillOnSeries = false;
   final BuildContext context;
   final SeriesBaseResult currentSeriesBaseResult;
+  final ScrollController scrollController;
+
+  Color _currentTitleColor = Colors.transparent;
+  ScrollDirection _currentScrollDirection = ScrollDirection.idle;
+  double _lastOffset  = 0.0;
 
   SeriesContentsListFactoryController({
     required this.context,
-    required this.currentSeriesBaseResult
+    required this.currentSeriesBaseResult,
+    required this.scrollController
   });
+
+
 
   @override
   void init() {
     context.read<SeriesItemListCubit>().showLoading();
-
+    context.read<SeriesTitleColorCubit>().setTitleColor(_currentTitleColor);
     _settingSubscriptions();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
       BlocProvider.of<SeriesContentsBloc>(context).add(
-          GetSeriesContentsDataEvent(displayID: currentSeriesBaseResult.id)
+          SeriesContentsDataEvent(displayID: currentSeriesBaseResult.id)
       );
+    });
+
+
+    scrollController.addListener(() {
+      if(_currentScrollDirection != scrollController.position.userScrollDirection)
+        {
+          _currentScrollDirection = scrollController.position.userScrollDirection;
+          if(_currentScrollDirection == ScrollDirection.forward)
+            {
+              Logger.d("아래로 스크롤");
+            }
+          else
+            {
+              Logger.d("위로 스크롤");
+            }
+          _lastOffset = scrollController.offset;
+        }
+      double currentOffset = _lastOffset - scrollController.offset;
+
+
+      if(_currentScrollDirection == ScrollDirection.reverse && currentOffset.toInt() <= -60)
+        {
+          if(_currentTitleColor != AppColors.color_ffffff)
+          {
+            _currentTitleColor = AppColors.color_ffffff;
+            context.read<SeriesTitleColorCubit>().setTitleColor(_currentTitleColor);
+
+          }
+        }
+      else if(_currentScrollDirection == ScrollDirection.forward && currentOffset.toInt() > 60)
+        {
+          if(_currentTitleColor != Colors.transparent)
+          {
+            _currentTitleColor = Colors.transparent;
+            context.read<SeriesTitleColorCubit>().setTitleColor(_currentTitleColor);
+
+          }
+        }
+
     });
   }
 
@@ -79,6 +130,7 @@ class SeriesContentsListFactoryController extends BlocController {
         _seriesContentsData.isSingleSeries() ? true : false,
         _currentContentsItemList);
   }
+
 
   String _getSeriesColor() {
     String result = "";

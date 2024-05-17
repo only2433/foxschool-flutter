@@ -12,6 +12,7 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
 import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
+import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryTitleColorCubit.dart';
 import 'package:foxschool/bloc/intro/api/IntroBloc.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
@@ -21,6 +22,7 @@ import 'package:foxschool/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
+import 'package:foxschool/bloc/main/factory/cubit/MainUserInformationCubit.dart';
 import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieCaptionTextCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
@@ -45,6 +47,7 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableSeriesDa
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import 'package:foxschool/common/CommonHttpOverrides.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/values/AppColors.dart';
@@ -129,6 +132,7 @@ class MyApp extends StatelessWidget {
           /**
            *  Main
            */
+          BlocProvider(create: (context) => MainUserInformationCubit()),
           BlocProvider(create: (context) => MainStorySelectTypeListCubit()),
           BlocProvider(create: (context) => MainSongCategoryListCubit()),
           BlocProvider(create: (context) => MainMyBooksTypeCubit()),
@@ -145,6 +149,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => LastWatchSeriesItemCubit()),
           BlocProvider(create: (context) => SeriesItemListCubit()),
           BlocProvider(create: (context) => SelectItemCountCubit()),
+          BlocProvider(create: (context) => SeriesTitleColorCubit()),
 
           /**
            * StoryCategoryListScreen
@@ -153,7 +158,7 @@ class MyApp extends StatelessWidget {
               create: (context) => getIt<CategoryContentsDataBloc>()
           ),
           BlocProvider(create: (context) => CategoryItemListCubit()),
-
+          BlocProvider(create: (context) => CategoryTitleColorCubit()),
           /**
            * Search
            */

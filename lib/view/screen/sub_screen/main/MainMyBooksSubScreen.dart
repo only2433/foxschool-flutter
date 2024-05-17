@@ -15,7 +15,7 @@ import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:foxschool/view/widget/ToggleTextButton.dart';
 
 import '../../../../bloc/main/MainFactoryController.dart';
-import '../../../../bloc/main/factory/state/MyBooksTypeState.dart';
+import '../../../../bloc/main/factory/state/MainMyBooksTypeState.dart';
 import '../../../../common/CommonUtils.dart';
 import '../../../../di/Dependencies.dart';
 import '../../../../values/AppColors.dart';
@@ -64,7 +64,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 color: AppColors.color_ffffff,
-                child: BlocBuilder<MainMyBooksTypeCubit, MyBooksTypeState>(builder: (context, state)
+                child: BlocBuilder<MainMyBooksTypeCubit, MainMyBooksTypeState>(builder: (context, state)
                 {
                   List<Widget> containers = [];
 
@@ -73,11 +73,11 @@ class MainMyBooksSubScreen extends StatelessWidget {
                       for(int i = 0 ; i < state.bookshelfList.length; i++)
                         {
                           containers.add(
-                              _bookshelfItemWidget(context, state.bookshelfList[i])
+                              _buildBookshelfItemWidget(context, state.bookshelfList[i])
                           );
                         }
                       containers.add(
-                        _addItemWidget(context, MyBooksType.BOOKSHELF)
+                        _buildAddItemWidget(context, MyBooksType.BOOKSHELF)
                       );
                     }
                   else
@@ -85,11 +85,11 @@ class MainMyBooksSubScreen extends StatelessWidget {
                       for(int i = 0 ; i < state.vocabularyList.length; i++)
                       {
                         containers.add(
-                            _vocabularyItemWidget(context, state.vocabularyList[i])
+                            _buildVocabularyItemWidget(context, state.vocabularyList[i])
                         );
                       }
                       containers.add(
-                          _addItemWidget(context, MyBooksType.VOCABULARY)
+                          _buildAddItemWidget(context, MyBooksType.VOCABULARY)
                       );
                     }
                   return Column(
@@ -103,7 +103,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
     );
   }
 
-  Widget _bookshelfItemWidget(BuildContext context, MyBookshelfResult item)
+  Widget _buildBookshelfItemWidget(BuildContext context, MyBookshelfResult item)
   {
     Logger.d("data : " + item.toString());
     BookColor color = CommonUtils.getInstance(context).getBookColorType(item.color);
@@ -174,7 +174,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
     );
   }
 
-  Widget _vocabularyItemWidget(BuildContext context, MyVocabularyResult item)
+  Widget _buildVocabularyItemWidget(BuildContext context, MyVocabularyResult item)
   {
     Logger.d("data : " + item.toString());
     BookColor color = CommonUtils.getInstance(context).getBookColorType(item.color);
@@ -245,7 +245,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
     );
   }
 
-  Widget _addItemWidget(BuildContext context, MyBooksType type)
+  Widget _buildAddItemWidget(BuildContext context, MyBooksType type)
   {
     return Container(
       width: MediaQuery.of(context).size.width,

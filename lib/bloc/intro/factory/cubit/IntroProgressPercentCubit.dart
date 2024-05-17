@@ -1,15 +1,15 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../state/ProgressPercentState.dart';
+import '../state/IntroProgressPercentState.dart';
 
-class IntroProgressPercentCubit extends Cubit<ProgressPercentState>
+class IntroProgressPercentCubit extends Cubit<IntroProgressPercentState>
 {
-  IntroProgressPercentCubit() : super(ProgressPercentState(percent: 0));
+  IntroProgressPercentCubit() : super(IntroProgressPercentState(percent: 0));
 
   void setProgressPercent(double percent)
   {
-    emit(ProgressPercentState(percent: percent));
+    emit(IntroProgressPercentState(percent: percent));
   }
 
 }

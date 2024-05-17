@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/category_contents_list/CategoryContentsListController.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
+import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryTitleColorCubit.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/state/CategoryItemListState.dart';
+import 'package:foxschool/bloc/category_contents_list/factory/state/CategoryTitleColorState.dart';
 import 'package:foxschool/bloc/series_contents_list/SeriesContentsListFactoryController.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
@@ -35,13 +37,15 @@ class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with 
   late ScrollController _scrollController;
   late CategoryContentsListController _factoryController;
   late AnimationController _animationController;
-  Color _titleColor = Colors.white;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     _factoryController = CategoryContentsListController(
-        context: context, currentSeriesBaseResult: widget.seriesBaseResult);
+        context: context,
+        currentSeriesBaseResult: widget.seriesBaseResult,
+        scrollController: _scrollController);
     _factoryController.init();
 
     _animationController = AnimationController(
@@ -49,19 +53,7 @@ class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with 
       duration: Duration(milliseconds: Common.DURATION_SHORT),
     );
 
-    _scrollController = ScrollController()
-      ..addListener(() {
-        setState(() {
-          _titleColor = _isSliverAppBarExpanded ? AppColors.color_ffffff : Colors.transparent;
-        });
-      });
 
-  }
-
-  bool get _isSliverAppBarExpanded {
-    return _scrollController.hasClients &&
-        _scrollController.offset >
-            CommonUtils.getInstance(context).getHeight(607) - CommonUtils.getInstance(context).getHeight(150);
   }
 
   @override
@@ -82,37 +74,39 @@ class _StoryCategoryListScreenState extends State<StoryCategoryListScreen> with 
             child: CustomScrollView(
               controller: _scrollController,
               slivers: <Widget>[
-                SliverAppBar(
-                  backgroundColor: topBarColor,
-                  toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
-                  expandedHeight: CommonUtils.getInstance(context).getHeight(607),
-                  centerTitle: true,
-                  title: _isSliverAppBarExpanded ? RobotoBoldText(
-                    text: widget.seriesBaseResult.name,
-                    fontSize: CommonUtils.getInstance(context).getWidth(50),
-                    color: _titleColor,
-                  ) : null,
-                  flexibleSpace: FlexibleSpaceBar(
-                    collapseMode: CollapseMode.parallax,
+                BlocBuilder<CategoryTitleColorCubit, CategoryTitleColorState>(builder: (context, state) {
+                  return SliverAppBar(
+                    backgroundColor: topBarColor,
+                    toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
+                    expandedHeight: CommonUtils.getInstance(context).getHeight(607),
+                    centerTitle: true,
+                    title: RobotoBoldText(
+                      text: widget.seriesBaseResult.name,
+                      fontSize: CommonUtils.getInstance(context).getWidth(50),
+                      color: state.titleColor,
+                    ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      collapseMode: CollapseMode.parallax,
 
-                    background: Hero(
-                      tag: widget.seriesBaseResult.id,
-                      child: Image.network(
-                        widget.seriesBaseResult.thumbnailUrl,
-                        height: CommonUtils.getInstance(context).getHeight(607),
-                        fit: BoxFit.cover,
+                      background: Hero(
+                        tag: widget.seriesBaseResult.id,
+                        child: Image.network(
+                          widget.seriesBaseResult.thumbnailUrl,
+                          height: CommonUtils.getInstance(context).getHeight(607),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  pinned: true,
-                  floating: true,
-                  leading: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white,),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
+                    pinned: true,
+                    floating: true,
+                    leading: IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white,),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                }),
                 BlocBuilder<CategoryItemListCubit, ContentsListBaseState>(
                   builder: (context, state) {
 

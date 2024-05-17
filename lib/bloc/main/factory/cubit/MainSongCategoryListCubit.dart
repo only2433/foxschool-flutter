@@ -1,17 +1,17 @@
 
 import 'package:flutter/animation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/bloc/main/factory/state/SongCategoryListState.dart';
+import 'package:foxschool/bloc/main/factory/state/MainSongCategoryListState.dart';
 
 import '../../../../data/main/series/SeriesInformationResult.dart';
 
-class MainSongCategoryListCubit extends Cubit<SongCategoryListState>
+class MainSongCategoryListCubit extends Cubit<MainSongCategoryListState>
 {
-  MainSongCategoryListCubit() : super(SongCategoryListState(list: []));
+  MainSongCategoryListCubit() : super(MainSongCategoryListState(list: []));
 
   void setSongCategoryList(List<SeriesInformationResult> itemList)
   {
-    emit(SongCategoryListState(list: itemList));
+    emit(MainSongCategoryListState(list: itemList));
   }
 
 }

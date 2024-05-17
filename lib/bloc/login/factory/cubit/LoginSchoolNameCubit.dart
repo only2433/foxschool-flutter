@@ -1,15 +1,15 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../state/SchoolNameState.dart';
+import '../state/LoginSchoolNameState.dart';
 
-class LoginSchoolNameCubit extends Cubit<SchoolNameState>
+class LoginSchoolNameCubit extends Cubit<LoginSchoolNameState>
 {
-  LoginSchoolNameCubit() : super(SchoolNameState(name: ""));
+  LoginSchoolNameCubit() : super(LoginSchoolNameState(name: ""));
 
   void setSchoolName(String value)
   {
-    emit(SchoolNameState(name: value));
+    emit(LoginSchoolNameState(name: value));
   }
 
 }

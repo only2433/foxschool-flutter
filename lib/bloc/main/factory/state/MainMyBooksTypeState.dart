@@ -7,13 +7,13 @@ import '../../../../data/main/my_book/MyBookshelfResult.dart';
 import '../../../../data/main/my_vocabulary/MyVocabularyResult.dart';
 import '../../../../enum/MyBooksType.dart';
 
-class MyBooksTypeState extends Equatable
+class MainMyBooksTypeState extends Equatable
 {
   final MyBooksType type;
   final List<MyBookshelfResult> bookshelfList;
   final List<MyVocabularyResult> vocabularyList;
 
-  MyBooksTypeState({
+  MainMyBooksTypeState({
     required this.type,
     required this.bookshelfList,
     required this.vocabularyList

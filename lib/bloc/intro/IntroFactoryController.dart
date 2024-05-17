@@ -48,9 +48,8 @@ class IntroFactoryController extends BlocController
 
   @override
   void init() {
-    _settingSubscriptions();
     Logger.d("init");
-
+    _settingSubscriptions();
     _checkPermission();
   }
 

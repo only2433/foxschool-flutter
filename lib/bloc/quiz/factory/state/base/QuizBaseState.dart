@@ -13,6 +13,8 @@ class QuizBaseState extends Equatable
 
 class InitState extends QuizBaseState {}
 
+class LoadingState extends QuizBaseState {}
+
 class LoadedCompleteState extends QuizBaseState {}
 
 

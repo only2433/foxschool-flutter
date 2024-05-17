@@ -4,11 +4,11 @@ import 'package:foxschool/bloc/base/BlocState.dart';
 
 import '../../../../data/school_data/SchoolData.dart';
 
-class SchoolNameState extends Equatable
+class LoginSchoolNameState extends Equatable
 {
   final String name;
 
-  const SchoolNameState({
+  const LoginSchoolNameState({
     required this.name,
   });
 

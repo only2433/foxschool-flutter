@@ -15,11 +15,11 @@ class QuizTopTitleView extends StatelessWidget {
   @override
   Widget build(BuildContext context)
   {
-    return _CloseButtonWidget(context);
+    return _buildCloseButtonWidget(context);
   }
 
 
-  Widget _CloseButtonWidget(BuildContext context)
+  Widget _buildCloseButtonWidget(BuildContext context)
   {
     return Container(
       width: MediaQuery.of(context).size.width,

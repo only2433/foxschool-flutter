@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
-import 'package:foxschool/bloc/intro/factory/state/ScreenTypeState.dart';
-import 'package:foxschool/bloc/intro/factory/state/ProgressPercentState.dart';
+import 'package:foxschool/bloc/intro/factory/state/IntroScreenTypeState.dart';
+import 'package:foxschool/bloc/intro/factory/state/IntroProgressPercentState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/di/Dependencies.dart';
@@ -107,11 +107,11 @@ class _IntroScreenState extends State<IntroScreen>  with WidgetsBindingObserver{
                     builder: (context, state) {
                       if (state.type == IntroScreenType.TYPE_LOGIN_PROGRESS)
                       {
-                        return Positioned(bottom: 0, child: _ProgressLayout(context));
+                        return Positioned(bottom: 0, child: _buildProgressLayout(context));
                       }
                       else
                       {
-                        return Positioned(bottom: 0, child: _ItemSelectLayout(context));
+                        return Positioned(bottom: 0, child: _buildItemSelectLayout(context));
                       }
                 })
               ],
@@ -122,14 +122,14 @@ class _IntroScreenState extends State<IntroScreen>  with WidgetsBindingObserver{
     );
   }
 
-  Widget _ProgressLayout(BuildContext context) {
+  Widget _buildProgressLayout(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(300),
       child: Column(
         children: [
           FrameAnimationView(width: CommonUtils.getInstance(context).getWidth(160), height: CommonUtils.getInstance(context).getWidth(160), duration: Duration(milliseconds: 70), isStart: true),
-          BlocBuilder<IntroProgressPercentCubit, ProgressPercentState>(
+          BlocBuilder<IntroProgressPercentCubit, IntroProgressPercentState>(
             builder: (context, state) {
               return PercentLineProgressBar(
                   percent: state.percent, width: CommonUtils.getInstance(context).getWidth(888), height: CommonUtils.getInstance(context).getWidth(50), progressColor: AppColors.color_alpha_white);
@@ -140,7 +140,7 @@ class _IntroScreenState extends State<IntroScreen>  with WidgetsBindingObserver{
     );
   }
 
-  Widget _ItemSelectLayout(BuildContext context) {
+  Widget _buildItemSelectLayout(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(524),

@@ -10,6 +10,7 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemList
 import 'package:foxschool/bloc/series_contents_list/factory/state/EnableBottomSelectViewState.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SelectItemCountState.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesTitleColorState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/view/widget/BottomIconTextView.dart';
@@ -20,6 +21,7 @@ import '../../bloc/series_contents_list/factory/cubit/EnableInformationIconViewC
 import '../../bloc/series_contents_list/factory/cubit/EnableSeriesDataViewCubit.dart';
 import '../../bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
 import '../../bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
+import '../../bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import '../../common/Common.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
 import '../../di/Dependencies.dart';
@@ -43,15 +45,17 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
   late ScrollController _scrollController;
   late SeriesContentsListFactoryController _factoryController;
   late AnimationController _animationController;
-  Color _titleColor = Colors.white;
 
   @override
   void initState() {
     super.initState();
 
     Logger.d("initState");
+    _scrollController = ScrollController();
     _factoryController = SeriesContentsListFactoryController(
-        context: context, currentSeriesBaseResult: widget.seriesBaseResult);
+        context: context,
+        currentSeriesBaseResult: widget.seriesBaseResult,
+        scrollController: _scrollController);
     _factoryController.init();
 
     _animationController = AnimationController(
@@ -59,19 +63,6 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
       duration: Duration(milliseconds: Common.DURATION_SHORT),
     );
 
-
-    _scrollController = ScrollController()
-      ..addListener(() {
-        setState(() {
-          _titleColor = _isSliverAppBarExpanded ? AppColors.color_ffffff : Colors.transparent;
-        });
-      });
-  }
-
-  bool get _isSliverAppBarExpanded {
-    return _scrollController.hasClients &&
-        _scrollController.offset >
-            CommonUtils.getInstance(context).getHeight(607) - CommonUtils.getInstance(context).getHeight(150);
   }
 
   @override
@@ -94,39 +85,41 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                 child: CustomScrollView(
                   controller: _scrollController,
                   slivers: <Widget>[
-                    SliverAppBar(
-                      backgroundColor: topBarColor,
-                      toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
-                      expandedHeight: CommonUtils.getInstance(context).getHeight(607),
-                      centerTitle: true,
-                      title: _isSliverAppBarExpanded ? RobotoBoldText(
-                        text: widget.seriesBaseResult.name,
-                        fontSize: CommonUtils.getInstance(context).getWidth(50),
-                        color: _titleColor,
-                      ) : null,
-                      flexibleSpace: FlexibleSpaceBar(
-                        collapseMode: CollapseMode.parallax,
-                        background: Hero(
-                          tag: widget.seriesBaseResult.id,
-                          child: Image.network(
-                            widget.seriesBaseResult.thumbnailUrl,
-                            height: CommonUtils.getInstance(context).getHeight(607),
-                            fit: BoxFit.cover,
+                    BlocBuilder<SeriesTitleColorCubit, SeriesTitleColorState>(builder: (context, state) {
+                      return SliverAppBar(
+                        backgroundColor: topBarColor,
+                        toolbarHeight: CommonUtils.getInstance(context).getHeight(150),
+                        expandedHeight: CommonUtils.getInstance(context).getHeight(607),
+                        centerTitle: true,
+                        title: RobotoBoldText(
+                          text: widget.seriesBaseResult.name,
+                          fontSize: CommonUtils.getInstance(context).getWidth(50),
+                          color: state.titleColor,
+                        ),
+                        flexibleSpace: FlexibleSpaceBar(
+                          collapseMode: CollapseMode.parallax,
+                          background: Hero(
+                            tag: widget.seriesBaseResult.id,
+                            child: Image.network(
+                              widget.seriesBaseResult.thumbnailUrl,
+                              height: CommonUtils.getInstance(context).getHeight(607),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      pinned: true,
-                      floating: true,
-                      onStretchTrigger: () async {
-                        Logger.d("onStretchTrigger");
-                      },
-                      leading: IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.white,),
-                        onPressed: () {
-                          Navigator.pop(context);
+                        pinned: true,
+                        floating: true,
+                        onStretchTrigger: () async {
+                          Logger.d("onStretchTrigger");
                         },
-                      ),
-                    ),
+                        leading: IconButton(
+                          icon: Icon(Icons.arrow_back, color: Colors.white,),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      );
+                    }),
                     BlocBuilder<SeriesItemListCubit, ContentsListBaseState>(builder: (context, state) {
                         if (state is SeriesItemListState)
                         {

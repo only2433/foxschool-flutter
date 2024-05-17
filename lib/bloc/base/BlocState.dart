@@ -17,10 +17,10 @@ class LoadingState extends BlocState {}
 class ErrorState extends BlocState{
   final String message;
 
-  ErrorState({
+  const ErrorState({
     required this.message
   });
 
   @override
-  List<Object> get props => [this.message];
+  List<Object> get props => [message];
 }

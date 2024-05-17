@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:foxschool/bloc/main/factory/cubit/MainUserInformationCubit.dart';
+import 'package:foxschool/bloc/main/factory/state/MainUserInformationState.dart';
 import 'package:foxschool/data/login/user_info_section/UserInfoSectionResult.dart';
 import 'package:foxschool/data/main/main_story_infomation/MainStoryInformationResult.dart';
 import 'package:foxschool/enum/MainMenuDrawerType.dart';
@@ -39,36 +42,6 @@ class _MainScreenState extends State<MainScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late MainFactoryController _factoryController;
   late PersistentTabController _controller;
-  late MainInformationResult _mainData;
-  late LoginInformationResult _userData;
-  int _selectedIndex = 0;
-  String _schoolName = "";
-  String _userName = "";
-  String _userClass = "";
-
-  Future<void> loadMainData() async
-  {
-    Object? userObject = await Preference.getObject(Common.PARAMS_USER_API_INFORMATION);
-    if (userObject != null) {
-      _userData = LoginInformationResult.fromJson(userObject as Map<String, dynamic>);
-      setState(() {
-        _schoolName = _userData.schoolData!.name;
-        _userName = _userData.userData!.name;
-        _userClass = _userData.schoolData!.className;
-      });
-    }
-
-    Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
-    if (mainObject != null) {
-      _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
-    }
-  }
-
-  void _setTabNavigation(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   List<Widget> _buildScreens() {
     return [
@@ -108,8 +81,7 @@ class _MainScreenState extends State<MainScreen> {
     _factoryController = MainFactoryController(context: context);
     _factoryController.init();
 
-    _controller = PersistentTabController(initialIndex: _selectedIndex);
-    loadMainData();
+    _controller = PersistentTabController(initialIndex: 0);
   }
 
   @override
@@ -124,15 +96,17 @@ class _MainScreenState extends State<MainScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              MainScreenTitleView(
-                title: _schoolName,
-                onMenuPressed: () {
-                  _scaffoldKey.currentState?.openDrawer();
-                },
-                onSearchPressed: () {
-                   _factoryController.onClickSearch();
-                },
-              ),
+              BlocBuilder<MainUserInformationCubit, MainUserInformationState>(builder: (context, state) {
+                return MainScreenTitleView(
+                  title: state.userSchoolName,
+                  onMenuPressed: () {
+                    _scaffoldKey.currentState?.openDrawer();
+                  },
+                  onSearchPressed: () {
+                    _factoryController.onClickSearch();
+                  },
+                );
+              }),
               Expanded(child: PersistentTabView(
                 context,
                 controller: _controller,
@@ -170,13 +144,15 @@ class _MainScreenState extends State<MainScreen> {
       ),
 
       drawer: Drawer(
-        child: MainMenuDrawerView(
-          userName: _userName,
-          userClass: _userClass,
-          onSelected: (type) async {
-            checkDrawerItem(type);
-          },
-        ),
+        child: BlocBuilder<MainUserInformationCubit, MainUserInformationState>(builder: (context, state) {
+          return MainMenuDrawerView(
+            userName: state.userName,
+            userClass: state.userClass,
+            onSelected: (type) async {
+              checkDrawerItem(type);
+            },
+          );
+        }),
       ),
 
     );
