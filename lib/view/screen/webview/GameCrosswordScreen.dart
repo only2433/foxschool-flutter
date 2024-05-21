@@ -34,7 +34,7 @@ class _GameCrosswordScreenState extends State<GameCrosswordScreen> {
 
     isInAppWebViewReady = false;
     isWebViewLoadingComplete = false;
-    Locale locale = WidgetsBinding.instance.window.locale;
+
     Future.delayed(const Duration(milliseconds: Common.DURATION_NORMAL), () {
       setState(() {
         isInAppWebViewReady = true;
@@ -84,7 +84,7 @@ class _GameCrosswordScreenState extends State<GameCrosswordScreen> {
                       android: AndroidInAppWebViewOptions(useHybridComposition: true)
                   ),
                   onLoadStart: (controller, url) {
-
+                    Logger.d("url : $url");
                   },
                   onLoadStop: (controller, url) async{
                     await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG), () {

@@ -192,7 +192,7 @@ class BottomContentLayoutWidget extends StatelessWidget {
   {
     List<ContentsItemType> result = [];
     int androidSDKInt = await CommonUtils.getInstance(context).getSDKInt();
-    if(CommonUtils.getInstance(context).getDeviceType() == DeviceType.TABLET  && androidSDKInt >= 23)
+    if(data.serviceInfo?.ebookSupportType == Common.SERVICE_SUPPORTED_PAID)
       {
         result.add(ContentsItemType.EBOOK);
       }

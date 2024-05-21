@@ -238,5 +238,5 @@ class Common
 
   static const int PAGE_LOAD_COUNT = 20;
 
-  static const String TEST_USER_AGENT = "LF_APP_AOS:phone/1.0.0/SM-N981N/Android:13";
+  static const String TEST_USER_AGENT = "LF_APP_AOS:phone/1.0.0/SM-S911N/Android:14";
 }

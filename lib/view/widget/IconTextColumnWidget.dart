@@ -25,7 +25,6 @@ class IconTextColumnWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger.d("imagePath : $imagePath");
     return Container(
       width: width,
       height: height,

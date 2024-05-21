@@ -49,10 +49,6 @@ class _GamsStarwordsScreenState extends State<GamsStarwordsScreen> {
         canPop: true,
         onPopInvoked: (didPop) async {
 
-
-         // await _webViewController.clearCache();
-        //  await _webViewController.loadData(data: "");
-
           await SystemChrome.setPreferredOrientations([
             DeviceOrientation.portraitUp,
           ]);

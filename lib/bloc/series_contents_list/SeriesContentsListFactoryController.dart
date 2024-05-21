@@ -17,6 +17,7 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesTitleCol
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 import 'package:foxschool/view/screen/MoviePlayerScreen.dart';
 import 'package:foxschool/view/screen/QuizScreen.dart';
+import 'package:foxschool/view/screen/webview/EbookScreen.dart';
 import 'package:foxschool/view/screen/webview/GameCrosswordScreen.dart';
 import 'package:foxschool/view/screen/webview/GameStarwordsScreen.dart';
 import 'package:foxschool/view/screen/webview/TranslateScreen.dart';
@@ -190,7 +191,7 @@ class SeriesContentsListFactoryController extends BlocController {
         String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
         Navigator.push(
             context,
-            Page.getDefaultJoinedTransition(context,
+            Page.getDefaultTransition(context,
                 GameCrosswordScreen(
                     crosswordID: data.id,
                     accessToken: accessToken)
@@ -213,13 +214,23 @@ class SeriesContentsListFactoryController extends BlocController {
         String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
         Navigator.push(
             context,
-            Page.getDefaultJoinedTransition(context,
+            Page.getDefaultTransition(context,
                 TranslateScreen(
                     translateID: data.id,
                     accessToken: accessToken)
             )
         );
         break;
+      case ContentsItemType.EBOOK:
+        String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
+        Navigator.push(
+            context,
+            Page.getDefaultTransition(context,
+                EbookScreen(
+                    ebookID: data.id,
+                    accessToken: accessToken)
+            )
+        );
       default:
         break;
     }
