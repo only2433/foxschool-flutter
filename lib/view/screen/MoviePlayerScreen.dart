@@ -185,23 +185,23 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                     return Container();
                   }
                 }),
-                _getMenuLayout(),
+                _buildMenuLayout(),
 
                 BlocBuilder<MoviePlayCompleteCubit, MoviePlayCompleteState>(builder: (context, state) {
                   Logger.d("state.isComplete : ${state.isComplete}");
-                  return _getPlayerEndLayout(state.isComplete);
+                  return _buildPlayerEndLayout(state.isComplete);
                 }),
                 Positioned(
                     left: 0,
                     top: CommonUtils.getInstance(context).getHeight(552),
-                    child: _getPlayerTitleLayout()
+                    child: _buildPlayerTitleLayout()
                 ),
 
                 Positioned(
                   left: 0,
                   top: CommonUtils.getInstance(context).getHeight(532),
                   width: MediaQuery.of(context).size.width,
-                  child: _getSeekProgressView(),
+                  child: _buildSeekProgressView(),
                 )
               ],
             ),
@@ -224,7 +224,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                         fontSize: CommonUtils.getInstance(context).getWidth(40),
                       ),
                     ),
-                    _getPlayListView()
+                    _buildPlayListView()
                   ],
                 ),
               )
@@ -234,7 +234,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
     );
   }
 
-  Widget _getMenuLayout()
+  Widget _buildMenuLayout()
   {
     return Stack(
       children: [
@@ -488,7 +488,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
 
 
 
-  Widget _getPlayerEndLayout(bool isComplete)
+  Widget _buildPlayerEndLayout(bool isComplete)
   {
     if(isComplete)
     {
@@ -648,7 +648,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
     );
   }
 
-  Widget _getSeekProgressView()
+  Widget _buildSeekProgressView()
   {
     return SliderTheme(
         data: SliderThemeData(
@@ -710,11 +710,11 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
               }
             },
           ),
-          _getLandscapeMenuLayout(),
+          _buildLandscapeMenuLayout(),
           BlocBuilder<MoviePlayCompleteCubit, MoviePlayCompleteState>(
             builder: (context, state) {
               Logger.d("state.isComplete : ${state.isComplete}");
-              return _getLandscapePlayerEndLayout(state.isComplete);
+              return _buildLandscapePlayerEndLayout(state.isComplete);
             },
           ),
         ],
@@ -723,7 +723,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
   }
 
 
-  Widget _getLandscapeMenuLayout()
+  Widget _buildLandscapeMenuLayout()
   {
     return Stack(
       children: [
@@ -995,7 +995,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                     Container(
                       width: CommonUtils.getInstance(context).getWidth(1130),
                       height: CommonUtils.getInstance(context).getHeight(62),
-                      child: _getSeekProgressView(),
+                      child: _buildSeekProgressView(),
                     ),
                     //-- TotalTime
                     BlocBuilder<MoviePlayTimeCubit, MoviePlayTimeState>(builder: (context, state) {
@@ -1033,7 +1033,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
   
 
 
-  Widget _getLandscapePlayerEndLayout(bool isComplete)
+  Widget _buildLandscapePlayerEndLayout(bool isComplete)
   {
     if(isComplete)
     {
@@ -1195,7 +1195,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
   }
 
 
-  Widget _getPlayerTitleLayout()
+  Widget _buildPlayerTitleLayout()
   {
     return BlocBuilder<MoviePlayTitleCubit, MoviePlayTitleState>(builder: (context, state) {
       return Container(
@@ -1234,7 +1234,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
     });
   }
 
-  Widget _getPlayListView()
+  Widget _buildPlayListView()
   {
     return BlocBuilder<MoviePlayListCubit, MoviePlayListState>(
       builder: (context, state) {

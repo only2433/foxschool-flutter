@@ -1,13 +1,13 @@
 
 import 'package:equatable/equatable.dart';
 
-class UserInteractionState extends Equatable
+class QuizUserInteractionState extends Equatable
 {
   final int pictureQuizSelectIndex;
   final int textQuizSelectIndex;
   final bool isCorrect;
   final bool isSelectedComplete;
-  UserInteractionState({
+  QuizUserInteractionState({
     required this.pictureQuizSelectIndex,
     required this.textQuizSelectIndex,
     required this.isCorrect,

@@ -5,10 +5,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/series_contents_list/SeriesContentsListFactoryController.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableBottomSelectViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableBottomViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/EnableBottomSelectViewState.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/SelectItemCountState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesEnableBottomViewState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesSelectItemCountState.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesTitleColorState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
@@ -17,10 +17,10 @@ import 'package:foxschool/view/widget/BottomIconTextView.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
 
 import '../../bloc/base/ContentsListBaseState.dart';
-import '../../bloc/series_contents_list/factory/cubit/EnableInformationIconViewCubit.dart';
-import '../../bloc/series_contents_list/factory/cubit/EnableSeriesDataViewCubit.dart';
-import '../../bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
-import '../../bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
+import '../../bloc/series_contents_list/factory/cubit/SeriesEnableInformationViewCubit.dart';
+import '../../bloc/series_contents_list/factory/cubit/SeriesEnableDataViewCubit.dart';
+import '../../bloc/series_contents_list/factory/cubit/SeriesLastWatchItemCubit.dart';
+import '../../bloc/series_contents_list/factory/cubit/SeriesSelectItemCountCubit.dart';
 import '../../bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import '../../common/Common.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
@@ -189,8 +189,8 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                   ],
                 ),
               ),
-              _getBottomControllerLayout(),
-              BlocBuilder<EnableBottomSelectViewCubit, EnableBottomSelectViewState>(builder: (context, state) {
+              _buildBottomControllerLayout(),
+              BlocBuilder<SeriesEnableBottomViewCubit, SeriesEnableBottomViewState>(builder: (context, state) {
                 return Positioned(
                     right: CommonUtils.getInstance(context).getWidth(30),
                     bottom: CommonUtils.getInstance(context).getHeight(50),
@@ -217,9 +217,9 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
     );
   }
 
-  Widget _getBottomControllerLayout()
+  Widget _buildBottomControllerLayout()
   {
-    return BlocBuilder<EnableBottomSelectViewCubit, EnableBottomSelectViewState>(builder: (context, state) {
+    return BlocBuilder<SeriesEnableBottomViewCubit, SeriesEnableBottomViewState>(builder: (context, state) {
 
       return Positioned(
         left: 0,
@@ -257,7 +257,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                           onPressed: (){
                             _factoryController.onClickSelectedListPlay();
                           }),
-                      BlocBuilder<SelectItemCountCubit, SelectItemCountState>(builder: (context, state) {
+                      BlocBuilder<SeriesSelectItemCountCubit, SeriesSelectItemCountState>(builder: (context, state) {
 
                         if(state.count != 0)
                           {

@@ -2,10 +2,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 
-class EnableBottomSelectViewState extends Equatable
+class SeriesEnableBottomViewState extends Equatable
 {
   final bool isEnable;
-  const EnableBottomSelectViewState({
+  const SeriesEnableBottomViewState({
     required this.isEnable
   });
 

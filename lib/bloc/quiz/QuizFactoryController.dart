@@ -15,8 +15,8 @@ import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTimeCubit.dart';
 import 'package:foxschool/bloc/quiz/api/QuizInformationBloc.dart';
 import 'package:foxschool/bloc/quiz/api/event/QuizInformationEvent.dart';
 import 'package:foxschool/bloc/quiz/api/state/QuizInformationLoadedState.dart';
-import 'package:foxschool/bloc/quiz/factory/cubit/ConstituteWidgetCubit.dart';
-import 'package:foxschool/bloc/quiz/factory/cubit/EnableTaskboxCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizConstituteWidgetCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizEnableTaskboxCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizCorrectCountCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizReadyDataCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/state/QuizRemainTimeState.dart';
@@ -99,8 +99,8 @@ class QuizFactoryController extends BlocController {
     _maxPageCount = 0;
     pageController.addListener(_handlePageChange);
     context.read<QuizReadyDataCubit>().showLoading();
-    context.read<ConstituteWidgetCubit>().setWidgetList([]);
-    context.read<EnableTaskboxCubit>().setEnable(false);
+    context.read<QuizConstituteWidgetCubit>().setWidgetList([]);
+    context.read<QuizEnableTaskboxCubit>().setEnable(false);
     _initAudioPlayer();
     _settingSubscription();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -350,7 +350,7 @@ class QuizFactoryController extends BlocController {
     result.add(QuizResultSubScreen(quizFactoryController: this));
 
     _maxPageCount = result.length;
-    context.read<ConstituteWidgetCubit>().setWidgetList(result);
+    context.read<QuizConstituteWidgetCubit>().setWidgetList(result);
   }
 
   void _constituteTextQuizList()
@@ -368,7 +368,7 @@ class QuizFactoryController extends BlocController {
     result.add(QuizResultSubScreen(quizFactoryController: this));
 
     _maxPageCount = result.length;
-    context.read<ConstituteWidgetCubit>().setWidgetList(result);
+    context.read<QuizConstituteWidgetCubit>().setWidgetList(result);
   }
 
 
@@ -387,7 +387,7 @@ class QuizFactoryController extends BlocController {
     result.add(QuizResultSubScreen(quizFactoryController: this));
 
     _maxPageCount = result.length;
-    context.read<ConstituteWidgetCubit>().setWidgetList(result);
+    context.read<QuizConstituteWidgetCubit>().setWidgetList(result);
   }
 
 
@@ -400,10 +400,10 @@ class QuizFactoryController extends BlocController {
       _currentPageIndex = newPageIndex;
       if (_currentPageIndex == _maxPageCount) {
         _enableTimer(false);
-        context.read<EnableTaskboxCubit>().setEnable(false);
+        context.read<QuizEnableTaskboxCubit>().setEnable(false);
       }
       else {
-        context.read<EnableTaskboxCubit>().setEnable(true);
+        context.read<QuizEnableTaskboxCubit>().setEnable(true);
         if (_currentPageIndex == 1) {
           _userSelectDataList.clear();
           _initTaskboxData();
@@ -662,8 +662,6 @@ class QuizFactoryController extends BlocController {
   {
 
   }
-
-  bool isLoading = false;
 
   void onClickReplayButton() async
   {

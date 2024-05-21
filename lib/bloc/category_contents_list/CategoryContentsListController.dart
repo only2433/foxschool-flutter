@@ -18,7 +18,7 @@ import '../../data/main/series/base/SeriesBaseResult.dart';
 import '../../data/story_category_contents/StoryCategoryContentsResult.dart';
 import '../../values/AppColors.dart';
 import '../../view/screen/SeriesContentListScreen.dart';
-import 'api/event/GetCategoryContentsEvent.dart';
+import 'api/event/CategoryContentsEvent.dart';
 
 class CategoryContentsListController extends BlocController
 {
@@ -47,7 +47,7 @@ class CategoryContentsListController extends BlocController
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
       await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
       BlocProvider.of<CategoryContentsDataBloc>(context).add(
-        GetCategoryContentsEvent(displayID: currentSeriesBaseResult.id)
+        CategoryContentsEvent(displayID: currentSeriesBaseResult.id)
       );
     });
 

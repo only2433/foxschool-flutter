@@ -33,6 +33,18 @@ PageTransition getDefaultTransition(BuildContext context, Widget toWidget)
   );
 }
 
+PageTransition getScaleTransition(BuildContext context, Widget toWidget)
+{
+  return PageTransition(
+    curve: Curves.decelerate,
+    duration: Duration(milliseconds: Common.DURATION_SHORT),
+    reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
+    type: PageTransitionType.scale,
+    alignment: Alignment.center,
+    child: toWidget,
+  );
+}
+
 PageTransition getMainTransition()
 {
   return PageTransition(

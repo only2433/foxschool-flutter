@@ -3,7 +3,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 
-class EnableSeriesDataViewState extends Equatable
+class SeriesDataViewState extends Equatable
 {
   final String seriesType;
   final int level;
@@ -11,7 +11,7 @@ class EnableSeriesDataViewState extends Equatable
   final bool isSingleSeries;
   final String arLevelData;
 
-  EnableSeriesDataViewState({
+  SeriesDataViewState({
     required this.seriesType,
     required this.level,
     required this.count,

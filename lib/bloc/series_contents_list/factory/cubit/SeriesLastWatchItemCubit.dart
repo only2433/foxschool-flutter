@@ -1,10 +1,10 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/LastWatchSeriesItemState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesLastWatchItemState.dart';
 
-class LastWatchSeriesItemCubit extends Cubit<LastWatchSeriesItemState>
+class SeriesLastWatchItemCubit extends Cubit<SeriesLastWatchItemState>
 {
-  LastWatchSeriesItemCubit() : super(LastWatchSeriesItemState(
+  SeriesLastWatchItemCubit() : super(SeriesLastWatchItemState(
       seriesName: "",
       nickName: "",
       position: -1,
@@ -13,7 +13,7 @@ class LastWatchSeriesItemCubit extends Cubit<LastWatchSeriesItemState>
 
   void showLastWatchSeriesItem(String seriesName, String nickName, int position, bool isLastMovie)
   {
-    emit(LastWatchSeriesItemState(
+    emit(SeriesLastWatchItemState(
         seriesName: seriesName,
         nickName: nickName,
         position: position,

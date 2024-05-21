@@ -1,10 +1,10 @@
 
 import 'package:equatable/equatable.dart';
 
-class EnableTaskboxState extends Equatable
+class QuizEnableTaskboxState extends Equatable
 {
   final bool isEnable;
-  EnableTaskboxState({
+  QuizEnableTaskboxState({
     required this.isEnable
   });
 

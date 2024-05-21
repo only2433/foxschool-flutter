@@ -1,10 +1,10 @@
 
 import 'package:equatable/equatable.dart';
 
-class SelectItemCountState extends Equatable
+class SeriesSelectItemCountState extends Equatable
 {
   final int count;
-  SelectItemCountState({
+  SeriesSelectItemCountState({
     required this.count
   });
 

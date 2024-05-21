@@ -31,21 +31,21 @@ import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
 import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
 import 'package:foxschool/bloc/quiz/api/QuizInformationBloc.dart';
-import 'package:foxschool/bloc/quiz/factory/cubit/ConstituteWidgetCubit.dart';
-import 'package:foxschool/bloc/quiz/factory/cubit/EnableTaskboxCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizConstituteWidgetCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizEnableTaskboxCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizCorrectCountCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizReadyDataCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizRemainTimeCubit.dart';
-import 'package:foxschool/bloc/quiz/factory/cubit/UserInteractionCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizUserInteractionCubit.dart';
 import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchItemListCubit.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchTypeCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableBottomSelectViewCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableInformationIconViewCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableSeriesDataViewCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/LastWatchSeriesItemCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableBottomViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableInformationViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableDataViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesLastWatchItemCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesSelectItemCountCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import 'package:foxschool/common/CommonHttpOverrides.dart';
@@ -143,12 +143,12 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => getIt<SeriesContentsBloc>(),
           ),
-          BlocProvider(create: (context) => EnableInformationIconViewCubit()),
-          BlocProvider(create: (context) => EnableSeriesDataViewCubit()),
-          BlocProvider(create: (context) => EnableBottomSelectViewCubit()),
-          BlocProvider(create: (context) => LastWatchSeriesItemCubit()),
+          BlocProvider(create: (context) => SeriesEnableInformationViewCubit()),
+          BlocProvider(create: (context) => SeriesDataViewCubit()),
+          BlocProvider(create: (context) => SeriesEnableBottomViewCubit()),
+          BlocProvider(create: (context) => SeriesLastWatchItemCubit()),
           BlocProvider(create: (context) => SeriesItemListCubit()),
-          BlocProvider(create: (context) => SelectItemCountCubit()),
+          BlocProvider(create: (context) => SeriesSelectItemCountCubit()),
           BlocProvider(create: (context) => SeriesTitleColorCubit()),
 
           /**
@@ -189,8 +189,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) => getIt<QuizInformationBloc>()),
           BlocProvider(create: (context) => QuizReadyDataCubit()),
-          BlocProvider(create: (context) => EnableTaskboxCubit()),
-          BlocProvider(create: (context) => ConstituteWidgetCubit()),
+          BlocProvider(create: (context) => QuizEnableTaskboxCubit()),
+          BlocProvider(create: (context) => QuizConstituteWidgetCubit()),
           BlocProvider(create: (context) => QuizRemainTimeCubit()),
           BlocProvider(create: (context) => QuizCorrectCountCubit()),
         ],

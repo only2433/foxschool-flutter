@@ -6,11 +6,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/quiz/QuizFactoryController.dart';
-import 'package:foxschool/bloc/quiz/factory/cubit/ConstituteWidgetCubit.dart';
-import 'package:foxschool/bloc/quiz/factory/cubit/EnableTaskboxCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizConstituteWidgetCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizEnableTaskboxCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizCorrectCountCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizRemainTimeCubit.dart';
-import 'package:foxschool/bloc/quiz/factory/state/EnableTaskboxState.dart';
+import 'package:foxschool/bloc/quiz/factory/state/QuizEnableTaskboxState.dart';
 import 'package:foxschool/bloc/quiz/factory/state/QuizCorrectCountState.dart';
 import 'package:foxschool/bloc/quiz/factory/state/QuizRemainTimeState.dart';
 import 'package:foxschool/view/screen/sub_screen/quiz/QuizIntroSubScreen.dart';
@@ -18,7 +18,7 @@ import 'package:foxschool/view/screen/sub_screen/quiz/QuizPicturePlaySubScreen.d
 import 'package:foxschool/view/screen/sub_screen/quiz/QuizResultSubScreen.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 
-import '../../bloc/quiz/factory/state/ConstituteWidgetState.dart';
+import '../../bloc/quiz/factory/state/QuizConstituteWidgetState.dart';
 import '../../common/Common.dart';
 import '../../common/CommonUtils.dart';
 import '../../common/FoxschoolLocalization.dart';
@@ -94,7 +94,7 @@ class _QuizScreenState extends State<QuizScreen> {
               Expanded(
                 child: Stack(
                   children: [
-                    BlocBuilder<ConstituteWidgetCubit, ConstituteWidgetState>(
+                    BlocBuilder<QuizConstituteWidgetCubit, QuizConstituteWidgetState>(
                       builder: (context, state) {
                         return PageView(
                           controller: _pageController,
@@ -110,7 +110,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           ],
                         );
                       },),
-                    BlocBuilder<EnableTaskboxCubit, EnableTaskboxState>(builder: (context, state) {
+                    BlocBuilder<QuizEnableTaskboxCubit, QuizEnableTaskboxState>(builder: (context, state) {
                       if(state.isEnable)
                       {
                         return _buildTaskboxLayout();

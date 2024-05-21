@@ -30,14 +30,11 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
 
-  final int MAX_TEXT_FIELD_COUNT = 1;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _searchTitleTextController = TextEditingController();
   late ScrollController _scrollController;
   late SearchContentsListFactoryController _factoryController;
   late FocusNode _searchFocusNode;
-  String _currentSearchType = Common.CONTENT_TYPE_ALL;
-
 
   @override
   void initState() {
@@ -109,11 +106,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       SizedBox(
                           height: CommonUtils.getInstance(context).getHeight(10)
                       ),
-                      _getSelectItemLayout(),
+                      _buildSelectItemLayout(),
                       SizedBox(
                         height: CommonUtils.getInstance(context).getHeight(5)
                       ),
-                      _getSearchTextFieldLayout()
+                      _buildSearchTextFieldLayout()
                     ],
                   )
               ),
@@ -201,7 +198,7 @@ class _SearchScreenState extends State<SearchScreen> {
   
   
 
-  Widget _getSelectItemLayout()
+  Widget _buildSelectItemLayout()
   {
     return BlocBuilder<SearchTypeCubit, SearchTypeState>(builder: (context, state) {
       Logger.d("state.type : ${state.type}");
@@ -286,7 +283,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _getSearchTextFieldLayout()
+  Widget _buildSearchTextFieldLayout()
   {
     return Form(
       key: _formKey,

@@ -2,10 +2,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-class ConstituteWidgetState extends Equatable
+class QuizConstituteWidgetState extends Equatable
 {
   List<Widget> list;
-  ConstituteWidgetState({
+  QuizConstituteWidgetState({
     required this.list
   });
 

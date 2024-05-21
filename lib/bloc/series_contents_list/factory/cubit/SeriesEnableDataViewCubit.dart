@@ -1,14 +1,14 @@
 
 import 'package:flutter/animation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/EnableInformationIconViewState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesEnableInformationViewState.dart';
 
-import '../state/EnableSeriesDataViewState.dart';
+import '../state/SeriesDataViewState.dart';
 
-class EnableSeriesDataViewCubit extends Cubit<EnableSeriesDataViewState>
+class SeriesDataViewCubit extends Cubit<SeriesDataViewState>
 {
-  EnableSeriesDataViewCubit() : super(
-      EnableSeriesDataViewState(
+  SeriesDataViewCubit() : super(
+      SeriesDataViewState(
         seriesType: "",
         level: -1,
         count: 0,
@@ -18,7 +18,7 @@ class EnableSeriesDataViewCubit extends Cubit<EnableSeriesDataViewState>
 
   void showSeriesDataView(String seriesType, int level, int count, bool isSingleSeries, String arLevelData)
   {
-    emit(EnableSeriesDataViewState(
+    emit(SeriesDataViewState(
         seriesType: seriesType,
         level: level,
         count: count,

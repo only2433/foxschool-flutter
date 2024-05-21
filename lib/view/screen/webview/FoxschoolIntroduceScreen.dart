@@ -66,7 +66,7 @@ class _FoxschoolIntroduceScreenState extends State<FoxschoolIntroduceScreen> {
                               android: AndroidInAppWebViewOptions(useHybridComposition: true,),
                           ),
                           onLoadStart: (controller, url) {
-                            print("onLoadStart");
+
                           },
                           onLoadStop: (controller, url) async{
                             print("onLoadStop");

@@ -6,8 +6,8 @@ import 'package:foxschool/data/quiz/quiz_data/text/QuizTextData.dart';
 import 'package:foxschool/view/widget/QuizExampleTextWidget.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../bloc/quiz/factory/cubit/UserInteractionCubit.dart';
-import '../../../../bloc/quiz/factory/state/UserInteractionState.dart';
+import '../../../../bloc/quiz/factory/cubit/QuizUserInteractionCubit.dart';
+import '../../../../bloc/quiz/factory/state/QuizUserInteractionState.dart';
 import '../../../../common/Common.dart';
 import '../../../../common/CommonUtils.dart';
 import '../../../../common/FoxschoolLocalization.dart';
@@ -32,7 +32,7 @@ class QuizTextPlaySubScreen extends StatefulWidget {
 
 class _QuizTextPlaySubScreenState extends State<QuizTextPlaySubScreen> with TickerProviderStateMixin{
 
-  late UserInteractionCubit _userInteractionCubit; // Cubit 인스턴스 선언
+  late QuizUserInteractionCubit _userInteractionCubit; // Cubit 인스턴스 선언
   late AnimationController _animationController;
   late Animation<double> _rotationAnimation;
 
@@ -40,7 +40,7 @@ class _QuizTextPlaySubScreenState extends State<QuizTextPlaySubScreen> with Tick
   @override
   void initState() {
     super.initState();
-    _userInteractionCubit = UserInteractionCubit();
+    _userInteractionCubit = QuizUserInteractionCubit();
   }
 
   @override
@@ -153,16 +153,16 @@ class _QuizTextPlaySubScreenState extends State<QuizTextPlaySubScreen> with Tick
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(500),
-      child: BlocBuilder<UserInteractionCubit, UserInteractionState>(
+      child: BlocBuilder<QuizUserInteractionCubit, QuizUserInteractionState>(
         builder: (context, state) {
           return Column(
-            children: _getTextExampleItemView(context, state),
+            children: _buildTextExampleItemView(context, state),
           );
       }),
     );
   }
 
-  List<Widget> _getTextExampleItemView(BuildContext context, UserInteractionState state)
+  List<Widget> _buildTextExampleItemView(BuildContext context, QuizUserInteractionState state)
   {
     List<Widget> result = [];
     final List<String> INDEX_RESOURCE = [
@@ -187,17 +187,17 @@ class _QuizTextPlaySubScreenState extends State<QuizTextPlaySubScreen> with Tick
       final index = i;
       result.add(QuizExampleTextWidget(
           indexImage: INDEX_RESOURCE[index],
-          checkImage: _checkImage(index, widget.data.exampleList[i].isAnswer, state),
+          checkImage: _getCheckStatusImage(index, widget.data.exampleList[i].isAnswer, state),
           text: widget.data.exampleList[index].text,
           onItemPressed: () {
             Logger.d("select : $index, isCorrect : ${widget.data.exampleList[index].isAnswer}");
             if(widget.data.exampleList[index].isAnswer)
               {
-                context.read<UserInteractionCubit>().selectTextQuiz(index, true);
+                context.read<QuizUserInteractionCubit>().selectTextQuiz(index, true);
               }
             else
               {
-                context.read<UserInteractionCubit>().selectTextQuiz(index, false);
+                context.read<QuizUserInteractionCubit>().selectTextQuiz(index, false);
               }
             widget.quizController.onPlayCorrectSound(widget.data.exampleList[index].isAnswer);
             widget.quizController.onSelectTextQuizData(index, widget.data);
@@ -209,49 +209,11 @@ class _QuizTextPlaySubScreenState extends State<QuizTextPlaySubScreen> with Tick
     return result;
   }
 
-  String _checkImage(int itemIndex, bool isAnswer, UserInteractionState state)
-  {
-    if(state.isSelectedComplete)
-    {
-      if(state.isCorrect)
-        {
-          if(itemIndex == state.textQuizSelectIndex)
-          {
-            return 'assets/image/icon_check_on.png';
-          }
-          else
-          {
-            return 'assets/image/icon_check_off.png';
-          }
-        }
-      else
-        {
-          if(itemIndex == state.textQuizSelectIndex)
-          {
-            return 'assets/image/icon_check_on.png';
-          }
-          else
-          {
-            if(isAnswer)
-              {
-                return 'assets/image/icon_check_answer.png';
-              }
-            else
-              {
-                return 'assets/image/icon_check_off.png';
-              }
-          }
-        }
-    }
-    else
-    {
-      return 'assets/image/icon_check_off.png';
-    }
-  }
+
 
   Widget _buildNextButtonView(BuildContext context)
   {
-    return BlocBuilder<UserInteractionCubit, UserInteractionState>(builder: (context, state) {
+    return BlocBuilder<QuizUserInteractionCubit, QuizUserInteractionState>(builder: (context, state) {
       return Center(
         child: Opacity(
           opacity: state.isSelectedComplete ? 1.0 : 0.3,
@@ -287,7 +249,7 @@ class _QuizTextPlaySubScreenState extends State<QuizTextPlaySubScreen> with Tick
 
   Widget _buildCheckAnimationView(BuildContext context)
   {
-    return BlocConsumer<UserInteractionCubit, UserInteractionState>(
+    return BlocConsumer<QuizUserInteractionCubit, QuizUserInteractionState>(
       listener: (context, state) {
         if(state.isSelectedComplete)
         {
@@ -324,5 +286,45 @@ class _QuizTextPlaySubScreenState extends State<QuizTextPlaySubScreen> with Tick
         );
       },
     );
+  }
+
+  String _getCheckStatusImage(int itemIndex, bool isAnswer, QuizUserInteractionState state)
+  {
+    if(state.isSelectedComplete)
+    {
+      if(state.isCorrect)
+      {
+        if(itemIndex == state.textQuizSelectIndex)
+        {
+          return 'assets/image/icon_check_on.png';
+        }
+        else
+        {
+          return 'assets/image/icon_check_off.png';
+        }
+      }
+      else
+      {
+        if(itemIndex == state.textQuizSelectIndex)
+        {
+          return 'assets/image/icon_check_on.png';
+        }
+        else
+        {
+          if(isAnswer)
+          {
+            return 'assets/image/icon_check_answer.png';
+          }
+          else
+          {
+            return 'assets/image/icon_check_off.png';
+          }
+        }
+      }
+    }
+    else
+    {
+      return 'assets/image/icon_check_off.png';
+    }
   }
 }

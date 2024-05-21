@@ -11,20 +11,25 @@ import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
 import 'package:foxschool/bloc/series_contents_list/api/event/SeriesContentsDataEvent.dart';
 import 'package:foxschool/bloc/series_contents_list/api/state/SeriesContentsDataLoadedState.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/EnableBottomSelectViewCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/SelectItemCountCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableBottomViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesSelectItemCountCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 import 'package:foxschool/view/screen/MoviePlayerScreen.dart';
 import 'package:foxschool/view/screen/QuizScreen.dart';
+import 'package:foxschool/view/screen/webview/GameCrosswordScreen.dart';
+import 'package:foxschool/view/screen/webview/GameStarwordsScreen.dart';
+import 'package:foxschool/view/screen/webview/TranslateScreen.dart';
 
 import '../../common/Common.dart';
 import '../../common/CommonUtils.dart';
 import '../../data/contents/contents_base/ContentsBaseResult.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
+import '../../enum/ContentsItemType.dart';
 import '../../values/AppColors.dart';
 import 'factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/common/PageNavigator.dart' as Page;
+import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:foxschool/view/dialog/BottomContentItemDialog.dart' as BottomContentDialog;
 
 class SeriesContentsListFactoryController extends BlocController {
@@ -153,7 +158,7 @@ class SeriesContentsListFactoryController extends BlocController {
         _currentContentsItemList);
   }
 
-  int getItemSelectCount()
+  int _getItemSelectCount()
   {
     int count = 0;
     for(int i = 0 ; i < _currentContentsItemList.length; i++)
@@ -164,6 +169,60 @@ class SeriesContentsListFactoryController extends BlocController {
           }
       }
     return count;
+  }
+
+  void _goToNavigateScreen(ContentsItemType type, ContentsBaseResult data) async
+  {
+    switch(type)
+    {
+      case ContentsItemType.QUIZ:
+        Navigator.push(
+            context,
+            Page.getScaleTransition(context,
+                QuizScreen(
+                    contentID: data.id,
+                    title: data.name,
+                    subTitle: data.subName
+            ))
+        );
+        break;
+      case ContentsItemType.CROSSWORD:
+        String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
+        Navigator.push(
+            context,
+            Page.getDefaultJoinedTransition(context,
+                GameCrosswordScreen(
+                    crosswordID: data.id,
+                    accessToken: accessToken)
+            )
+        );
+        break;
+      case ContentsItemType.STARWORDS:
+        String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
+        Navigator.push(
+            context,
+            Page.getScaleTransition(context,
+                GamsStarwordsScreen(
+                    starwordsID: data.id,
+                    accessToken: accessToken
+                )
+            )
+        );
+        break;
+      case ContentsItemType.TRANSLATE:
+        String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
+        Navigator.push(
+            context,
+            Page.getDefaultJoinedTransition(context,
+                TranslateScreen(
+                    translateID: data.id,
+                    accessToken: accessToken)
+            )
+        );
+        break;
+      default:
+        break;
+    }
   }
 
 
@@ -185,14 +244,14 @@ class SeriesContentsListFactoryController extends BlocController {
 
   void enableBottomSelectViewMode()
   {
-    context.read<EnableBottomSelectViewCubit>().enableBottomSelectView(true);
+    context.read<SeriesEnableBottomViewCubit>().enableBottomSelectView(true);
   }
 
   void disableBottomSelectViewMode()
   {
-    context.read<EnableBottomSelectViewCubit>().enableBottomSelectView(false);
+    context.read<SeriesEnableBottomViewCubit>().enableBottomSelectView(false);
     _setSelectAllItem(false);
-    context.read<SelectItemCountCubit>().setSelectItemCount(0);
+    context.read<SeriesSelectItemCountCubit>().setSelectItemCount(0);
   }
 
   void onSelectedItem(int index)
@@ -214,7 +273,7 @@ class SeriesContentsListFactoryController extends BlocController {
         _seriesContentsData.isSingleSeries() ? true : false,
         _currentContentsItemList);
 
-    itemCount = getItemSelectCount();
+    itemCount = _getItemSelectCount();
 
     if (itemCount == 0)
     {
@@ -227,7 +286,7 @@ class SeriesContentsListFactoryController extends BlocController {
         enableBottomSelectViewMode();
       }
     }
-    context.read<SelectItemCountCubit>().setSelectItemCount(itemCount);
+    context.read<SeriesSelectItemCountCubit>().setSelectItemCount(itemCount);
   }
 
   void onSelectAll()
@@ -279,16 +338,7 @@ class SeriesContentsListFactoryController extends BlocController {
           Navigator.of(context).pop();
 
           await Future.delayed(const Duration(milliseconds: Common.DURATION_SHORT), () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return QuizScreen(
-                      contentID: _currentContentsItemList[index].id,
-                      title: _currentContentsItemList[index].name,
-                      subTitle: _currentContentsItemList[index].subName
-                  );
-                },)
-            );
+            _goToNavigateScreen(type, _currentContentsItemList[index]);
           },);
         },);
   }

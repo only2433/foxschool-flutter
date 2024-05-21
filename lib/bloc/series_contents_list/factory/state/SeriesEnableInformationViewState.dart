@@ -3,10 +3,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 
-class EnableInformationIconViewState extends Equatable
+class SeriesEnableInformationViewState extends Equatable
 {
   final bool isEnable;
-  EnableInformationIconViewState({
+  SeriesEnableInformationViewState({
     required this.isEnable
   });
 

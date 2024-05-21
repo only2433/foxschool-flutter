@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:foxschool/bloc/quiz/factory/cubit/UserInteractionCubit.dart';
-import 'package:foxschool/bloc/quiz/factory/state/UserInteractionState.dart';
+import 'package:foxschool/bloc/quiz/factory/cubit/QuizUserInteractionCubit.dart';
+import 'package:foxschool/bloc/quiz/factory/state/QuizUserInteractionState.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
@@ -35,14 +35,14 @@ class QuizPicturePlayScreen extends StatefulWidget {
 
 class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with TickerProviderStateMixin{
 
-  late UserInteractionCubit _userInteractionCubit; // Cubit 인스턴스 선언
+  late QuizUserInteractionCubit _userInteractionCubit; // Cubit 인스턴스 선언
   late AnimationController _animationController;
   late Animation<double> _rotationAnimation;
   
   @override
   void initState() {
     super.initState();
-    _userInteractionCubit = UserInteractionCubit();
+    _userInteractionCubit = QuizUserInteractionCubit();
   }
 
 
@@ -197,7 +197,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
 
   Widget _buildQuestionBackgroundView(BuildContext context)
   {
-    return BlocBuilder<UserInteractionCubit, UserInteractionState>(builder: (context, state) {
+    return BlocBuilder<QuizUserInteractionCubit, QuizUserInteractionState>(builder: (context, state) {
       return Container(
         width: MediaQuery.of(context).size.width,
         height: CommonUtils.getInstance(context).getHeight(500),
@@ -214,11 +214,11 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
                 Logger.d("isSelected 0");
                 if(widget.data.exampleList[0].isAnswer)
                 {
-                  context.read<UserInteractionCubit>().selectPictureQuiz(0, true);
+                  context.read<QuizUserInteractionCubit>().selectPictureQuiz(0, true);
                 }
                 else
                 {
-                  context.read<UserInteractionCubit>().selectPictureQuiz(0, false);
+                  context.read<QuizUserInteractionCubit>().selectPictureQuiz(0, false);
                 }
                 widget.quizController.onPlayCorrectSound(widget.data.exampleList[0].isAnswer);
                 widget.quizController.onSelectPictureQuizData(0, widget.data);
@@ -249,11 +249,11 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
                 Logger.d("isSelected 1");
                 if(widget.data.exampleList[1].isAnswer)
                 {
-                  context.read<UserInteractionCubit>().selectPictureQuiz(1, true);
+                  context.read<QuizUserInteractionCubit>().selectPictureQuiz(1, true);
                 }
                 else
                 {
-                  context.read<UserInteractionCubit>().selectPictureQuiz(1, false);
+                  context.read<QuizUserInteractionCubit>().selectPictureQuiz(1, false);
                 }
                 widget.quizController.onPlayCorrectSound(widget.data.exampleList[1].isAnswer);
                 widget.quizController.onSelectPictureQuizData(1, widget.data);
@@ -278,7 +278,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
 
   Widget _buildNextButtonView(BuildContext context)
   {
-    return BlocBuilder<UserInteractionCubit, UserInteractionState>(builder: (context, state) {
+    return BlocBuilder<QuizUserInteractionCubit, QuizUserInteractionState>(builder: (context, state) {
       return Center(
         child: Opacity(
           opacity: state.isSelectedComplete ? 1.0 : 0.3,
@@ -314,7 +314,7 @@ class _QuizPicturePlayScreenState extends State<QuizPicturePlayScreen> with Tick
 
   Widget _buildCheckAnimationView(BuildContext context)
   {
-    return BlocConsumer<UserInteractionCubit, UserInteractionState>(
+    return BlocConsumer<QuizUserInteractionCubit, QuizUserInteractionState>(
       listener: (context, state) {
         if(state.isSelectedComplete)
           {

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
-import 'package:foxschool/bloc/category_contents_list/api/event/GetCategoryContentsEvent.dart';
+import 'package:foxschool/bloc/category_contents_list/api/event/CategoryContentsEvent.dart';
 import 'package:foxschool/bloc/category_contents_list/api/state/CategoryContentsLoadedState.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/data/story_category_contents/StoryCategoryContentsResult.dart';
@@ -18,10 +18,10 @@ class CategoryContentsDataBloc extends Bloc<BlocEvent, BlocState>
     required this.repository 
   }) : super(InitState())
   {
-    on<GetCategoryContentsEvent>(_onCategoryContentsData);
+    on<CategoryContentsEvent>(_onCategoryContentsData);
   }
   
-  void _onCategoryContentsData(GetCategoryContentsEvent event, Emitter<BlocState> state) async
+  void _onCategoryContentsData(CategoryContentsEvent event, Emitter<BlocState> state) async
   {
     try
     {
