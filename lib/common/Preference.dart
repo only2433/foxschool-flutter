@@ -9,12 +9,21 @@ Future<String> getString(String key) async
   return result ?? "";
 }
 
+Future<int> getInt(String key) async
+{
+  final SharedPreferences preferences = await SharedPreferences.getInstance();
+  final int? result = preferences.getInt(key);
+  return result ?? 0;
+}
+
 Future<bool> getBoolean(String key) async
 {
   final SharedPreferences preferences = await SharedPreferences.getInstance();
   final bool? result = preferences.getBool(key);
   return result ?? false;
 }
+
+
 
 Future<Map<String, dynamic>?> getObject(String key) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -29,6 +38,12 @@ Future<void> setString(String key, String value) async
 {
   final SharedPreferences preferences = await SharedPreferences.getInstance();
   await preferences.setString(key, value);
+}
+
+Future<void> setInt(String key, int value) async
+{
+  final SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.setInt(key, value);
 }
 
 Future<void> setBoolean(String key, bool value) async

@@ -71,4 +71,9 @@ class FoxSchoolRepository extends FoxSchoolDataSource
     return apiClient.quizInformationAsync(contentID);
   }
 
+  @override
+  Future<BaseResponse> vocabularyDataListAsync(String contentID){
+    return apiClient.vocabularyContentsListAsync(contentID);
+  }
+
 }

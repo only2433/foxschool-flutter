@@ -7,6 +7,7 @@ import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/values/AppColors.dart';
+import 'package:foxschool/view/widget/BottomIntervalSelectWidget.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:foxschool/view/widget/RobotoRegularText.dart';
@@ -72,6 +73,19 @@ Future<void> showConfirmDialog({
       );
     },
   );
+}
+
+Future<void> showBottomIntervalSelectDialog({
+  required BuildContext context,
+  required int currentIntervalIndex,
+  required Function(int index) onItemPressed
+}) async
+{
+  showModalBottomSheet(context: context, builder: (context) {
+    return BottomIntervalSelectWidget(
+        currentSelectIndex: currentIntervalIndex,
+        onItemPressed: onItemPressed);
+  },);
 }
 
 

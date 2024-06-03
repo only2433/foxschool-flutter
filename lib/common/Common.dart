@@ -1,4 +1,8 @@
 
+import 'package:foxschool/common/FoxschoolLocalization.dart';
+
+import '../di/Dependencies.dart';
+
 class Common
 {
   static const String PACKAGE_NAME = "com.littlefox.app.foxschool";
@@ -239,4 +243,11 @@ class Common
   static const int PAGE_LOAD_COUNT = 20;
 
   static const String TEST_USER_AGENT = "LF_APP_AOS:phone/1.0.0/SM-S911N/Android:14";
+
+  static final List<String> VOCABULARY_INTERVAL_TEXT = [
+    '간격 없음',
+    '1초 간격',
+
+  ];
+
 }

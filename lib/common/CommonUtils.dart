@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -202,6 +203,24 @@ class CommonUtils
 
     return seedNumber;
 
+  }
+
+  double getVocabularyContentViewSize(int lineCount)
+  {
+    switch(lineCount)
+    {
+      case 1:
+      case 2:
+        return getWidth(174);
+      case 3:
+        return getWidth(210);
+      case 4:
+        return getWidth(280);
+      case 5:
+        return getWidth(330);
+      default:
+        return getWidth(390);
+    }
   }
 
 }

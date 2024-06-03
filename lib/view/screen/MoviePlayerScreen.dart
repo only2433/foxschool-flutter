@@ -1234,6 +1234,7 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
     });
   }
 
+
   Widget _buildPlayListView()
   {
     return BlocBuilder<MoviePlayListCubit, MoviePlayListState>(

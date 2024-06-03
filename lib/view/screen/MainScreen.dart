@@ -27,7 +27,7 @@ import '../../values/AppColors.dart';
 import '../widget/MainScreenTitleView.dart';
 import '../widget/TopTitleView.dart';
 import '../../common/Preference.dart' as Preference;
-import '../dialog/FoxSchoolAlertDialog.dart' as FoxSchoolAlertDialog;
+import '../dialog/FoxSchoolDialog.dart' as FoxSchoolDialog;
 import 'package:foxschool/common/PageNavigator.dart' as Page;
 
 class MainScreen extends StatefulWidget {
@@ -162,7 +162,7 @@ class _MainScreenState extends State<MainScreen> {
   {
     switch (type) {
       case MainMenuDrawerType.LOG_OUT:
-        await FoxSchoolAlertDialog.showSelectDialog(
+        await FoxSchoolDialog.showSelectDialog(
             context: context,
             message: getIt<FoxschoolLocalization>().data['message_try_logout'],
             buttonText: getIt<FoxschoolLocalization>().data['text_confirm'],

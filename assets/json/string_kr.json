@@ -286,5 +286,6 @@
   "text_list_email": ["gmail.com", "naver.com", "daum.net", "nate.com", "직접 입력"],
   "text_list_1on1_ask": ["오류", "학습", "기타"],
   "text_list_homework_filter": ["전체", "완료한 숙제", "남은 숙제"],
-  "text_list_homework_filter_teacher": ["전체", "Animation", "eBook", "퀴즈", "스타워즈", "크로스워드 퍼즐", "녹음기"]
+  "text_list_homework_filter_teacher": ["전체", "Animation", "eBook", "퀴즈", "스타워즈", "크로스워드 퍼즐", "녹음기"],
+  "text_list_vocabulary_interval": ["간격 없음", "1초 간격", "2초 간격", "3초 간격", "5초 간격", "7초 간격", "10초 간격", "15초 간격", "20초 간격", "30초 간격"]
 }

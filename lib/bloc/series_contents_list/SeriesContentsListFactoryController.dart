@@ -15,8 +15,11 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableBo
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesSelectItemCountCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
+import 'package:foxschool/data/vocabulary/information/VocabularyInformationData.dart';
+import 'package:foxschool/enum/VocabularyType.dart';
 import 'package:foxschool/view/screen/MoviePlayerScreen.dart';
 import 'package:foxschool/view/screen/QuizScreen.dart';
+import 'package:foxschool/view/screen/VocabularyScreen.dart';
 import 'package:foxschool/view/screen/webview/EbookScreen.dart';
 import 'package:foxschool/view/screen/webview/GameCrosswordScreen.dart';
 import 'package:foxschool/view/screen/webview/GameStarwordsScreen.dart';
@@ -187,6 +190,19 @@ class SeriesContentsListFactoryController extends BlocController {
             ))
         );
         break;
+      case ContentsItemType.VOCABULARY:
+        VocabularyInformationData vocabularyInformationData = VocabularyInformationData(
+            id: data.id,
+            type: VocabularyType.VOCABULARY_CONTENTS,
+            title: data.getSubName());
+        Navigator.push(
+            context,
+            Page.getDefaultTransition(context,
+                VocabularyScreen(
+                  data: vocabularyInformationData)
+            )
+        );
+        break;
       case ContentsItemType.CROSSWORD:
         String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
         Navigator.push(
@@ -303,6 +319,7 @@ class SeriesContentsListFactoryController extends BlocController {
   void onSelectAll()
   {
     _setSelectAllItem(true);
+    context.read<SeriesSelectItemCountCubit>().setSelectItemCount(_currentContentsItemList.length);
   }
 
   void onClickThumbnailItem(int index)

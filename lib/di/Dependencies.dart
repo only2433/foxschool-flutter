@@ -9,6 +9,7 @@ import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/bloc/quiz/api/QuizInformationBloc.dart';
 import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
+import 'package:foxschool/bloc/vocabulary/api/VocabularyBloc.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:flutter_easylogger/flutter_logger.dart';
@@ -41,6 +42,7 @@ Future<void> init() async
   getIt.registerLazySingleton(() => SearchContentsBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => MovieContentsBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => QuizInformationBloc(repository: getIt<FoxSchoolRepository>()));
+  getIt.registerLazySingleton(() => VocabularyBloc(repository: getIt<FoxSchoolRepository>()));
 }
 
 

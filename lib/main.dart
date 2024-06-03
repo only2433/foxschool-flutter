@@ -48,6 +48,12 @@ import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesLastWatc
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesSelectItemCountCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
+import 'package:foxschool/bloc/vocabulary/api/VocabularyBloc.dart';
+import 'package:foxschool/bloc/vocabulary/factory/cubit/VocabularyBottomControllerCubit.dart';
+import 'package:foxschool/bloc/vocabulary/factory/cubit/VocabularyItemListCubit.dart';
+import 'package:foxschool/bloc/vocabulary/factory/cubit/VocabularyPlayingCubit.dart';
+
+import 'package:foxschool/bloc/vocabulary/factory/cubit/VocabularyStudyTypeCubit.dart';
 import 'package:foxschool/common/CommonHttpOverrides.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/values/AppColors.dart';
@@ -193,8 +199,18 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => QuizConstituteWidgetCubit()),
           BlocProvider(create: (context) => QuizRemainTimeCubit()),
           BlocProvider(create: (context) => QuizCorrectCountCubit()),
+
+          /**
+           * Vocabulary
+           */
+          BlocProvider(
+              create: (context) => getIt<VocabularyBloc>()),
+          BlocProvider(create: (context) => VocabularyItemListCubit()),
+          BlocProvider(create: (context) => VocabularyPlayingCubit()),
+          BlocProvider(create: (context) => VocabularyBottomControllerCubit()),
+          BlocProvider(create: (context) => VocabularyStudyTypeCubit())
         ],
-        child: MaterialApp(
+        child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           home: IntroScreen(),
         )

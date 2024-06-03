@@ -22,7 +22,7 @@ class RobotoNormalText extends StatelessWidget {
           color: color,
           fontWeight: FontWeight.normal,
           fontSize: fontSize,
-          fontFamily: 'Roboto'
+          fontFamily: 'Roboto',
       ),
       textAlign: align,
       maxLines: maxLines,

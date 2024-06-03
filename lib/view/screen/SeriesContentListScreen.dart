@@ -238,10 +238,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
               child: Row(
                 children: [
                   BottomIconTextView(
-                      image: Image.asset('assets/image/bottom_all.png',
-                          width: CommonUtils.getInstance(context).getWidth(210),
-                          height: CommonUtils.getInstance(context).getHeight(90),
-                          fit: BoxFit.cover),
+                      imageAssetUri: 'assets/image/bottom_all.png',
                       title: getIt<FoxschoolLocalization>().data['text_select_all'],
                       onPressed: (){
                         _factoryController.onSelectAll();
@@ -249,10 +246,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                   Stack(
                     children: [
                       BottomIconTextView(
-                          image: Image.asset('assets/image/bottom_play.png',
-                              width: CommonUtils.getInstance(context).getWidth(210),
-                              height: CommonUtils.getInstance(context).getHeight(90),
-                              fit: BoxFit.cover),
+                          imageAssetUri: 'assets/image/bottom_play.png',
                           title: getIt<FoxschoolLocalization>().data['text_select_play'],
                           onPressed: (){
                             _factoryController.onClickSelectedListPlay();
@@ -265,7 +259,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                               right: state.count < 100 ? CommonUtils.getInstance(context).getWidth(100) : CommonUtils.getInstance(context).getWidth(85),
                               top: CommonUtils.getInstance(context).getHeight(20),
                               child: Container(
-                                width: state.count < 100 ? CommonUtils.getInstance(context).getWidth(30) : CommonUtils.getInstance(context).getWidth(45),
+                                width: state.count < 100 ? CommonUtils.getInstance(context).getWidth(35) : CommonUtils.getInstance(context).getWidth(45),
                                 height: CommonUtils.getInstance(context).getHeight(30),
                                 decoration: BoxDecoration(
                                     color: AppColors.color_ffffff,
@@ -290,19 +284,13 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
 
                   ) ,
                   BottomIconTextView(
-                      image: Image.asset('assets/image/bottom_bookshelf.png',
-                          width: CommonUtils.getInstance(context).getWidth(210),
-                          height: CommonUtils.getInstance(context).getHeight(90),
-                          fit: BoxFit.cover),
+                      imageAssetUri: 'assets/image/bottom_bookshelf.png',
                       title: getIt<FoxschoolLocalization>().data['text_contain_bookshelf'],
                       onPressed: (){
 
                       }) ,
                   BottomIconTextView(
-                      image: Image.asset('assets/image/bottom_close.png',
-                          width: CommonUtils.getInstance(context).getWidth(210),
-                          height: CommonUtils.getInstance(context).getHeight(90),
-                          fit: BoxFit.cover),
+                      imageAssetUri: 'assets/image/bottom_close.png',
                       title: getIt<FoxschoolLocalization>().data['text_cancel'],
                       onPressed: (){
                         _factoryController.disableBottomSelectViewMode();

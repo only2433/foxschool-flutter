@@ -5,34 +5,51 @@ import '../../common/CommonUtils.dart';
 import '../../values/AppColors.dart';
 
 class BottomIconTextView extends StatelessWidget {
-  
-  final Widget image;
+
+  final double width;
+  final double height;
+  final String imageAssetUri;
+  final double imageWidth;
+  final double imageHeight;
   final String title;
-  final VoidCallback onPressed;
+  final bool isPlaying;
+  final VoidCallback? onPressed;
   const BottomIconTextView({
-    super.key, 
-    required this.image, 
+    super.key,
+    this.width = 0,
+    this.height = 0,
+    required this.imageAssetUri,
+    this.imageWidth = 0,
+    this.imageHeight = 0,
     required this.title, 
-    required this.onPressed});
+    required this.onPressed,
+    this.isPlaying = false});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: CommonUtils.getInstance(context).getWidth(270),
-        height: CommonUtils.getInstance(context).getHeight(176),
+        width: width == 0 ? CommonUtils.getInstance(context).getWidth(270) : width,
+        height: height == 0 ? CommonUtils.getInstance(context).getHeight(176) : height,
         color: Colors.transparent,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            image,
+            Image.asset(
+                imageAssetUri,
+                width: imageWidth == 0 ? CommonUtils.getInstance(context).getWidth(210) : imageWidth,
+                height: imageHeight == 0 ? CommonUtils.getInstance(context).getHeight(90) : imageHeight,
+                fit: BoxFit.cover,
+                color: isPlaying ? Colors.white.withOpacity(0.4) : null,
+            ),
             SizedBox(
               height: CommonUtils.getInstance(context).getHeight(20),
             ),
             RobotoNormalText(
                 text: title,
-                fontSize: CommonUtils.getInstance(context).getWidth(32)
+                fontSize: CommonUtils.getInstance(context).getWidth(32),
+                color: isPlaying ? Colors.white.withOpacity(0.4) : AppColors.color_ffffff,
             )
           ],
         ),

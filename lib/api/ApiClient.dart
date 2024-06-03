@@ -74,6 +74,11 @@ abstract class ApiClient
       @Path('contentID') String requestID
       );
 
+  @GET('contents/vocabularies/{contentID}')
+  Future<BaseResponse> vocabularyContentsListAsync(
+      @Path('contentID') String requestID
+      );
+
 
 
 }
