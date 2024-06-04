@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
 import 'package:foxschool/di/Dependencies.dart';
+import 'package:foxschool/enum/BookType.dart';
 import 'package:foxschool/values/AppColors.dart';
+import 'package:foxschool/view/widget/BottomAddBookWidget.dart';
 import 'package:foxschool/view/widget/BottomIntervalSelectWidget.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
 import 'package:foxschool/view/widget/RobotoRegularText.dart';
+
+import '../../data/vocabulary/VocabularyDataResult.dart';
 
 final int BUTTON_1_CLICK = 0;
 final int BUTTON_2_CLICK = 1;
@@ -87,6 +92,23 @@ Future<void> showBottomIntervalSelectDialog({
         onItemPressed: onItemPressed);
   },);
 }
+
+Future<void> showBottomAddBookSelectDialog({
+  required BuildContext context,
+  required BookType type,
+  required List<MyVocabularyResult> list,
+  required Function(int index) onItemPressed
+}) async
+{
+  showModalBottomSheet(context: context, builder: (context) {
+    return BottomAddBookWidget(
+        bookType: type,
+        vocabularyList: list,
+        onItemPressed: onItemPressed);
+  },);
+}
+
+
 
 
 Widget _AlertSelectDialog(BuildContext context, String message, String buttonText, VoidCallback onSelected)

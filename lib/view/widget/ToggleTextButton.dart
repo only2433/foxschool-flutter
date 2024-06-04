@@ -9,6 +9,7 @@ import 'package:foxschool/view/widget/RobotoNormalText.dart';
 
 import '../../common/Common.dart';
 import '../../di/Dependencies.dart';
+import '../../enum/MyBooksType.dart';
 
 
 class ToggleTextButton extends StatefulWidget {
@@ -17,7 +18,7 @@ class ToggleTextButton extends StatefulWidget {
   final double height;
   final String firstButtonText;
   final String secondButtonText;
-  final UserType type;
+  final int selectIndex;
   final Function(int index) onSelected;
 
   const ToggleTextButton({
@@ -26,7 +27,7 @@ class ToggleTextButton extends StatefulWidget {
     required this.height,
     required this.firstButtonText,
     required this.secondButtonText,
-    required this.type,
+    required this.selectIndex,
     required this.onSelected});
 
   @override
@@ -35,7 +36,6 @@ class ToggleTextButton extends StatefulWidget {
 
 class _ToggleTextButtonState extends State<ToggleTextButton>
 {
-  int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
 
@@ -63,9 +63,6 @@ class _ToggleTextButtonState extends State<ToggleTextButton>
               children: [
                 GestureDetector(
                   onTap: (){
-                    setState(() {
-                      selectIndex = 0;
-                    });
                     widget.onSelected(0);
                   },
                   child: Container(
@@ -74,7 +71,7 @@ class _ToggleTextButtonState extends State<ToggleTextButton>
                     alignment: Alignment.center,
                     child: RobotoNormalText(
                       text: widget.firstButtonText,
-                      color: selectIndex == 0 ? AppColors.color_26d0df : AppColors.color_999999,
+                      color: widget.selectIndex == 0 ? AppColors.color_26d0df : AppColors.color_999999,
                       fontSize: CommonUtils.getInstance(context).getWidth(40),
                       align: TextAlign.center,
                     ),
@@ -82,9 +79,6 @@ class _ToggleTextButtonState extends State<ToggleTextButton>
                 ),
                 GestureDetector(
                   onTap: (){
-                    setState(() {
-                      selectIndex = 1;
-                    });
                     widget.onSelected(1);
                   },
                   child: Container(
@@ -93,7 +87,7 @@ class _ToggleTextButtonState extends State<ToggleTextButton>
                     alignment: Alignment.center,
                     child: RobotoNormalText(
                       text: widget.secondButtonText,
-                      color: selectIndex == 1 ? AppColors.color_26d0df : AppColors.color_999999,
+                      color: widget.selectIndex == 1 ? AppColors.color_26d0df : AppColors.color_999999,
                       fontSize: CommonUtils.getInstance(context).getWidth(40),
                       align: TextAlign.center,
                     ),
@@ -105,7 +99,7 @@ class _ToggleTextButtonState extends State<ToggleTextButton>
           AnimatedPositioned(
             duration: Duration(milliseconds: Common.DURATION_NORMAL),
             curve: Curves.easeInOut,
-            left: selectIndex == 0 ? 0 : widget.width/2,
+            left: widget.selectIndex == 0 ? 0 : widget.width/2,
             child: Container(
               width: widget.width/2,
               height: widget.height,

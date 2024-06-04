@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:foxschool/enum/BookColor.dart';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -116,63 +115,27 @@ class CommonUtils
   }
 
 
-  BookColor getBookColorType(String color)
+
+  String getBookResource(String color)
   {
     switch(color)
     {
       case "red":
-        return BookColor.RED;
-      case "orange":
-        return BookColor.ORANGE;
-      case "green":
-        return BookColor.GREEN;
-      case "blue":
-        return BookColor.BLUE;
-      case "purple":
-        return BookColor.PURPLE;
-      case "pink":
-        return BookColor.PINK;
-    }
-    return BookColor.RED;
-  }
-
-  String getBookResource(BookColor color)
-  {
-    switch(color)
-    {
-      case BookColor.RED:
         return 'assets/image/bookshelf_01.png';
-      case BookColor.ORANGE:
+      case "orange":
         return 'assets/image/bookshelf_02.png';
-      case BookColor.GREEN:
+      case "green":
         return 'assets/image/bookshelf_03.png';
-      case BookColor.BLUE:
+      case "blue":
         return 'assets/image/bookshelf_04.png';
-      case BookColor.PURPLE:
+      case "purple":
         return 'assets/image/bookshelf_05.png';
-      case BookColor.PINK:
+      case "pink":
         return 'assets/image/bookshelf_06.png';
     }
+    return 'assets/image/bookshelf_01.png';
   }
 
-  String getBookColorString(BookColor color)
-  {
-    switch(color)
-    {
-      case BookColor.RED:
-        return 'red';
-      case BookColor.ORANGE:
-        return 'orange';
-      case BookColor.GREEN:
-        return 'green';
-      case BookColor.BLUE:
-        return 'blue';
-      case BookColor.PURPLE:
-        return 'purple';
-      case BookColor.PINK:
-        return 'pink';
-    }
-  }
 
   // 문자열 형식의 색상 코드를 Color 객체로 변환하는 함수
   Color colorFromHex(String colorCode) {

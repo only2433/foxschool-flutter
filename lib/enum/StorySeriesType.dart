@@ -1,7 +1,6 @@
 
-enum SeriesType
+enum StorySeriesType
 {
   LEVEL,
   CATEGORY,
-  SONG
 }

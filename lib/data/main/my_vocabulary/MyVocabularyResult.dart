@@ -30,5 +30,12 @@ class MyVocabularyResult with _$MyVocabularyResult
     VocabularyType vocabularyType
   }) = _MyVocabularyResult;
 
+  MyVocabularyResult._();
+
+  MyVocabularyResult setVocabularyType(VocabularyType type)
+  {
+    return copyWith(vocabularyType: type);
+  }
+
   factory MyVocabularyResult.fromJson(Map<String, dynamic> data) => _$MyVocabularyResultFromJson(data);
 }

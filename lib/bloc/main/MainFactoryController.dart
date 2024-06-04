@@ -23,7 +23,7 @@ import '../../data/main/MainInformationResult.dart';
 import '../../data/main/my_book/MyBookshelfResult.dart';
 import '../../data/main/my_vocabulary/MyVocabularyResult.dart';
 import '../../data/main/series/SeriesInformationResult.dart';
-import '../../enum/SeriesType.dart';
+import '../../enum/StorySeriesType.dart';
 import 'package:page_transition/page_transition.dart';
 
 class MainFactoryController extends BlocController
@@ -36,7 +36,7 @@ class MainFactoryController extends BlocController
   late List<SeriesInformationResult> _songCategoriesList;
   late List<MyBookshelfResult> _bookshelfList;
   late List<MyVocabularyResult> _vocabularyList;
-  SeriesType _currentStorySeriesType = SeriesType.LEVEL;
+  StorySeriesType _currentStorySeriesType = StorySeriesType.LEVEL;
   late MainInformationResult _mainData;
   late LoginInformationResult _userData;
   String _schoolName = "";
@@ -68,7 +68,7 @@ class MainFactoryController extends BlocController
     }
 
     Logger.d("_vocabularyList data : ${_vocabularyList.toString()}");
-    _settingStoryPageData(SeriesType.LEVEL);
+    _settingStoryPageData(StorySeriesType.LEVEL);
     _settingSongPageData();
     _settingMyBooksData(MyBooksType.BOOKSHELF);
   }
@@ -91,16 +91,16 @@ class MainFactoryController extends BlocController
     }
   }
 
-  void _settingStoryPageData(SeriesType type)
+  void _settingStoryPageData(StorySeriesType type)
   {
     _currentStorySeriesType = type;
-    if(type == SeriesType.LEVEL)
+    if(type == StorySeriesType.LEVEL)
     {
-      context.read<MainStorySelectTypeListCubit>().setSelectTypeList(_storyLevelItemList);
+      context.read<MainStorySelectTypeListCubit>().setSelectTypeList(StorySeriesType.LEVEL, _storyLevelItemList);
     }
     else
     {
-      context.read<MainStorySelectTypeListCubit>().setSelectTypeList(_storyCategoriesList);
+      context.read<MainStorySelectTypeListCubit>().setSelectTypeList(StorySeriesType.CATEGORY, _storyCategoriesList);
     }
   }
 
@@ -135,7 +135,7 @@ class MainFactoryController extends BlocController
     Navigator.of(context).pop();
   }
 
-  void onClickStorySelectType(SeriesType type)
+  void onClickStorySelectType(StorySeriesType type)
   {
     Logger.d("type : ${type}");
     _settingStoryPageData(type);
@@ -148,7 +148,7 @@ class MainFactoryController extends BlocController
 
   void onClickStorySeriesItem(SeriesInformationResult data, Widget widget)
   {
-    if(_currentStorySeriesType == SeriesType.LEVEL) {
+    if(_currentStorySeriesType == StorySeriesType.LEVEL) {
       Navigator.push(
         context,
           Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))

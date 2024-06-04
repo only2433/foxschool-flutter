@@ -9,11 +9,11 @@ import '../../../../data/vocabulary/VocabularyDataResult.dart';
 
 class VocabularyItemListCubit extends Cubit<VocabularyListBaseState>
 {
-  VocabularyItemListCubit() : super(InitState());
+  VocabularyItemListCubit() : super(InitVocabularyListState());
 
   void showLoading()
   {
-    emit(LoadingState());
+    emit(LoadingVocabularyListState());
   }
 
   void setVocabularyItemList(List<VocabularyDataResult> list)

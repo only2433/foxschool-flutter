@@ -164,14 +164,15 @@ class __$$MyVocabularyResultImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$MyVocabularyResultImpl implements _MyVocabularyResult {
+class _$MyVocabularyResultImpl extends _MyVocabularyResult {
   _$MyVocabularyResultImpl(
       {this.id = "",
       this.name = "",
       this.color = "",
       @JsonKey(name: 'words_count') this.wordsCount = 0,
       this.contentID = "",
-      this.vocabularyType = VocabularyType.VOCABULARY_CONTENTS});
+      this.vocabularyType = VocabularyType.VOCABULARY_CONTENTS})
+      : super._();
 
   factory _$MyVocabularyResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$MyVocabularyResultImplFromJson(json);
@@ -236,7 +237,7 @@ class _$MyVocabularyResultImpl implements _MyVocabularyResult {
   }
 }
 
-abstract class _MyVocabularyResult implements MyVocabularyResult {
+abstract class _MyVocabularyResult extends MyVocabularyResult {
   factory _MyVocabularyResult(
       {final String id,
       final String name,
@@ -244,6 +245,7 @@ abstract class _MyVocabularyResult implements MyVocabularyResult {
       @JsonKey(name: 'words_count') final int wordsCount,
       final String contentID,
       final VocabularyType vocabularyType}) = _$MyVocabularyResultImpl;
+  _MyVocabularyResult._() : super._();
 
   factory _MyVocabularyResult.fromJson(Map<String, dynamic> json) =
       _$MyVocabularyResultImpl.fromJson;

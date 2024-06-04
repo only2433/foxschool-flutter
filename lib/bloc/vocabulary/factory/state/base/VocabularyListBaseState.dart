@@ -6,6 +6,6 @@ class VocabularyListBaseState
   const VocabularyListBaseState();
 }
 
-class InitState extends VocabularyListBaseState{}
+class InitVocabularyListState extends VocabularyListBaseState{}
 
-class LoadingState extends VocabularyListBaseState{}
+class LoadingVocabularyListState extends VocabularyListBaseState{}

@@ -32,7 +32,7 @@ class BottomIntervalSelectWidget extends StatelessWidget {
       color: AppColors.color_ffffff,
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             height: CommonUtils.getInstance(context).getWidth(142),
             child: Row(

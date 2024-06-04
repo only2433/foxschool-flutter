@@ -16,7 +16,7 @@ import '../../../../common/Common.dart';
 import '../../../../common/FoxschoolLocalization.dart';
 import '../../../../data/main/series/SeriesInformationResult.dart';
 import '../../../../di/Dependencies.dart';
-import '../../../../enum/SeriesType.dart';
+import '../../../../enum/StorySeriesType.dart';
 import '../../../../values/AppColors.dart';
 import '../../SeriesContentListScreen.dart';
 
@@ -43,23 +43,25 @@ class MainStorySubScreen extends StatelessWidget {
                 SizedBox(
                   height: CommonUtils.getInstance(context).getHeight(40),
                 ),
-                ToggleTextButton(
-                  width: CommonUtils.getInstance(context).getWidth(660),
-                  height: CommonUtils.getInstance(context).getHeight(96),
-                  firstButtonText: getIt<FoxschoolLocalization>().data['text_levels'],
-                  secondButtonText: getIt<FoxschoolLocalization>().data['text_categories'],
-                  type: UserType.STUDENT,
-                  onSelected: (index) {
-                    if(index == 0)
-                    {
-                      factoryController.onClickStorySelectType(SeriesType.LEVEL);
-                    }
-                    else
-                    {
-                      factoryController.onClickStorySelectType(SeriesType.CATEGORY);
-                    }
-                  },
-                ),
+                BlocBuilder<MainStorySelectTypeListCubit, MainStorySelectTypeListState>(builder: (context, state) {
+                  return ToggleTextButton(
+                    width: CommonUtils.getInstance(context).getWidth(660),
+                    height: CommonUtils.getInstance(context).getHeight(96),
+                    firstButtonText: getIt<FoxschoolLocalization>().data['text_levels'],
+                    secondButtonText: getIt<FoxschoolLocalization>().data['text_categories'],
+                    selectIndex: state.type == StorySeriesType.LEVEL ? 0 : 1,
+                    onSelected: (index) {
+                      if(index == 0)
+                      {
+                        factoryController.onClickStorySelectType(StorySeriesType.LEVEL);
+                      }
+                      else
+                      {
+                        factoryController.onClickStorySelectType(StorySeriesType.CATEGORY);
+                      }
+                    },
+                  );
+                }),
                 SizedBox(
                   height: CommonUtils.getInstance(context).getHeight(40),
                 ),

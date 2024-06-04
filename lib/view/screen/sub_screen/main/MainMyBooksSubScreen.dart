@@ -8,7 +8,6 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/data/main/my_book/MyBookshelfResult.dart';
 import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
-import 'package:foxschool/enum/BookColor.dart';
 import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/enum/UserType.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
@@ -28,6 +27,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
     required this.factoryController
   });
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,24 +39,25 @@ class MainMyBooksSubScreen extends StatelessWidget {
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(40),
           ),
-          ToggleTextButton(
+          BlocBuilder<MainMyBooksTypeCubit, MainMyBooksTypeState>(builder: (context, state) {
+            return ToggleTextButton(
               width: CommonUtils.getInstance(context).getWidth(660),
               height: CommonUtils.getInstance(context).getHeight(96),
               firstButtonText: getIt<FoxschoolLocalization>().data['text_bookshelf'],
               secondButtonText: getIt<FoxschoolLocalization>().data['text_vocabulary'],
-              type: UserType.STUDENT,
+              selectIndex: state.type == MyBooksType.BOOKSHELF ? 0 : 1,
               onSelected: (index) {
-
                 if(index == 0)
-                  {
-                    factoryController.onClickMyBooksType(MyBooksType.BOOKSHELF);
-                  }
+                {
+                  factoryController.onClickMyBooksType(MyBooksType.BOOKSHELF);
+                }
                 else
-                  {
-                    factoryController.onClickMyBooksType(MyBooksType.VOCABULARY);
-                  }
+                {
+                  factoryController.onClickMyBooksType(MyBooksType.VOCABULARY);
+                }
               },
-          ),
+            );
+          }),
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(40),
           ),
@@ -66,34 +67,35 @@ class MainMyBooksSubScreen extends StatelessWidget {
                 color: AppColors.color_ffffff,
                 child: BlocBuilder<MainMyBooksTypeCubit, MainMyBooksTypeState>(builder: (context, state)
                 {
+                  Logger.d("event : ----- ${state.type}");
                   List<Widget> containers = [];
 
                   if(state.type == MyBooksType.BOOKSHELF)
+                  {
+                    for(int i = 0 ; i < state.bookshelfList.length; i++)
                     {
-                      for(int i = 0 ; i < state.bookshelfList.length; i++)
-                        {
-                          containers.add(
-                              _buildBookshelfItemWidget(context, state.bookshelfList[i])
-                          );
-                        }
                       containers.add(
+                          _buildBookshelfItemWidget(context, state.bookshelfList[i])
+                      );
+                    }
+                    containers.add(
                         _buildAddItemWidget(context, MyBooksType.BOOKSHELF)
-                      );
-                    }
+                    );
+                  }
                   else
+                  {
+                    for(int i = 0 ; i < state.vocabularyList.length; i++)
                     {
-                      for(int i = 0 ; i < state.vocabularyList.length; i++)
-                      {
-                        containers.add(
-                            _buildVocabularyItemWidget(context, state.vocabularyList[i])
-                        );
-                      }
                       containers.add(
-                          _buildAddItemWidget(context, MyBooksType.VOCABULARY)
+                          _buildVocabularyItemWidget(context, state.vocabularyList[i])
                       );
                     }
+                    containers.add(
+                        _buildAddItemWidget(context, MyBooksType.VOCABULARY)
+                    );
+                  }
                   return Column(
-                    children: containers
+                      children: containers
                   );
                 },),
               )
@@ -106,7 +108,6 @@ class MainMyBooksSubScreen extends StatelessWidget {
   Widget _buildBookshelfItemWidget(BuildContext context, MyBookshelfResult item)
   {
     Logger.d("data : " + item.toString());
-    BookColor color = CommonUtils.getInstance(context).getBookColorType(item.color);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(172),
@@ -124,7 +125,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                     height: CommonUtils.getInstance(context).getHeight(106),
                     child: Stack(
                       children: [
-                        Image.asset(CommonUtils.getInstance(context).getBookResource(color),
+                        Image.asset(CommonUtils.getInstance(context).getBookResource(item.color),
                             width: CommonUtils.getInstance(context).getWidth(94),
                             height: CommonUtils.getInstance(context).getHeight(106),
                             fit: BoxFit.cover),
@@ -177,7 +178,6 @@ class MainMyBooksSubScreen extends StatelessWidget {
   Widget _buildVocabularyItemWidget(BuildContext context, MyVocabularyResult item)
   {
     Logger.d("data : " + item.toString());
-    BookColor color = CommonUtils.getInstance(context).getBookColorType(item.color);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(172),
@@ -195,7 +195,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                     height: CommonUtils.getInstance(context).getHeight(106),
                     child: Stack(
                       children: [
-                        Image.asset(CommonUtils.getInstance(context).getBookResource(color),
+                        Image.asset(CommonUtils.getInstance(context).getBookResource(item.color),
                             width: CommonUtils.getInstance(context).getWidth(94),
                             height: CommonUtils.getInstance(context).getHeight(106),
                             fit: BoxFit.cover),
@@ -257,20 +257,21 @@ class MainMyBooksSubScreen extends StatelessWidget {
             height: CommonUtils.getInstance(context).getHeight(40),
           ),
           Image.asset('assets/image/btn_add.png',
-          width: CommonUtils.getInstance(context).getWidth(87),
-          height: CommonUtils.getInstance(context).getHeight(87)
+              width: CommonUtils.getInstance(context).getWidth(87),
+              height: CommonUtils.getInstance(context).getHeight(87)
           ),
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(10),
           ),
           RobotoNormalText(
-              text: type == MyBooksType.BOOKSHELF ?
-              getIt<FoxschoolLocalization>().data['text_add_bookshelf']
-              : getIt<FoxschoolLocalization>().data['text_add_vocabulary'],
-              fontSize: CommonUtils.getInstance(context).getWidth(40),
-              color: AppColors.color_b7b7b7,)
+            text: type == MyBooksType.BOOKSHELF ?
+            getIt<FoxschoolLocalization>().data['text_add_bookshelf']
+                : getIt<FoxschoolLocalization>().data['text_add_vocabulary'],
+            fontSize: CommonUtils.getInstance(context).getWidth(40),
+            color: AppColors.color_b7b7b7,)
         ],
       ),
     );
   }
 }
+

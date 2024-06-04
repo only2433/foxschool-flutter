@@ -2,6 +2,7 @@
 import 'package:foxschool/data/version_data_result/VersionDataResult.dart';
 
 import '../../data/base/BaseResponse.dart';
+import '../../data/vocabulary/VocabularyDataResult.dart';
 
 abstract class FoxSchoolDataSource{
   Future<BaseResponse> getSchoolList();
@@ -15,5 +16,6 @@ abstract class FoxSchoolDataSource{
   Future<BaseResponse> saveMovieStudyAsync(String contentID, String playType, String playTime, int? homeworkNumber);
   Future<BaseResponse> quizInformationAsync(String contentID);
   Future<BaseResponse> vocabularyDataListAsync(String contentID);
+  Future<BaseResponse> addVocabularyContents(String contentID, String vocabularyID, List<VocabularyDataResult> data);
 
 }

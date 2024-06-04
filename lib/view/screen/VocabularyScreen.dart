@@ -354,7 +354,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                 title: getIt<FoxschoolLocalization>().data['text_add_vocabulary'],
                 isPlaying: playingState.isPlaying,
                 onPressed: (){
-
+                  _factoryController.onClickAddVocabulary();
                 }) ,
 
           ],

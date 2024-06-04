@@ -1,10 +1,12 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/ApiClient.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolDataSource.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/data/version_data_result/VersionDataResult.dart';
+import 'package:foxschool/data/vocabulary/VocabularyDataResult.dart';
 
 import '../../common/Common.dart';
 
@@ -74,6 +76,23 @@ class FoxSchoolRepository extends FoxSchoolDataSource
   @override
   Future<BaseResponse> vocabularyDataListAsync(String contentID){
     return apiClient.vocabularyContentsListAsync(contentID);
+  }
+
+  @override
+  Future<BaseResponse> addVocabularyContents(String contentID, String vocabularyID, List<VocabularyDataResult> data) {
+
+    Logger.d("contentID : $contentID, vocabularyID : $vocabularyID");
+    Map<String, String> queriesMap = {};
+    queriesMap['content_id'] = contentID;
+
+    for(int i = 0; i < data.length; i++)
+      {
+        Logger.d("word_ids[$i] : ${data[i].vocabularyID}");
+        queriesMap['word_ids[$i]'] = data[i].vocabularyID;
+      }
+
+
+    return apiClient.addVocabularyContents(vocabularyID, queriesMap);
   }
 
 }

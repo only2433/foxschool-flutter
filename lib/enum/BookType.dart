@@ -1,0 +1,6 @@
+
+enum BookType
+{
+  BOOKSHELF,
+  VOCABULARY
+}

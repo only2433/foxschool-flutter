@@ -79,6 +79,12 @@ abstract class ApiClient
       @Path('contentID') String requestID
       );
 
+  @PUT('contents/vocabularies/{vocabulary_id}/words')
+  Future<BaseResponse> addVocabularyContents(
+      @Path('vocabulary_id') String vocabularyID,
+      @Queries(encoded: true) Map<String, String> queryMap
+      );
+
 
 
 }
