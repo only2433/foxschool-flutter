@@ -87,7 +87,11 @@ class MainMyBooksSubScreen extends StatelessWidget {
                     for(int i = 0 ; i < state.vocabularyList.length; i++)
                     {
                       containers.add(
-                          _buildVocabularyItemWidget(context, state.vocabularyList[i])
+                          GestureDetector(
+                            onTap: () {
+                              factoryController.onClickMyVocabulary(i);
+                            },
+                              child: _buildVocabularyItemWidget(context, state.vocabularyList[i]))
                       );
                     }
                     containers.add(

@@ -335,13 +335,6 @@ class MovieFactoryController extends BlocController {
   }
 
 
-
-  @override
-  void onPause() {}
-
-  @override
-  void onResume() {}
-
   @override
   void dispose() {
     _setOrientation(false);

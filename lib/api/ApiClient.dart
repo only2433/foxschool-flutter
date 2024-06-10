@@ -79,8 +79,19 @@ abstract class ApiClient
       @Path('contentID') String requestID
       );
 
+  @GET('contents/vocabularies/{vocabularyID}')
+  Future<BaseResponse> vocabularyShelfListAsync(
+      @Path('vocabularyID') String requestID
+      );
+
   @PUT('contents/vocabularies/{vocabulary_id}/words')
   Future<BaseResponse> addVocabularyContents(
+      @Path('vocabulary_id') String vocabularyID,
+      @Queries(encoded: true) Map<String, String> queryMap
+      );
+
+  @DELETE('contents/vocabularies/{vocabulary_id}/words')
+  Future<BaseResponse> deleteVocabularyContents(
       @Path('vocabulary_id') String vocabularyID,
       @Queries(encoded: true) Map<String, String> queryMap
       );

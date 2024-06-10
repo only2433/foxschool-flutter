@@ -37,7 +37,8 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen>  {
+
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late MainFactoryController _factoryController;
@@ -78,11 +79,17 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+
     _factoryController = MainFactoryController(context: context);
     _factoryController.init();
 
     _controller = PersistentTabController(initialIndex: 0);
   }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +192,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
+
     _factoryController.dispose();
     _controller.dispose();
     super.dispose();

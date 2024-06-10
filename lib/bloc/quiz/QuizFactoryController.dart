@@ -599,15 +599,6 @@ class QuizFactoryController extends BlocController {
   }
 
   @override
-  void onPause() {
-    // TODO: implement onPause
-  }
-
-  @override
-  void onResume() {
-    // TODO: implement onResume
-  }
-  @override
   void dispose() {
     _enableTimer(false);
     _subscription.cancel();

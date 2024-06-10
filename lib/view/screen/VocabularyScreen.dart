@@ -349,7 +349,6 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
             ),
 
             BottomIconTextView(
-                width: CommonUtils.getInstance(context).getWidth(210),
                 imageAssetUri: 'assets/image/bottom_voca.png',
                 title: getIt<FoxschoolLocalization>().data['text_add_vocabulary'],
                 isPlaying: playingState.isPlaying,
@@ -365,82 +364,99 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
 
   Widget _buildBottomBookshelfLayout()
   {
-    return Container(
-      color: AppColors.color_29c8e6,
-      width: MediaQuery.of(context).size.width,
-      height: CommonUtils.getInstance(context).getHeight(176),
-      child: Row(
-        children: [
-          BottomIconTextView(
-              width: CommonUtils.getInstance(context).getWidth(210),
-              imageAssetUri: 'assets/image/bottom_interval.png',
-              title: '2초 간격',
-              onPressed: (){
-
-              }) ,
-          BottomIconTextView(
-              width: CommonUtils.getInstance(context).getWidth(210),
-              imageAssetUri: 'assets/image/bottom_all.png',
-              title: getIt<FoxschoolLocalization>().data['text_select_all'],
-              onPressed: (){
-
-              }) ,
-          Stack(
-            children: [
-              BottomIconTextView(
-                  width: CommonUtils.getInstance(context).getWidth(210),
-                  imageAssetUri: 'assets/image/bottom_play.png',
-                  title: getIt<FoxschoolLocalization>().data['text_select_play'],
-                  onPressed: (){
-
-                  }),
-              BlocBuilder<SeriesSelectItemCountCubit, SeriesSelectItemCountState>(builder: (context, state) {
-                if(state.count != 0)
+    return BlocBuilder<VocabularyPlayingCubit, VocabularyPlayingState>(builder: (context, playingState) {
+      return Container(
+        color: AppColors.color_29c8e6,
+        width: MediaQuery.of(context).size.width,
+        height: CommonUtils.getInstance(context).getHeight(176),
+        child: Row(
+          children: [
+            BlocBuilder<VocabularyBottomControllerCubit, VocabularyBottomControllerState>(builder: (context, state) {
+              return BottomIconTextView(
+                width: CommonUtils.getInstance(context).getWidth(210),
+                imageAssetUri: 'assets/image/bottom_interval.png',
+                title: state is VocabularySelectIntervalState ? getIt<FoxschoolLocalization>().data['text_list_vocabulary_interval'][state.index] : "",
+                isPlaying: playingState.isPlaying,
+                onPressed: playingState.isPlaying == false ? () {
+                  _factoryController.onClickInterval();
+                } : null,
+              );
+            }) ,
+            BlocBuilder<VocabularyBottomControllerCubit, VocabularyBottomControllerState>(
+                buildWhen: (previous, current) => current is VocabularySelectAllState,
+                builder:(context, state)
                 {
-                  return Positioned(
-                    right: state.count < 100 ? CommonUtils.getInstance(context).getWidth(100) : CommonUtils.getInstance(context).getWidth(85),
-                    top: CommonUtils.getInstance(context).getHeight(20),
-                    child: Container(
-                      width: state.count < 100 ? CommonUtils.getInstance(context).getWidth(35) : CommonUtils.getInstance(context).getWidth(45),
-                      height: CommonUtils.getInstance(context).getHeight(30),
-                      decoration: BoxDecoration(
-                          color: AppColors.color_ffffff,
-                          borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(30))
-                      ),
-                      alignment: Alignment.center,
-                      child: RobotoBoldText(
-                        text: '${state.count}',
-                        fontSize: CommonUtils.getInstance(context).getWidth(20),
-                        color: AppColors.color_29c8e6,
-                        align: TextAlign.center,
-                      ),
-                    ),
+                  bool isSelected = state is VocabularySelectAllState && state.isHaveSelectedItem;
+                  return BottomIconTextView(
+                    width: CommonUtils.getInstance(context).getWidth(210),
+                    imageAssetUri: isSelected ? 'assets/image/bottom_close.png' :  'assets/image/bottom_all.png',
+                    title: isSelected ? getIt<FoxschoolLocalization>().data['text_select_init'] :  getIt<FoxschoolLocalization>().data['text_select_all'],
+                    isPlaying: playingState.isPlaying,
+                    onPressed: playingState.isPlaying == false ? () async {
+                      _factoryController.onClickSelectAll();
+                    } : null,
                   );
-                }
-                else
-                {
-                  return Container();
-                }
-              },)
-            ],
+                }),
+            Stack(
+              children: [
+                BottomIconTextView(
+                    width: CommonUtils.getInstance(context).getWidth(210),
+                    imageAssetUri: playingState.isPlaying ? 'assets/image/bottom_stop.png' : 'assets/image/bottom_play.png',
+                    title: playingState.isPlaying ? getIt<FoxschoolLocalization>().data['text_stop_play'] : getIt<FoxschoolLocalization>().data['text_select_play'],
+                    onPressed: () {
+                      _factoryController.onClickSelectPlay();
+                    }),
+                BlocBuilder<VocabularyBottomControllerCubit, VocabularyBottomControllerState>(
+                  buildWhen: (previous, current) => current is VocabularySelectItemCountState,
+                  builder: (context, state)
+                  {
+                    bool isSelectCountState = state is VocabularySelectItemCountState;
+                    if (isSelectCountState && state.count != 0) {
+                      return Positioned(
+                        right: state.count < 100 ? CommonUtils.getInstance(context).getWidth(100) : CommonUtils.getInstance(context).getWidth(85),
+                        top: CommonUtils.getInstance(context).getHeight(20),
+                        child: Container(
+                          width: state.count < 100 ? CommonUtils.getInstance(context).getWidth(35) : CommonUtils.getInstance(context).getWidth(45),
+                          height: CommonUtils.getInstance(context).getHeight(30),
+                          decoration: BoxDecoration(color: AppColors.color_ffffff, borderRadius: BorderRadius.circular(CommonUtils.getInstance(context).getWidth(30))),
+                          alignment: Alignment.center,
+                          child: RobotoBoldText(
+                            text: '${state.count}',
+                            fontSize: CommonUtils.getInstance(context).getWidth(20),
+                            color: AppColors.color_29c8e6,
+                            align: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                )
+              ],
+            ),
+            BottomIconTextView(
+                width: CommonUtils.getInstance(context).getWidth(210),
+                imageAssetUri: 'assets/image/bottom_flashcard.png',
+                title: getIt<FoxschoolLocalization>().data['text_flashcards'],
+                isPlaying: playingState.isPlaying,
+                onPressed: playingState.isPlaying == false ? () async {
 
-          ) ,
-          BottomIconTextView(
-              width: CommonUtils.getInstance(context).getWidth(210),
-              imageAssetUri: 'assets/image/bottom_flashcard.png',
-              title: getIt<FoxschoolLocalization>().data['text_flashcards'],
-              onPressed: (){
-
-              }) ,
-          BottomIconTextView(
-              imageAssetUri: 'assets/image/bottom_delete.png',
-              title: getIt<FoxschoolLocalization>().data['text_delete'],
-              onPressed: () {
-
-              }),
-        ],
-      ),
-    );
+                  } : null,
+                ) ,
+            BottomIconTextView(
+                width: CommonUtils.getInstance(context).getWidth(210),
+                imageAssetUri: 'assets/image/bottom_delete.png',
+                title: getIt<FoxschoolLocalization>().data['text_delete'],
+                isPlaying: playingState.isPlaying,
+                onPressed: playingState.isPlaying == false ? () async {
+                  _factoryController.onClickDeleteVocabularyItem();
+                  } : null,
+                ),
+          ],
+        ),
+      );
+    });
   }
 
   @override

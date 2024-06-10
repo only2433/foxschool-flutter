@@ -4,10 +4,10 @@ import 'package:foxschool/bloc/base/BlocState.dart';
 
 import '../../../../data/vocabulary/VocabularyDataResult.dart';
 
-class VocabularyDataListEvent extends BlocEvent
+class VocabularyContentsListEvent extends BlocEvent
 {
   final String contentID;
-  VocabularyDataListEvent({
+  VocabularyContentsListEvent({
     required this.contentID
   });
 

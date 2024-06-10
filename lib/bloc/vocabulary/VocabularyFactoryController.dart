@@ -9,9 +9,12 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/vocabulary/api/VocabularyBloc.dart';
-import 'package:foxschool/bloc/vocabulary/api/event/AddVocabularyContentsEvent.dart';
-import 'package:foxschool/bloc/vocabulary/api/event/VocabularyDataListEvent.dart';
-import 'package:foxschool/bloc/vocabulary/api/state/AddVocabularyContentsLoadedState.dart';
+import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsAddEvent.dart';
+import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsDeleteEvent.dart';
+import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsListEvent.dart';
+import 'package:foxschool/bloc/vocabulary/api/event/VocabularyShelfListEvent.dart';
+import 'package:foxschool/bloc/vocabulary/api/state/VocabularyContentsAddState.dart';
+import 'package:foxschool/bloc/vocabulary/api/state/VocabularyContentsDeleteState.dart';
 import 'package:foxschool/bloc/vocabulary/api/state/VocabularyDataListLoadedState.dart';
 import 'package:foxschool/bloc/vocabulary/factory/cubit/VocabularyBottomControllerCubit.dart';
 import 'package:foxschool/bloc/vocabulary/factory/cubit/VocabularyItemListCubit.dart';
@@ -23,6 +26,7 @@ import 'package:foxschool/bloc/base/BlocState.dart';
 import 'package:foxschool/bloc/vocabulary/factory/cubit/VocabularyStudyTypeCubit.dart';
 import 'package:foxschool/bloc/vocabulary/factory/state/base/VocabularyListBaseState.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/common/MainObserver.dart';
 import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
 import 'package:foxschool/enum/BookType.dart';
 import 'package:foxschool/enum/VocabularySelectType.dart';
@@ -45,7 +49,7 @@ class VocabularyFactoryController extends BlocController
   final List<int> INTERVAL_SECONDS = [0, 1, 2, 3, 5, 7, 10, 15, 20, 30];
   late StreamSubscription _subscription;
   late List<VocabularyDataResult> _vocabularyDataList;
-  late List<VocabularyDataResult> _currentPlayDataList;
+  late List<VocabularyDataResult> _selectDataList;
   late AudioPlayer _audioPlayer;
   late MainInformationResult _mainData;
   late MyVocabularyResult _selectMyVocabularyResult;
@@ -56,7 +60,7 @@ class VocabularyFactoryController extends BlocController
   bool _isEnableExample = true;
 
   bool _isSequencePlay = false;
-  bool _isSelectAll = false;
+  bool _isHaveSelectedItem = false;
   int _currentIntervalIndex = 0;
   int _currentSelectedItemCount = 0;
   int _playIndex = 0;
@@ -73,21 +77,35 @@ class VocabularyFactoryController extends BlocController
   @override
   void init() async {
     context.read<VocabularyItemListCubit>().showLoading();
+    await _getMainData();
     _currentIntervalIndex = await Preference.getInt(Common.PARAMS_VOCABULARY_INTERVAL);
     context.read<VocabularyBottomControllerCubit>().setInterval(_currentIntervalIndex);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
       await Future.delayed(const Duration(milliseconds: Common.DURATION_NORMAL), () {
-        BlocProvider.of<VocabularyBloc>(context).add(
-          VocabularyDataListEvent(contentID: vocabularyInformationData.id)
-        );
+        if(vocabularyInformationData.type == VocabularyType.VOCABULARY_CONTENTS)
+          {
+            BlocProvider.of<VocabularyBloc>(context).add(
+                VocabularyContentsListEvent(contentID: vocabularyInformationData.id)
+            );
+          }
+        else
+          {
+            BlocProvider.of<VocabularyBloc>(context).add(
+              VocabularyShelfListEvent(vocabularyID: vocabularyInformationData.id)
+            );
+          }
       },);
     });
     _initAudioPlayer();
     _settingSubscriptions();
   }
 
-
+  Future<void> _getMainData() async
+  {
+    Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
+    _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
+  }
 
   void _initAudioPlayer()
   {
@@ -96,7 +114,7 @@ class VocabularyFactoryController extends BlocController
       if(_isSequencePlay)
       {
 
-        if(_playIndex >= _currentPlayDataList.length - 1)
+        if(_playIndex >= _selectDataList.length - 1)
         {
           _playIndex = 0;
         }
@@ -104,10 +122,10 @@ class VocabularyFactoryController extends BlocController
         {
           _playIndex++;
         }
-        Logger.d("play index : $_playIndex,  length: ${_currentPlayDataList.length}");
+        Logger.d("play index : $_playIndex,  length: ${_selectDataList.length}");
         await Future.delayed(Duration(seconds: INTERVAL_SECONDS[_currentIntervalIndex]), () async{
           await autoScrollController.scrollToIndex(_playIndex, preferPosition: AutoScrollPosition.begin);
-          _playAudio(_currentPlayDataList[_playIndex].soundUrl);
+          _playAudio(_selectDataList[_playIndex].soundUrl);
           _setCurrentPlayItem(_playIndex);
         },);
       }
@@ -145,8 +163,6 @@ class VocabularyFactoryController extends BlocController
                   CommonUtils.getInstance(context).getWidth(800),
                   CommonUtils.getInstance(context).getWidth(38));
 
-              Logger.d("mean text  :${_vocabularyDataList[i].meanText}");
-              Logger.d("example text  :${_vocabularyDataList[i].exampleText}");
               _vocabularyDataList[i] = _vocabularyDataList[i].setLineCount(meanLineCount + exampleLineCount);
 
               Logger.i("index : $i , title : ${_vocabularyDataList[i].wordText}, meanLineCount: $meanLineCount, exampleLineCount: $exampleLineCount");
@@ -156,41 +172,48 @@ class VocabularyFactoryController extends BlocController
             context.read<VocabularyItemListCubit>().setVocabularyItemList(_vocabularyDataList);
             break;
           }
-        case AddVocabularyContentsLoadedState:
+        case VocabularyContentsAddState:
           {
             Logger.d("AddVocabularyContentsLoadedState");
 
-            blocState = state as AddVocabularyContentsLoadedState;
+            blocState = state as VocabularyContentsAddState;
             MyVocabularyResult result = blocState.data;
             await _updateVocabularyData(result);
 
-            _isSelectAll = false;
-            _setCheckAll(_isSelectAll);
+            _isHaveSelectedItem = false;
+            _setCheckAll(false);
 
-            Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
-            _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
-
+            await _getMainData();
             context.read<MainMyBooksTypeCubit>()
                 .setMyBooksTypeData(
                 MyBooksType.VOCABULARY,
                 _mainData.bookshelfList,
                 _mainData.vocabularyList
             );
+            MainObserver().update();
 
             LoadingDialog.dismiss(context);
             CommonUtils.getInstance(context).showSuccessMessage(
                 getIt<FoxschoolLocalization>().data['message_success_save_contents_in_vocabulary']
             );
-
             break;
           }
+        case VocabularyContentsDeleteState:
+
+          LoadingDialog.dismiss(context);
+          _refreshVocabularyListData();
+          _isHaveSelectedItem = false;
+          _setCheckAll(false);
+          Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_delete_contents']);
+          break;
+        case ErrorState:
+          blocState = state as ErrorState;
+          Fluttertoast.showToast(msg: blocState.message);
+          onBackPressed();
+
+          break;
       }
     });
-  }
-
-  void showLoading()
-  {
-
   }
 
   int _calculateLineCount(String text, double maxWidth, double fontSize)
@@ -240,7 +263,7 @@ class VocabularyFactoryController extends BlocController
   {
     _playIndex = 0;
     autoScrollController.jumpTo(0.0);
-    _playAudio(_currentPlayDataList[_playIndex].soundUrl);
+    _playAudio(_selectDataList[_playIndex].soundUrl);
     _setCurrentPlayItem(_playIndex);
   }
 
@@ -263,18 +286,18 @@ class VocabularyFactoryController extends BlocController
 
   void _setCurrentPlayItem(int index)
   {
-    for (int  i = 0 ; i < _currentPlayDataList.length; i++) {
+    for (int  i = 0 ; i < _selectDataList.length; i++) {
       if(i == index)
         {
-          _currentPlayDataList[i] = _currentPlayDataList[i].setCurrentPlaying(true);
+          _selectDataList[i] = _selectDataList[i].setCurrentPlaying(true);
         }
       else
         {
-          _currentPlayDataList[i] = _currentPlayDataList[i].setCurrentPlaying(false);
+          _selectDataList[i] = _selectDataList[i].setCurrentPlaying(false);
         }
     }
 
-    context.read<VocabularyItemListCubit>().setVocabularyItemList(_currentPlayDataList);
+    context.read<VocabularyItemListCubit>().setVocabularyItemList(_selectDataList);
   }
 
   void _setCheckAll(bool isCheckAll)
@@ -309,24 +332,51 @@ class VocabularyFactoryController extends BlocController
     await Preference.setObject(Common.PARAMS_FILE_MAIN_INFO, updateMainData);
   }
 
+  void _syncVocabularyList()
+  {
+    Logger.d(" size : ${_vocabularyDataList.length}");
+    // Create a set from the vocabularyIDs in _selectDataList
+    Set<String> selectedVocabularyIDs = _selectDataList.map((item) => item.vocabularyID).toSet();
+
+    // Remove items from _vocabularyDataList that match the selected IDs
+    _vocabularyDataList.removeWhere((item) => selectedVocabularyIDs.contains(item.vocabularyID));
+
+    Logger.d("removed list size : ${_vocabularyDataList.length}");
+  }
+
+  void _refreshVocabularyListData() async
+  {
+    _syncVocabularyList();
+
+    List<MyVocabularyResult> tempVocabularyList = _mainData.vocabularyList.toList();
+    for(int i = 0; i < tempVocabularyList.length; i++)
+      {
+        if(vocabularyInformationData.id == tempVocabularyList[i].id)
+          {
+            tempVocabularyList[i] = tempVocabularyList[i].setWordCount(_vocabularyDataList.length);
+            _mainData = _mainData.copyWith(vocabularyList: tempVocabularyList);
+          }
+      }
+
+    context.read<MainMyBooksTypeCubit>()
+        .setMyBooksTypeData(
+        MyBooksType.VOCABULARY,
+        _mainData.bookshelfList,
+        _mainData.vocabularyList
+    );
+
+    await Preference.setObject(Common.PARAMS_FILE_MAIN_INFO, _mainData);
+    MainObserver().update();
+  }
+
   @override
   void onBackPressed() {
     Navigator.of(context).pop();
   }
 
   @override
-  void onPause() {
-    // TODO: implement onPause
-  }
-
-  @override
-  void onResume() {
-    // TODO: implement onResume
-  }
-
-  @override
   void dispose() {
-
+    _subscription.cancel();
   }
 
   void onClickSelectType(VocabularySelectType type)
@@ -363,8 +413,6 @@ class VocabularyFactoryController extends BlocController
         context.read<VocabularyStudyTypeCubit>().setSelectType(_isEnableAll, _isEnableWord, _isEnableMean, _isEnableExample);
       }
   }
-
-
 
   void onSelectItem(int index)
   {
@@ -414,10 +462,10 @@ class VocabularyFactoryController extends BlocController
 
   void onClickSelectAll()
   {
-    _isSelectAll = !_isSelectAll;
+    _isHaveSelectedItem = !_isHaveSelectedItem;
 
-    Logger.d("_isSelectAll : $_isSelectAll");
-    _setCheckAll(_isSelectAll);
+    Logger.d("_isSelectAll : $_isHaveSelectedItem");
+    _setCheckAll(_isHaveSelectedItem);
   }
 
   void onClickSelectPlay() async
@@ -428,18 +476,18 @@ class VocabularyFactoryController extends BlocController
         context.read<VocabularyItemListCubit>().setVocabularyItemList(_vocabularyDataList);
         context.read<VocabularyBottomControllerCubit>().setSelectItemCount(_currentSelectedItemCount);
         context.read<VocabularyPlayingCubit>().enablePlay(false);
-        _currentPlayDataList.clear();
+        _selectDataList.clear();
         await autoScrollController.scrollToIndex(0, preferPosition: AutoScrollPosition.begin);
         _stopAudio();
       }
     else
       {
-        _currentPlayDataList = _getSelectedList();
-        if(_currentPlayDataList.isNotEmpty)
+        _selectDataList = _getSelectedList();
+        if(_selectDataList.isNotEmpty)
         {
           _isSequencePlay = true;
-          _isSelectAll = true;
-          context.read<VocabularyItemListCubit>().setVocabularyItemList(_currentPlayDataList);
+          _isHaveSelectedItem = true;
+          context.read<VocabularyItemListCubit>().setVocabularyItemList(_selectDataList);
           context.read<VocabularyBottomControllerCubit>().setSelectItemCount(0);
           context.read<VocabularyPlayingCubit>().enablePlay(true);
 
@@ -453,13 +501,10 @@ class VocabularyFactoryController extends BlocController
       }
   }
 
-
   void onClickAddVocabulary() async
   {
-    Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
-    _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
-    List<VocabularyDataResult> data = _getSelectedList();
-    if(data.isNotEmpty)
+    _selectDataList = _getSelectedList();
+    if(_selectDataList.isNotEmpty)
       {
         FoxSchoolDialog.showBottomAddBookSelectDialog(
             context: context,
@@ -469,16 +514,39 @@ class VocabularyFactoryController extends BlocController
               Logger.d("index : $index");
               _selectMyVocabularyResult = _mainData.vocabularyList[index];
               BlocProvider.of<VocabularyBloc>(context).add(
-                AddVocabularyContentsEvent(
+                VocabularyContentsAddEvent(
                     contentID: vocabularyInformationData.id,
                     vocabularyID: _selectMyVocabularyResult.id,
-                    list: data)
+                    list: _selectDataList)
               );
             });
       }
     else
       {
         Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_select_words_put_in_vocabulary']);
+      }
+  }
+
+  void onClickDeleteVocabularyItem()
+  {
+    _selectDataList = _getSelectedList();
+    if(_selectDataList.isNotEmpty)
+      {
+        FoxSchoolDialog.showSelectDialog(
+            context: context,
+            message: getIt<FoxschoolLocalization>().data['message_question_delete_contents_in_vocabulary'],
+            buttonText: getIt<FoxschoolLocalization>().data['text_confirm'],
+            onSelected: () {
+              BlocProvider.of<VocabularyBloc>(context).add(
+                  VocabularyContentsDeleteEvent(
+                      vocabularyID: vocabularyInformationData.id,
+                      data: _selectDataList)
+              );
+            },);
+      }
+    else
+      {
+        Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_select_words_delete_in_vocabulary']);
       }
   }
 

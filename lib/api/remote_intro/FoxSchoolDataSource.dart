@@ -15,7 +15,9 @@ abstract class FoxSchoolDataSource{
   Future<BaseResponse> authContentsPlayAsync(String data);
   Future<BaseResponse> saveMovieStudyAsync(String contentID, String playType, String playTime, int? homeworkNumber);
   Future<BaseResponse> quizInformationAsync(String contentID);
-  Future<BaseResponse> vocabularyDataListAsync(String contentID);
+  Future<BaseResponse> vocabularyContentsListAsync(String contentID);
+  Future<BaseResponse> vocabularyShelfListAsync(String vocabularyID);
   Future<BaseResponse> addVocabularyContents(String contentID, String vocabularyID, List<VocabularyDataResult> data);
+  Future<BaseResponse> deleteVocabularyContents(String vocabularyID, List<VocabularyDataResult> data);
 
 }

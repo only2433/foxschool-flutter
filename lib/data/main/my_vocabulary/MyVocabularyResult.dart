@@ -37,5 +37,10 @@ class MyVocabularyResult with _$MyVocabularyResult
     return copyWith(vocabularyType: type);
   }
 
+  MyVocabularyResult setWordCount(int count)
+  {
+    return copyWith(wordsCount: count);
+  }
+
   factory MyVocabularyResult.fromJson(Map<String, dynamic> data) => _$MyVocabularyResultFromJson(data);
 }

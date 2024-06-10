@@ -9,6 +9,7 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainUserInformationCubit.dart';
+import 'package:foxschool/common/MainObserver.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:foxschool/common/PageNavigator.dart' as Page;
 import 'package:foxschool/enum/MyBooksType.dart';
@@ -23,8 +24,12 @@ import '../../data/main/MainInformationResult.dart';
 import '../../data/main/my_book/MyBookshelfResult.dart';
 import '../../data/main/my_vocabulary/MyVocabularyResult.dart';
 import '../../data/main/series/SeriesInformationResult.dart';
+import '../../data/vocabulary/information/VocabularyInformationData.dart';
 import '../../enum/StorySeriesType.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../../enum/VocabularyType.dart';
+import '../../view/screen/VocabularyScreen.dart';
 
 class MainFactoryController extends BlocController
 {
@@ -119,15 +124,16 @@ class MainFactoryController extends BlocController
     );
   }
 
-  @override
-  void onPause() {}
+  void _checkUpdateMainData() async
+  {
+    if(MainObserver().isUpdate())
+    {
+      Logger.d(" 메인 데이터 업데이트 ");
+      Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
+      _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
 
-  @override
-  void onResume() {}
-
-  @override
-  void dispose() {
-
+      MainObserver().clear();
+    }
   }
 
   @override
@@ -149,17 +155,23 @@ class MainFactoryController extends BlocController
   void onClickStorySeriesItem(SeriesInformationResult data, Widget widget)
   {
     if(_currentStorySeriesType == StorySeriesType.LEVEL) {
-      Navigator.push(
+       Navigator.push(
         context,
           Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
-      );
+      ).then((value) {
+        Logger.d(" ----- onResume");
+        _checkUpdateMainData();
+       });
     }
     else
     {
-      Navigator.push(
+        Navigator.push(
           context,
           Page.getSeriesDetailListTransition(context, StoryCategoryListScreen(seriesBaseResult: data))
-      );
+      ).then((value) {
+          Logger.d(" ----- onResume");
+          _checkUpdateMainData();
+        });
     }
   }
 
@@ -169,6 +181,25 @@ class MainFactoryController extends BlocController
         context,
         Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
     );
+  }
+
+  void onClickMyVocabulary(int index)
+  {
+    Logger.d("index : $index");
+    VocabularyInformationData vocabularyInformationData = VocabularyInformationData(
+        id: _mainData.vocabularyList[index].id,
+        type: VocabularyType.VOCABULARY_SHELF,
+        title: _mainData.vocabularyList[index].name);
+    Navigator.push(
+        context,
+        Page.getDefaultTransition(context,
+            VocabularyScreen(
+                data: vocabularyInformationData)
+        )
+    ).then((value){
+      Logger.d(" ----- onResume");
+      _checkUpdateMainData();
+    });
   }
 
   void onClickSearch()

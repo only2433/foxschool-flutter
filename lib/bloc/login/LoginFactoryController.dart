@@ -90,11 +90,6 @@ class LoginFactoryController extends BlocController {
     }
   }
 
-  @override
-  void onPause() {}
-
-  @override
-  void onResume() {}
 
   @override
   void dispose() {

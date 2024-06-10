@@ -3,10 +3,10 @@ import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
 
 import '../../../base/BlocState.dart';
 
-class AddVocabularyContentsLoadedState extends BlocState
+class VocabularyContentsAddState extends BlocState
 {
   final MyVocabularyResult data;
-  const AddVocabularyContentsLoadedState({
+  const VocabularyContentsAddState({
     required this.data
   });
 

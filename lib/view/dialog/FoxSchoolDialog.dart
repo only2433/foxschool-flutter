@@ -118,6 +118,7 @@ Widget _AlertSelectDialog(BuildContext context, String message, String buttonTex
         text: message,
         fontSize: CommonUtils.getInstance(context).getWidth(40),
         color: AppColors.color_000000,
+        maxLines: 3,
       ),
     actionsPadding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(10)),
     actions: <Widget>[

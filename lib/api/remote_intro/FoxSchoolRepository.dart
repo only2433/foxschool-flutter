@@ -74,9 +74,15 @@ class FoxSchoolRepository extends FoxSchoolDataSource
   }
 
   @override
-  Future<BaseResponse> vocabularyDataListAsync(String contentID){
+  Future<BaseResponse> vocabularyContentsListAsync(String contentID){
     return apiClient.vocabularyContentsListAsync(contentID);
   }
+
+  @override
+  Future<BaseResponse> vocabularyShelfListAsync(String vocabularyID) {
+    return apiClient.vocabularyShelfListAsync(vocabularyID);
+  }
+
 
   @override
   Future<BaseResponse> addVocabularyContents(String contentID, String vocabularyID, List<VocabularyDataResult> data) {
@@ -94,5 +100,24 @@ class FoxSchoolRepository extends FoxSchoolDataSource
 
     return apiClient.addVocabularyContents(vocabularyID, queriesMap);
   }
+
+  @override
+  Future<BaseResponse> deleteVocabularyContents(String vocabularyID, List<VocabularyDataResult> data)
+  {
+    Map<String, String> queriesMap = {};
+
+    for(int i = 0; i < data.length; i++)
+      {
+        queriesMap['words[$i][content_id]'] = data[i].contentID;
+        queriesMap['words[$i][word_id]'] = data[i].vocabularyID;
+      }
+
+    return apiClient.deleteVocabularyContents(vocabularyID, queriesMap);
+  }
+
+
+
+
+
 
 }

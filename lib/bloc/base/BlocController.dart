@@ -1,9 +1,9 @@
 
-abstract class BlocController
+class BlocController
 {
-  void init();
-  void onPause();
-  void onResume();
-  void dispose();
-  void onBackPressed();
+  void init(){}
+  void onPause(){}
+  void onResume(){}
+  void dispose(){}
+  void onBackPressed(){}
 }

@@ -3,12 +3,12 @@ import 'package:foxschool/bloc/base/BlocEvent.dart';
 
 import '../../../../data/vocabulary/VocabularyDataResult.dart';
 
-class AddVocabularyContentsEvent extends BlocEvent
+class VocabularyContentsAddEvent extends BlocEvent
 {
   final String contentID;
   final String vocabularyID;
   final List<VocabularyDataResult> list;
-  AddVocabularyContentsEvent({
+  VocabularyContentsAddEvent({
     required this.contentID,
     required this.vocabularyID,
     required this.list
