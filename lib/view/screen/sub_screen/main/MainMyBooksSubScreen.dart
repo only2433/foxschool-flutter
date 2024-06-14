@@ -8,6 +8,7 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/data/main/my_book/MyBookshelfResult.dart';
 import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
+import 'package:foxschool/enum/ManagementMyBooksStatus.dart';
 import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/enum/UserType.dart';
 import 'package:foxschool/view/widget/RobotoNormalText.dart';
@@ -75,7 +76,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                     for(int i = 0 ; i < state.bookshelfList.length; i++)
                     {
                       containers.add(
-                          _buildBookshelfItemWidget(context, state.bookshelfList[i])
+                          _buildBookshelfItemWidget(context, state, i)
                       );
                     }
                     containers.add(
@@ -91,7 +92,8 @@ class MainMyBooksSubScreen extends StatelessWidget {
                             onTap: () {
                               factoryController.onClickMyVocabulary(i);
                             },
-                              child: _buildVocabularyItemWidget(context, state.vocabularyList[i]))
+                              child: _buildVocabularyItemWidget(context, state, i)
+                          )
                       );
                     }
                     containers.add(
@@ -109,9 +111,9 @@ class MainMyBooksSubScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBookshelfItemWidget(BuildContext context, MyBookshelfResult item)
+  Widget _buildBookshelfItemWidget(BuildContext context, MainMyBooksTypeState state, int index)
   {
-    Logger.d("data : " + item.toString());
+    MyBookshelfResult data = state.bookshelfList[index];
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(172),
@@ -129,7 +131,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                     height: CommonUtils.getInstance(context).getHeight(106),
                     child: Stack(
                       children: [
-                        Image.asset(CommonUtils.getInstance(context).getBookResource(item.color),
+                        Image.asset(CommonUtils.getInstance(context).getBookResource(data.color),
                             width: CommonUtils.getInstance(context).getWidth(94),
                             height: CommonUtils.getInstance(context).getHeight(106),
                             fit: BoxFit.cover),
@@ -150,7 +152,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                   Container(
                     width: CommonUtils.getInstance(context).getWidth(660),
                     child: RobotoNormalText(
-                      text: '${item.name} (${item.contentsCount})',
+                      text: '${data.name} (${data.contentsCount})',
                       fontSize: CommonUtils.getInstance(context).getWidth(40),
                       color: AppColors.color_444444,
                     ),
@@ -158,10 +160,15 @@ class MainMyBooksSubScreen extends StatelessWidget {
                   SizedBox(
                     width: CommonUtils.getInstance(context).getWidth(40),
                   ),
-                  Image.asset('assets/image/icon_setting_g.png',
-                    width: CommonUtils.getInstance(context).getWidth(63),
-                    height: CommonUtils.getInstance(context).getHeight(63),
-                    fit: BoxFit.cover,)
+                  GestureDetector(
+                    onTap: () {
+                      factoryController.onClickModifyMyBooks(ManagementMyBooksStatus.BOOKSHELF_MODIFY, index);
+                    },
+                    child: Image.asset('assets/image/icon_setting_g.png',
+                      width: CommonUtils.getInstance(context).getWidth(63),
+                      height: CommonUtils.getInstance(context).getHeight(63),
+                      fit: BoxFit.contain,),
+                  )
                 ],
               ),
             ),
@@ -179,9 +186,9 @@ class MainMyBooksSubScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildVocabularyItemWidget(BuildContext context, MyVocabularyResult item)
+  Widget _buildVocabularyItemWidget(BuildContext context, MainMyBooksTypeState state, int index)
   {
-    Logger.d("data : " + item.toString());
+    MyVocabularyResult data = state.vocabularyList[index];
     return Container(
       width: MediaQuery.of(context).size.width,
       height: CommonUtils.getInstance(context).getHeight(172),
@@ -199,7 +206,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                     height: CommonUtils.getInstance(context).getHeight(106),
                     child: Stack(
                       children: [
-                        Image.asset(CommonUtils.getInstance(context).getBookResource(item.color),
+                        Image.asset(CommonUtils.getInstance(context).getBookResource(data.color),
                             width: CommonUtils.getInstance(context).getWidth(94),
                             height: CommonUtils.getInstance(context).getHeight(106),
                             fit: BoxFit.cover),
@@ -220,7 +227,7 @@ class MainMyBooksSubScreen extends StatelessWidget {
                   Container(
                     width: CommonUtils.getInstance(context).getWidth(660),
                     child: RobotoNormalText(
-                      text: '${item.name} (${item.wordsCount})',
+                      text: '${data.name} (${data.wordsCount})',
                       fontSize: CommonUtils.getInstance(context).getWidth(40),
                       color: AppColors.color_444444,
                     ),
@@ -228,10 +235,15 @@ class MainMyBooksSubScreen extends StatelessWidget {
                   SizedBox(
                     width: CommonUtils.getInstance(context).getWidth(40),
                   ),
-                  Image.asset('assets/image/icon_setting_g.png',
-                    width: CommonUtils.getInstance(context).getWidth(63),
-                    height: CommonUtils.getInstance(context).getHeight(63),
-                    fit: BoxFit.cover,)
+                  GestureDetector(
+                    onTap: () {
+                      factoryController.onClickModifyMyBooks(ManagementMyBooksStatus.VOCABULARY_MODIFY, index);
+                    },
+                    child: Image.asset('assets/image/icon_setting_g.png',
+                      width: CommonUtils.getInstance(context).getWidth(63),
+                      height: CommonUtils.getInstance(context).getHeight(63),
+                      fit: BoxFit.contain,),
+                  )
                 ],
               ),
             ),
@@ -260,9 +272,21 @@ class MainMyBooksSubScreen extends StatelessWidget {
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(40),
           ),
-          Image.asset('assets/image/btn_add.png',
-              width: CommonUtils.getInstance(context).getWidth(87),
-              height: CommonUtils.getInstance(context).getHeight(87)
+          GestureDetector(
+            onTap: () {
+              if(type == MyBooksType.BOOKSHELF)
+                {
+                  factoryController.onClickCreateMyBooks(ManagementMyBooksStatus.BOOKSHELF_ADD);
+                }
+              else
+                {
+                  factoryController.onClickCreateMyBooks(ManagementMyBooksStatus.VOCABULARY_ADD);
+                }
+            },
+            child: Image.asset('assets/image/btn_add.png',
+                width: CommonUtils.getInstance(context).getWidth(87),
+                height: CommonUtils.getInstance(context).getHeight(87)
+            ),
           ),
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(10),

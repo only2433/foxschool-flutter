@@ -95,7 +95,7 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
     try
     {
       emit(LoadingState());
-      BaseResponse response = await repository.addVocabularyContents(event.contentID, event.vocabularyID, event.list);
+      BaseResponse response = await repository.addVocabularyContentsAsync(event.contentID, event.vocabularyID, event.list);
       Logger.d("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
         {
@@ -123,7 +123,7 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
     try
     {
       emit(LoadingState());
-      BaseResponse response = await repository.deleteVocabularyContents(event.vocabularyID, event.data);
+      BaseResponse response = await repository.deleteVocabularyContentsAsync(event.vocabularyID, event.data);
       Logger.d("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
         {

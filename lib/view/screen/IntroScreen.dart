@@ -13,7 +13,7 @@ import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/enum/IntroScreenType.dart';
 
 import 'package:foxschool/view/screen/webview/FoxschoolIntroduceScreen.dart';
-import 'package:foxschool/view/widget/BlueOutlinedTextButton.dart';
+import 'package:foxschool/view/widget/OutlinedTextButton.dart';
 import 'package:foxschool/view/widget/BlueTextButton.dart';
 import 'package:foxschool/view/widget/FrameAnimationView.dart';
 import 'package:foxschool/view/widget/PercentLineProgressBar.dart';
@@ -154,7 +154,7 @@ class _IntroScreenState extends State<IntroScreen>  with WidgetsBindingObserver{
           SizedBox(
             height: CommonUtils.getInstance(context).getHeight(30),
           ),
-          BlueOutlinedTextButton(
+          OutlinedTextButton(
               width: CommonUtils.getInstance(context).getWidth(788),
               height: CommonUtils.getInstance(context).getHeight(120),
               text: getIt<FoxschoolLocalization>().data['text_login'],

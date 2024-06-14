@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
-import 'package:foxschool/enum/BookType.dart';
+import 'package:foxschool/enum/MyBooksType.dart';
 
 import '../../common/CommonUtils.dart';
 import '../../common/FoxschoolLocalization.dart';
@@ -12,7 +12,7 @@ import '../../values/AppColors.dart';
 import 'RobotoNormalText.dart';
 
 class BottomAddBookWidget extends StatelessWidget {
-  final BookType bookType;
+  final MyBooksType bookType;
   final List<MyVocabularyResult> vocabularyList;
   final Function(int index) onItemPressed;
   BottomAddBookWidget({

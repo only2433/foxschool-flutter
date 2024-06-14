@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:foxschool/enum/MyBooksColorType.dart';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -135,6 +136,47 @@ class CommonUtils
     }
     return 'assets/image/bookshelf_01.png';
   }
+
+  MyBooksColorType getMyBooksType(String color)
+  {
+    switch(color)
+    {
+      case "red":
+        return MyBooksColorType.RED;
+      case "orange":
+        return MyBooksColorType.ORANGE;
+      case "green":
+        return MyBooksColorType.GREEN;
+      case "blue":
+        return MyBooksColorType.BLUE;
+      case "purple":
+        return MyBooksColorType.PURPLE;
+      case "pink":
+        return MyBooksColorType.PINK;
+    }
+    return MyBooksColorType.RED;
+  }
+
+  String getMyBooksColorText(MyBooksColorType type)
+  {
+    switch(type)
+    {
+      case MyBooksColorType.RED:
+        return 'red';
+      case MyBooksColorType.ORANGE:
+        return 'orange';
+      case MyBooksColorType.GREEN:
+        return 'green';
+      case MyBooksColorType.BLUE:
+        return 'blue';
+      case MyBooksColorType.PURPLE:
+        return 'purple';
+      case MyBooksColorType.PINK:
+        return 'pink';
+    }
+  }
+
+
 
 
   // 문자열 형식의 색상 코드를 Color 객체로 변환하는 함수

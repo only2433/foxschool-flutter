@@ -85,7 +85,7 @@ class FoxSchoolRepository extends FoxSchoolDataSource
 
 
   @override
-  Future<BaseResponse> addVocabularyContents(String contentID, String vocabularyID, List<VocabularyDataResult> data) {
+  Future<BaseResponse> addVocabularyContentsAsync(String contentID, String vocabularyID, List<VocabularyDataResult> data) {
 
     Logger.d("contentID : $contentID, vocabularyID : $vocabularyID");
     Map<String, String> queriesMap = {};
@@ -102,7 +102,7 @@ class FoxSchoolRepository extends FoxSchoolDataSource
   }
 
   @override
-  Future<BaseResponse> deleteVocabularyContents(String vocabularyID, List<VocabularyDataResult> data)
+  Future<BaseResponse> deleteVocabularyContentsAsync(String vocabularyID, List<VocabularyDataResult> data)
   {
     Map<String, String> queriesMap = {};
 
@@ -115,9 +115,33 @@ class FoxSchoolRepository extends FoxSchoolDataSource
     return apiClient.deleteVocabularyContents(vocabularyID, queriesMap);
   }
 
+  @override
+  Future<BaseResponse> createBookshelfAsync(String name, String color) {
+    return apiClient.createBookshelfAsync(name, color);
+  }
 
+  @override
+  Future<BaseResponse> createVocabularyAsync(String name, String color) {
+    return apiClient.createVocabularyAsync(name, color);
+  }
 
+  @override
+  Future<BaseResponse> deleteBookshelfAsync(String bookshelfID) {
+    return apiClient.deleteBookshelfAsync(bookshelfID);
+  }
 
+  @override
+  Future<BaseResponse> deleteVocabularyAsync(String vocabularyID) {
+    return apiClient.deleteVocabularyAsync(vocabularyID);
+  }
 
+  @override
+  Future<BaseResponse> updateBookshelfAsync(String bookshelfID, String name, String color) {
+    return apiClient.updateBookshelfAsync(bookshelfID, name, color);
+  }
 
+  @override
+  Future<BaseResponse> updateVocabularyAsync(String vocabularyID, String name, String color) {
+    return apiClient.updateVocabularyAsync(vocabularyID, name, color);
+  }
 }

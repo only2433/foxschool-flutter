@@ -28,7 +28,7 @@ import 'package:foxschool/bloc/vocabulary/factory/state/base/VocabularyListBaseS
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/common/MainObserver.dart';
 import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
-import 'package:foxschool/enum/BookType.dart';
+
 import 'package:foxschool/enum/VocabularySelectType.dart';
 import 'package:foxschool/enum/VocabularyType.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -326,6 +326,7 @@ class VocabularyFactoryController extends BlocController
           {
             Logger.d("change Voca ID : ${data.id}");
             dataList[i] = data;
+            break;
           }
       }
     final updateMainData = _mainData.copyWith(vocabularyList: dataList);
@@ -355,6 +356,7 @@ class VocabularyFactoryController extends BlocController
           {
             tempVocabularyList[i] = tempVocabularyList[i].setWordCount(_vocabularyDataList.length);
             _mainData = _mainData.copyWith(vocabularyList: tempVocabularyList);
+            break;
           }
       }
 
@@ -508,7 +510,7 @@ class VocabularyFactoryController extends BlocController
       {
         FoxSchoolDialog.showBottomAddBookSelectDialog(
             context: context,
-            type: BookType.VOCABULARY,
+            type: MyBooksType.VOCABULARY,
             list: _mainData.vocabularyList,
             onItemPressed: (index) {
               Logger.d("index : $index");

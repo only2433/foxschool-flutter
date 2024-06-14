@@ -5,14 +5,19 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 abstract class BlocState extends Equatable
 {
   const BlocState();
-
-  @override
-  List<Object> get props => [];
 }
 
-class InitState extends BlocState {}
+class InitState extends BlocState {
 
-class LoadingState extends BlocState {}
+  @override
+  List<Object?> get props => [];
+}
+
+class LoadingState extends BlocState {
+
+  @override
+  List<Object?> get props => [];
+}
 
 class ErrorState extends BlocState{
   final String message;

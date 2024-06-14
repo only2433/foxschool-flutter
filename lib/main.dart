@@ -23,6 +23,9 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainUserInformationCubit.dart';
+import 'package:foxschool/bloc/management/api/ManagementMyBooksBloc.dart';
+import 'package:foxschool/bloc/management/factory/cubit/MyBooksUpdateColorCubit.dart';
+import 'package:foxschool/bloc/management/factory/cubit/MyBooksUpdateNameCubit.dart';
 import 'package:foxschool/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieCaptionTextCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
@@ -211,7 +214,15 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => VocabularyItemListCubit()),
           BlocProvider(create: (context) => VocabularyPlayingCubit()),
           BlocProvider(create: (context) => VocabularyBottomControllerCubit()),
-          BlocProvider(create: (context) => VocabularyStudyTypeCubit())
+          BlocProvider(create: (context) => VocabularyStudyTypeCubit()),
+
+          /**
+           * Management MyBooks
+           */
+          BlocProvider(
+              create: (context) => getIt<ManagementMyBooksBloc>()),
+          BlocProvider(create: (context) => MyBooksUpdateNameCubit()),
+          BlocProvider(create: (context) => MyBooksUpdateColorCubit()),
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,

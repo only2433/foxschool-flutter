@@ -1,0 +1,8 @@
+
+enum ManagementMyBooksStatus
+{
+  BOOKSHELF_ADD,
+  BOOKSHELF_MODIFY,
+  VOCABULARY_ADD,
+  VOCABULARY_MODIFY
+}

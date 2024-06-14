@@ -9,11 +9,14 @@ import 'package:foxschool/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainUserInformationCubit.dart';
+import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/MainObserver.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:foxschool/common/PageNavigator.dart' as Page;
+import 'package:foxschool/enum/ManagementMyBooksStatus.dart';
 import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
+import 'package:foxschool/view/screen/ManagementMyBooksScreen.dart';
 import 'package:foxschool/view/screen/SearchScreen.dart';
 import 'package:foxschool/view/screen/SeriesContentListScreen.dart';
 import 'package:foxschool/view/screen/StoryCategoryListScreen.dart';
@@ -219,5 +222,47 @@ class MainFactoryController extends BlocController
         Page.getLogoutTransition(context),
        (route) => false,
     );
+  }
+
+  void onClickCreateMyBooks(ManagementMyBooksStatus status)
+  {
+    Logger.d("status : $status");
+    Navigator.push(context,
+        Page.getDefaultTransition(context,
+            ManagementMyBooksScreen(status: status))
+    ).then((value){
+      Logger.d(" ----- onResume");
+      _checkUpdateMainData();
+    });
+  }
+
+  void onClickModifyMyBooks(ManagementMyBooksStatus status, int index)
+  {
+    ManagementMyBooksScreen screen;
+
+    if(status == ManagementMyBooksStatus.BOOKSHELF_MODIFY)
+      {
+        screen = ManagementMyBooksScreen(
+            status: status,
+            id: _mainData.bookshelfList[index].id,
+            name: _mainData.bookshelfList[index].name,
+            type: CommonUtils.getInstance(context).getMyBooksType(_mainData.bookshelfList[index].color));
+      }
+    else
+      {
+        screen = ManagementMyBooksScreen(
+            status: status,
+            id: _mainData.vocabularyList[index].id,
+            name: _mainData.vocabularyList[index].name,
+            type: CommonUtils.getInstance(context).getMyBooksType(_mainData.vocabularyList[index].color));
+      }
+
+    Navigator.push(context,
+        Page.getDefaultTransition(context,
+            screen)
+    ).then((value){
+      Logger.d(" ----- onResume");
+      _checkUpdateMainData();
+    });
   }
 }

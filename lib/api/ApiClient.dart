@@ -96,6 +96,42 @@ abstract class ApiClient
       @Queries(encoded: true) Map<String, String> queryMap
       );
 
+  @PUT('contents/bookshelves')
+  Future<BaseResponse> createBookshelfAsync(
+      @Field('name') String name,
+      @Field('color') String color
+      );
+
+  @POST('contents/bookshelves/{bookshelf_id}')
+  Future<BaseResponse> updateBookshelfAsync(
+      @Path('bookshelf_id') String bookshelfID,
+      @Field('name') String name,
+      @Field('color') String color
+      );
+
+  @DELETE('contents/bookshelves/{bookshelf_id}')
+  Future<BaseResponse> deleteBookshelfAsync(
+      @Path('bookshelf_id') String bookshelfID
+      );
+
+  @PUT('contents/vocabularies')
+  Future<BaseResponse> createVocabularyAsync(
+      @Field('name') String name,
+      @Field('color') String color
+      );
+
+  @POST('contents/vocabularies/{vocabulary_id}')
+  Future<BaseResponse> updateVocabularyAsync(
+      @Path('vocabulary_id') String vocabularyID,
+      @Field('name') String name,
+      @Field('color') String color
+      );
+
+  @DELETE('contents/vocabularies/{vocabulary_id}')
+  Future<BaseResponse> deleteVocabularyAsync(
+      @Path('vocabulary_id') String vocabularyID
+      );
 
 
 }
+

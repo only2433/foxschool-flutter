@@ -7,7 +7,7 @@ import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
 import 'package:foxschool/di/Dependencies.dart';
-import 'package:foxschool/enum/BookType.dart';
+import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/view/widget/BottomAddBookWidget.dart';
 import 'package:foxschool/view/widget/BottomIntervalSelectWidget.dart';
@@ -95,7 +95,7 @@ Future<void> showBottomIntervalSelectDialog({
 
 Future<void> showBottomAddBookSelectDialog({
   required BuildContext context,
-  required BookType type,
+  required MyBooksType type,
   required List<MyVocabularyResult> list,
   required Function(int index) onItemPressed
 }) async
