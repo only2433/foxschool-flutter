@@ -107,7 +107,7 @@ class CategoryContentsListController extends BlocController
   {
     Navigator.push(
         context,
-        Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
+        Page.getSeriesDetailListTransition(context, SeriesContentScreen(seriesBaseResult: data))
     );
   }
 

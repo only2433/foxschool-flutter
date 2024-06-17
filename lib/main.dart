@@ -157,10 +157,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(create: (context) => SeriesEnableInformationViewCubit()),
           BlocProvider(create: (context) => SeriesDataViewCubit()),
-          BlocProvider(create: (context) => SeriesEnableBottomViewCubit()),
           BlocProvider(create: (context) => SeriesLastWatchItemCubit()),
-          BlocProvider(create: (context) => SeriesItemListCubit()),
-          BlocProvider(create: (context) => SeriesSelectItemCountCubit()),
           BlocProvider(create: (context) => SeriesTitleColorCubit()),
 
           /**

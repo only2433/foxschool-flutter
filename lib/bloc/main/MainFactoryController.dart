@@ -160,7 +160,7 @@ class MainFactoryController extends BlocController
     if(_currentStorySeriesType == StorySeriesType.LEVEL) {
        Navigator.push(
         context,
-          Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
+          Page.getSeriesDetailListTransition(context, SeriesContentScreen(seriesBaseResult: data))
       ).then((value) {
         Logger.d(" ----- onResume");
         _checkUpdateMainData();
@@ -182,7 +182,7 @@ class MainFactoryController extends BlocController
   {
     Navigator.push(
         context,
-        Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
+        Page.getSeriesDetailListTransition(context, SeriesContentScreen(seriesBaseResult: data))
     );
   }
 

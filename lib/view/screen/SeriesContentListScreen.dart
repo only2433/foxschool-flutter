@@ -28,6 +28,26 @@ import '../../di/Dependencies.dart';
 import '../../values/AppColors.dart';
 import '../widget/ContentsListItemView.dart';
 
+class SeriesContentScreen extends StatelessWidget {
+  final SeriesBaseResult seriesBaseResult;
+  const SeriesContentScreen ({
+    super.key,
+    required this.seriesBaseResult});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => SeriesEnableBottomViewCubit()),
+          BlocProvider(create: (context) => SeriesItemListCubit()),
+          BlocProvider(create: (context) => SeriesSelectItemCountCubit()),
+        ],
+        child: SeriesContentListScreen(seriesBaseResult: seriesBaseResult)
+    );
+  }
+}
+
+
 
 class SeriesContentListScreen extends StatefulWidget {
 
@@ -45,6 +65,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
   late ScrollController _scrollController;
   late SeriesContentsListFactoryController _factoryController;
   late AnimationController _animationController;
+
 
   @override
   void initState() {
@@ -69,7 +90,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
   Widget build(BuildContext context) {
 
     Color statusBarColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.statusBar);
-    Color topBarColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.title); 
+    Color topBarColor = CommonUtils.getInstance(context).colorFromHex(widget.seriesBaseResult.colors!.title);
     return Scaffold(
       backgroundColor: AppColors.color_edeef2,
       body: Container(

@@ -106,7 +106,7 @@ abstract class ApiClient
   Future<BaseResponse> updateBookshelfAsync(
       @Path('bookshelf_id') String bookshelfID,
       @Field('name') String name,
-      @Field('color') String color
+      @Field('color') String color,
       );
 
   @DELETE('contents/bookshelves/{bookshelf_id}')
@@ -130,6 +130,11 @@ abstract class ApiClient
   @DELETE('contents/vocabularies/{vocabulary_id}')
   Future<BaseResponse> deleteVocabularyAsync(
       @Path('vocabulary_id') String vocabularyID
+      );
+
+  @GET('contents/bookshelves/{bookshelf_id}')
+  Future<BaseResponse> bookshelfContentsListAsync(
+      @Path('bookshelf_id') String bookshelfID
       );
 
 
