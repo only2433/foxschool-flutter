@@ -18,10 +18,10 @@ class CategoryContentsDataBloc extends Bloc<BlocEvent, BlocState>
     required this.repository 
   }) : super(InitState())
   {
-    on<CategoryContentsEvent>(_onCategoryContentsData);
+    on<CategoryContentsEvent>(_onGetCategoryContentsData);
   }
   
-  void _onCategoryContentsData(CategoryContentsEvent event, Emitter<BlocState> state) async
+  void _onGetCategoryContentsData(CategoryContentsEvent event, Emitter<BlocState> state) async
   {
     try
     {

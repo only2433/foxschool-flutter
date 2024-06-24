@@ -181,6 +181,7 @@
   "message_not_have_play_vocabulary": "재생할 단어가 없습니다.",
   "message_select_words_put_in_vocabulary": "단어장에 저장할 단어를 선택해 주세요.",
   "message_select_words_delete_in_vocabulary": "삭제할 단어를 선택해주세요.",
+  "message_select_contents_delete_in_bookshelf": "삭제할 컨탠츠를 선택해주세요.",
   "message_question_delete_contents_in_vocabulary": "선택하신 단어를 단어장에서 삭제하시겠습니까?",
   "message_question_delete_contents_in_bookshelf": "선택하신 컨텐츠를 책장에서 삭제하시겠습니까?",
   "message_success_save_contents_in_vocabulary": "단어장에 등록되었습니다.",

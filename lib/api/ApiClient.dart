@@ -85,13 +85,13 @@ abstract class ApiClient
       );
 
   @PUT('contents/vocabularies/{vocabulary_id}/words')
-  Future<BaseResponse> addVocabularyContents(
+  Future<BaseResponse> addMyVocabularyContentsAsync(
       @Path('vocabulary_id') String vocabularyID,
       @Queries(encoded: true) Map<String, String> queryMap
       );
 
   @DELETE('contents/vocabularies/{vocabulary_id}/words')
-  Future<BaseResponse> deleteVocabularyContents(
+  Future<BaseResponse> deleteMyVocabularyContentsAsync(
       @Path('vocabulary_id') String vocabularyID,
       @Queries(encoded: true) Map<String, String> queryMap
       );
@@ -135,6 +135,18 @@ abstract class ApiClient
   @GET('contents/bookshelves/{bookshelf_id}')
   Future<BaseResponse> bookshelfContentsListAsync(
       @Path('bookshelf_id') String bookshelfID
+      );
+  
+  @PUT('contents/bookshelves/{bookshelf_id}/contents')
+  Future<BaseResponse> addMyBookshelfContentsAsync(
+      @Path('bookshelf_id') String bookshelfID,
+      @Queries(encoded: true) Map<String, String> queryMap
+      );
+
+  @DELETE('contents/bookshelves/{bookshelf_id}/contents')
+  Future<BaseResponse> deleteMyBookshelfContentsAsync(
+      @Path('bookshelf_id') String bookshelfID,
+      @Queries(encoded: true) Map<String, String> queryMap
       );
 
 

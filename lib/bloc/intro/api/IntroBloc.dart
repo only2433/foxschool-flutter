@@ -34,8 +34,8 @@ class IntroBloc extends Bloc<BlocEvent, BlocState>
   }) : super(InitState())
   {
     on<GetVersionEvent>(_onGetVersion);
-    on<AuthMeEvent>(_onAuthMeData);
-    on<MainInformationEvent>(_onMainInformationData);
+    on<AuthMeEvent>(_onGetAuthMeData);
+    on<MainInformationEvent>(_onGetMainInformationData);
   }
 
   void _onGetVersion(GetVersionEvent event , Emitter<BlocState> emit) async
@@ -64,7 +64,7 @@ class IntroBloc extends Bloc<BlocEvent, BlocState>
 
 
 
-  void _onAuthMeData(AuthMeEvent event, Emitter<BlocState> emit) async
+  void _onGetAuthMeData(AuthMeEvent event, Emitter<BlocState> emit) async
   {
     try
     {
@@ -89,7 +89,7 @@ class IntroBloc extends Bloc<BlocEvent, BlocState>
     }
   }
 
-  void _onMainInformationData(MainInformationEvent event, Emitter<BlocState> emit) async
+  void _onGetMainInformationData(MainInformationEvent event, Emitter<BlocState> emit) async
   {
     try {
       emit(LoadingState());

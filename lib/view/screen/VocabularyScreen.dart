@@ -20,8 +20,8 @@ import 'package:foxschool/enum/VocabularySelectType.dart';
 import 'package:foxschool/view/widget/VocabularyItemWidget.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-import '../../bloc/series_contents_list/factory/cubit/SeriesSelectItemCountCubit.dart';
-import '../../bloc/series_contents_list/factory/state/SeriesSelectItemCountState.dart';
+import '../../bloc/series_contents_list/factory/cubit/ContentsSelectItemCountCubit.dart';
+import '../../bloc/series_contents_list/factory/state/ContentsSelectItemCountState.dart';
 import '../../common/CommonUtils.dart';
 import '../../common/FoxschoolLocalization.dart';
 import '../../di/Dependencies.dart';

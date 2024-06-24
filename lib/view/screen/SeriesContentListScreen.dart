@@ -5,11 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/series_contents_list/SeriesContentsListFactoryController.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableBottomViewCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesEnableBottomViewState.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesSelectItemCountState.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/ContentsEnableBottomViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/ContentsItemListCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/ContentsEnableBottomViewState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/ContentsSelectItemCountState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/ContentsItemListState.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesTitleColorState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -20,7 +20,7 @@ import '../../bloc/base/ContentsListBaseState.dart';
 import '../../bloc/series_contents_list/factory/cubit/SeriesEnableInformationViewCubit.dart';
 import '../../bloc/series_contents_list/factory/cubit/SeriesEnableDataViewCubit.dart';
 import '../../bloc/series_contents_list/factory/cubit/SeriesLastWatchItemCubit.dart';
-import '../../bloc/series_contents_list/factory/cubit/SeriesSelectItemCountCubit.dart';
+import '../../bloc/series_contents_list/factory/cubit/ContentsSelectItemCountCubit.dart';
 import '../../bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import '../../common/Common.dart';
 import '../../data/main/series/base/SeriesBaseResult.dart';
@@ -38,9 +38,9 @@ class SeriesContentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => SeriesEnableBottomViewCubit()),
-          BlocProvider(create: (context) => SeriesItemListCubit()),
-          BlocProvider(create: (context) => SeriesSelectItemCountCubit()),
+          BlocProvider(create: (context) => ContentsEnableBottomViewCubit()),
+          BlocProvider(create: (context) => ContentsItemListCubit()),
+          BlocProvider(create: (context) => ContentsSelectItemCountCubit()),
         ],
         child: SeriesContentListScreen(seriesBaseResult: seriesBaseResult)
     );
@@ -141,8 +141,8 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                         ),
                       );
                     }),
-                    BlocBuilder<SeriesItemListCubit, ContentsListBaseState>(builder: (context, state) {
-                        if (state is SeriesItemListState)
+                    BlocBuilder<ContentsItemListCubit, ContentsListBaseState>(builder: (context, state) {
+                        if (state is ContentsItemListState)
                         {
                           _animationController.forward();
                           return SliverList(
@@ -175,7 +175,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                                       left: CommonUtils.getInstance(context).getWidth(25),
                                       right: CommonUtils.getInstance(context).getWidth(25)
                                   ),
-                                  child: ContentsListItemView(
+                                  child: index < state.itemList.length ? ContentsListItemView(
                                     thumbnailUrl: state.itemList[index].thumbnailUrl,
                                     index: state.itemList[index].index,
                                     indexColor: state.seriesColor,
@@ -191,11 +191,20 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                                       Logger.d("Option pressed");
                                       _factoryController.onClickOption(index);
                                     },
+                                  ) : Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: CommonUtils.getInstance(context).getHeight(176),
+                                    child: Center(
+                                      child: Image.asset('assets/image/footer_logo132.png',
+                                          width: CommonUtils.getInstance(context).getWidth(187),
+                                          height: CommonUtils.getInstance(context).getHeight(97),
+                                          fit: BoxFit.contain,),
+                                    ),
                                   ),
                                 ),
                               );
                             },
-                              childCount: state.itemList.length,
+                              childCount: state.itemList.length + 1,
                             ),
                           );
                         } else {
@@ -211,7 +220,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                 ),
               ),
               _buildBottomControllerLayout(),
-              BlocBuilder<SeriesEnableBottomViewCubit, SeriesEnableBottomViewState>(builder: (context, state) {
+              BlocBuilder<ContentsEnableBottomViewCubit, ContentsEnableBottomViewState>(builder: (context, state) {
                 return Positioned(
                     right: CommonUtils.getInstance(context).getWidth(30),
                     bottom: CommonUtils.getInstance(context).getHeight(50),
@@ -240,7 +249,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
 
   Widget _buildBottomControllerLayout()
   {
-    return BlocBuilder<SeriesEnableBottomViewCubit, SeriesEnableBottomViewState>(builder: (context, state) {
+    return BlocBuilder<ContentsEnableBottomViewCubit, ContentsEnableBottomViewState>(builder: (context, state) {
 
       return Positioned(
         left: 0,
@@ -272,7 +281,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                           onPressed: (){
                             _factoryController.onClickSelectedListPlay();
                           }),
-                      BlocBuilder<SeriesSelectItemCountCubit, SeriesSelectItemCountState>(builder: (context, state) {
+                      BlocBuilder<ContentsSelectItemCountCubit, ContentsSelectItemCountState>(builder: (context, state) {
 
                         if(state.count != 0)
                           {
@@ -308,7 +317,7 @@ class _SeriesContentListScreenState extends State<SeriesContentListScreen> with 
                       imageAssetUri: 'assets/image/bottom_bookshelf.png',
                       title: getIt<FoxschoolLocalization>().data['text_contain_bookshelf'],
                       onPressed: (){
-
+                        _factoryController.onClickAddMyBookshelf();
                       }) ,
                   BottomIconTextView(
                       imageAssetUri: 'assets/image/bottom_close.png',

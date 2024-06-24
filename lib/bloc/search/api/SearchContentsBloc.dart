@@ -20,11 +20,11 @@ class SearchContentsBloc extends Bloc<BlocEvent, BlocState>
     required this.repository
   }): super(InitState())
   {
-    on<SearchContentsListEvent>(_onSearchContentsData);
+    on<SearchContentsListEvent>(_onGetSearchContentsData);
   }
 
 
-  void _onSearchContentsData(SearchContentsListEvent event, Emitter<BlocState> state) async
+  void _onGetSearchContentsData(SearchContentsListEvent event, Emitter<BlocState> state) async
   {
     try
     {

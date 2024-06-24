@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
 
-class VocabularyShelfListEvent extends BlocEvent
+class VocabularyMyBooksListEvent extends BlocEvent
 {
   final String vocabularyID;
-  VocabularyShelfListEvent({
+  VocabularyMyBooksListEvent({
     required this.vocabularyID
   });
 

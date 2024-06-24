@@ -13,12 +13,14 @@ import 'RobotoNormalText.dart';
 
 class BottomAddBookWidget extends StatelessWidget {
   final MyBooksType bookType;
-  final List<MyVocabularyResult> vocabularyList;
+  List<MyVocabularyResult>? vocabularyList;
+  List<MyBookshelfResult>? bookshelfList;
   final Function(int index) onItemPressed;
   BottomAddBookWidget({
     super.key,
     required this.bookType,
-    required this.vocabularyList,
+    this.vocabularyList,
+    this.bookshelfList,
     required this.onItemPressed,
   });
 
@@ -51,28 +53,55 @@ class BottomAddBookWidget extends StatelessWidget {
             height: CommonUtils.getInstance(context).getHeight(2),
             color: AppColors.color_b9b9b9,
           ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: CommonUtils.getInstance(context).getHeight(680),
-            child: ListView.builder(
-              itemCount: vocabularyList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    onItemPressed(index);
-                  },
-                  child: _buildSelectItem(
-                      context: context,
-                      color: vocabularyList[index].color,
-                      title: vocabularyList[index].name,
-                      itemCount: vocabularyList[index].wordsCount),
-                );
-            },),
-
-          )
+          bookType == MyBooksType.BOOKSHELF ? _buildMyBookshelfList(context) : _buildMyVocabularyList(context)
         ],
       ),
+    );
+  }
+
+  Widget _buildMyVocabularyList(BuildContext context)
+  {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: CommonUtils.getInstance(context).getHeight(680),
+      child: ListView.builder(
+        itemCount: vocabularyList!.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+              onItemPressed(index);
+            },
+            child: _buildSelectItem(
+                context: context,
+                color: vocabularyList![index].color,
+                title: vocabularyList![index].name,
+                itemCount: vocabularyList![index].wordsCount),
+          );
+        },),
+    );
+  }
+
+  Widget _buildMyBookshelfList(BuildContext context)
+  {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: CommonUtils.getInstance(context).getHeight(680),
+      child: ListView.builder(
+        itemCount: bookshelfList!.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+              onItemPressed(index);
+            },
+            child: _buildSelectItem(
+                context: context,
+                color: bookshelfList![index].color,
+                title: bookshelfList![index].name,
+                itemCount: bookshelfList![index].contentsCount),
+          );
+        },),
     );
   }
 

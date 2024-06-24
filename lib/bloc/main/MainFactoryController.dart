@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
@@ -10,6 +11,7 @@ import 'package:foxschool/bloc/main/factory/cubit/MainSongCategoryListCubit.dart
 import 'package:foxschool/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
 import 'package:foxschool/bloc/main/factory/cubit/MainUserInformationCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
+import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/common/MainObserver.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
 import 'package:foxschool/common/PageNavigator.dart' as Page;
@@ -17,6 +19,7 @@ import 'package:foxschool/enum/ManagementMyBooksStatus.dart';
 import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:foxschool/view/screen/ManagementMyBooksScreen.dart';
+import 'package:foxschool/view/screen/MyBookshelfScreen.dart';
 import 'package:foxschool/view/screen/SearchScreen.dart';
 import 'package:foxschool/view/screen/SeriesContentListScreen.dart';
 import 'package:foxschool/view/screen/StoryCategoryListScreen.dart';
@@ -28,9 +31,10 @@ import '../../data/main/my_book/MyBookshelfResult.dart';
 import '../../data/main/my_vocabulary/MyVocabularyResult.dart';
 import '../../data/main/series/SeriesInformationResult.dart';
 import '../../data/vocabulary/information/VocabularyInformationData.dart';
+import '../../di/Dependencies.dart';
 import '../../enum/StorySeriesType.dart';
 import 'package:page_transition/page_transition.dart';
-
+import '../../view/dialog/FoxSchoolDialog.dart' as FoxSchoolDialog;
 import '../../enum/VocabularyType.dart';
 import '../../view/screen/VocabularyScreen.dart';
 
@@ -64,16 +68,11 @@ class MainFactoryController extends BlocController
   void _initData() async
   {
     await _loadMainData();
-    Map<String, dynamic>? jsonMap = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
-    if(jsonMap != null)
-    {
-      MainInformationResult baseData = MainInformationResult.fromJson(jsonMap);
-      _storyLevelItemList = baseData.mainStoryInformation!.levelsList;
-      _storyCategoriesList = baseData.mainStoryInformation!.categoriesList;
-      _songCategoriesList = baseData.mainSongInformation;
-      _bookshelfList = baseData.bookshelfList;
-      _vocabularyList =baseData.vocabularyList;
-    }
+    _storyLevelItemList = _mainData.mainStoryInformation!.levelsList;
+    _storyCategoriesList = _mainData.mainStoryInformation!.categoriesList;
+    _songCategoriesList = _mainData.mainSongInformation;
+    _bookshelfList = _mainData.bookshelfList;
+    _vocabularyList =_mainData.vocabularyList;
 
     Logger.d("_vocabularyList data : ${_vocabularyList.toString()}");
     _settingStoryPageData(StorySeriesType.LEVEL);
@@ -82,6 +81,12 @@ class MainFactoryController extends BlocController
   }
 
   Future<void> _loadMainData() async
+  {
+    await _loadUserInformation();
+    await _loadMainInformation();
+  }
+
+  Future<void> _loadUserInformation() async
   {
     Object? userObject = await Preference.getObject(Common.PARAMS_USER_API_INFORMATION);
     if (userObject != null) {
@@ -92,10 +97,23 @@ class MainFactoryController extends BlocController
           _userData.schoolData!.name
       );
     }
+  }
 
+  Future<void> _loadMainInformation() async
+  {
     Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
-    if (mainObject != null) {
-      _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
+    _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
+  }
+
+  void _checkUpdateMainData() async
+  {
+    if(MainObserver().isUpdate())
+    {
+      Logger.d(" 메인 데이터 업데이트 ");
+      await _loadMainInformation();
+      _bookshelfList = _mainData.bookshelfList;
+      _vocabularyList =_mainData.vocabularyList;
+      MainObserver().clear();
     }
   }
 
@@ -127,21 +145,18 @@ class MainFactoryController extends BlocController
     );
   }
 
-  void _checkUpdateMainData() async
-  {
-    if(MainObserver().isUpdate())
-    {
-      Logger.d(" 메인 데이터 업데이트 ");
-      Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
-      _mainData = MainInformationResult.fromJson(mainObject as Map<String, dynamic>);
 
-      MainObserver().clear();
-    }
-  }
 
   @override
   void onBackPressed() {
-    Navigator.of(context).pop();
+    Logger.d("");
+    FoxSchoolDialog.showSelectDialog(
+        context: context,
+        message: getIt<FoxschoolLocalization>().data['message_check_end_app'],
+        buttonText: getIt<FoxschoolLocalization>().data['text_confirm'],
+        onSelected: () {
+          SystemNavigator.pop(animated: true);
+        },);
   }
 
   void onClickStorySelectType(StorySeriesType type)
@@ -184,6 +199,21 @@ class MainFactoryController extends BlocController
         context,
         Page.getSeriesDetailListTransition(context, SeriesContentScreen(seriesBaseResult: data))
     );
+  }
+
+  void onClickMyBookshelf(int index)
+  {
+    Logger.d("index : $index");
+    Navigator.push(context,
+        Page.getDefaultTransition(context,
+            MyBookshelfScreen(
+                id: _mainData.bookshelfList[index].id,
+                title: _mainData.bookshelfList[index].name)
+        )
+    ).then((value){
+      Logger.d(" ----- onResume");
+      _checkUpdateMainData();
+    });
   }
 
   void onClickMyVocabulary(int index)

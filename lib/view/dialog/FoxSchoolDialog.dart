@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/data/main/my_book/MyBookshelfResult.dart';
 import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/enum/MyBooksType.dart';
@@ -93,20 +94,34 @@ Future<void> showBottomIntervalSelectDialog({
   },);
 }
 
-Future<void> showBottomAddBookSelectDialog({
+Future<void> showBottomAddVocabularySelectDialog({
   required BuildContext context,
-  required MyBooksType type,
   required List<MyVocabularyResult> list,
   required Function(int index) onItemPressed
 }) async
 {
   showModalBottomSheet(context: context, builder: (context) {
     return BottomAddBookWidget(
-        bookType: type,
+        bookType: MyBooksType.VOCABULARY,
         vocabularyList: list,
         onItemPressed: onItemPressed);
   },);
 }
+
+Future<void> showBottomAddBookshelfSelectDialog({
+  required BuildContext context,
+  required List<MyBookshelfResult> list,
+  required Function(int index) onItemPressed
+}) async
+{
+  showModalBottomSheet(context: context, builder: (context) {
+    return BottomAddBookWidget(
+        bookType: MyBooksType.BOOKSHELF,
+        bookshelfList: list,
+        onItemPressed: onItemPressed);
+  },);
+}
+
 
 
 

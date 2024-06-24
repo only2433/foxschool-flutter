@@ -5,6 +5,7 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/ApiClient.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolDataSource.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
+import 'package:foxschool/data/contents/contents_base/ContentsBaseResult.dart';
 import 'package:foxschool/data/version_data_result/VersionDataResult.dart';
 import 'package:foxschool/data/vocabulary/VocabularyDataResult.dart';
 
@@ -85,7 +86,7 @@ class FoxSchoolRepository extends FoxSchoolDataSource
 
 
   @override
-  Future<BaseResponse> addVocabularyContentsAsync(String contentID, String vocabularyID, List<VocabularyDataResult> data) {
+  Future<BaseResponse> addMyVocabularyContentsAsync(String contentID, String vocabularyID, List<VocabularyDataResult> data) {
 
     Logger.d("contentID : $contentID, vocabularyID : $vocabularyID");
     Map<String, String> queriesMap = {};
@@ -98,11 +99,11 @@ class FoxSchoolRepository extends FoxSchoolDataSource
       }
 
 
-    return apiClient.addVocabularyContents(vocabularyID, queriesMap);
+    return apiClient.addMyVocabularyContentsAsync(vocabularyID, queriesMap);
   }
 
   @override
-  Future<BaseResponse> deleteVocabularyContentsAsync(String vocabularyID, List<VocabularyDataResult> data)
+  Future<BaseResponse> deleteMyVocabularyContentsAsync(String vocabularyID, List<VocabularyDataResult> data)
   {
     Map<String, String> queriesMap = {};
 
@@ -112,7 +113,7 @@ class FoxSchoolRepository extends FoxSchoolDataSource
         queriesMap['words[$i][word_id]'] = data[i].vocabularyID;
       }
 
-    return apiClient.deleteVocabularyContents(vocabularyID, queriesMap);
+    return apiClient.deleteMyVocabularyContentsAsync(vocabularyID, queriesMap);
   }
 
   @override
@@ -126,6 +127,16 @@ class FoxSchoolRepository extends FoxSchoolDataSource
   }
 
   @override
+  Future<BaseResponse> updateBookshelfAsync(String bookshelfID, String name, String color) {
+    return apiClient.updateBookshelfAsync(bookshelfID, name, color);
+  }
+
+  @override
+  Future<BaseResponse> updateVocabularyAsync(String vocabularyID, String name, String color) {
+    return apiClient.updateVocabularyAsync(vocabularyID, name, color);
+  }
+
+  @override
   Future<BaseResponse> deleteBookshelfAsync(String bookshelfID) {
     return apiClient.deleteBookshelfAsync(bookshelfID);
   }
@@ -135,13 +146,32 @@ class FoxSchoolRepository extends FoxSchoolDataSource
     return apiClient.deleteVocabularyAsync(vocabularyID);
   }
 
+
   @override
-  Future<BaseResponse> updateBookshelfAsync(String bookshelfID, String name, String color) {
-    return apiClient.updateBookshelfAsync(bookshelfID, name, color);
+  Future<BaseResponse> bookshelfContentListAsync(String bookshelfID) {
+    return apiClient.bookshelfContentsListAsync(bookshelfID);
   }
 
   @override
-  Future<BaseResponse> updateVocabularyAsync(String vocabularyID, String name, String color) {
-    return apiClient.updateVocabularyAsync(vocabularyID, name, color);
+  Future<BaseResponse> addMyBookshelfContentsAsync(String bookshelfID, List<ContentsBaseResult> data) {
+    Map<String, String> queriesMap = {};
+    for(int i = 0; i < data.length ; i++)
+      {
+        queriesMap['content_ids[$i]'] = data[i].id;
+      }
+    return apiClient.addMyBookshelfContentsAsync(bookshelfID, queriesMap);
   }
+
+  @override
+  Future<BaseResponse> deleteMyBookshelfContentsAsync(String bookshelfID, List<ContentsBaseResult> data) {
+
+    Map<String, String> queriesMap = {};
+    for(int i = 0 ;  i < data.length; i++)
+      {
+        queriesMap['content_ids[$i]'] = data[i].id;
+      }
+    return apiClient.deleteMyBookshelfContentsAsync(bookshelfID, queriesMap);
+  }
+
+
 }

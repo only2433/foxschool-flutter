@@ -6,9 +6,13 @@ import 'package:foxschool/bloc/series_contents_list/api/event/SeriesContentsData
 import 'package:foxschool/bloc/series_contents_list/api/state/SeriesContentsDataLoadedState.dart';
 import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 import '../../../common/Common.dart';
+import '../../../data/main/my_book/MyBookshelfResult.dart';
 import '../../base/BlocState.dart';
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
+
+import '../../bookshelf/api/event/BookshelfContentsAddEvent.dart';
+import '../../bookshelf/api/state/BookshelfContentsAddState.dart';
 
 class SeriesContentsBloc extends Bloc<BlocEvent, BlocState>
 {
@@ -17,14 +21,14 @@ class SeriesContentsBloc extends Bloc<BlocEvent, BlocState>
    required this.repository
   }) : super(InitState())
   {
-    on<SeriesContentsDataEvent>(_onSeriesContentsData);
+    on<SeriesContentsDataEvent>(_onGetSeriesContentsData);
+    on<BookshelfContentsAddEvent>(_onAddBookshelfContents);
   }
 
-  void _onSeriesContentsData(SeriesContentsDataEvent event, Emitter<BlocState> emit) async
+  void _onGetSeriesContentsData(SeriesContentsDataEvent event, Emitter<BlocState> emit) async
   {
     try
     {
-      emit(LoadingState());
       BaseResponse response = await repository.seriesStoryData(event.displayID);
       Logger.d("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
@@ -41,6 +45,31 @@ class SeriesContentsBloc extends Bloc<BlocEvent, BlocState>
       }
     }
     catch(e)
+    {
+      emit(ErrorState(message: e.toString()));
+    }
+  }
+
+  void _onAddBookshelfContents(BookshelfContentsAddEvent event, Emitter<BlocState> state) async
+  {
+    try
+    {
+      emit(LoadingState());
+      BaseResponse response = await repository.addMyBookshelfContentsAsync(event.bookshelfID, event.data);
+      if(response.status == Common.SUCCESS_CODE_OK)
+      {
+        if(response.access_token != "")
+        {
+          await Preference.setString(Common.PARAMS_ACCESS_TOKEN, response.access_token);
+        }
+        MyBookshelfResult result = MyBookshelfResult.fromJson(response.data);
+        emit(BookshelfContentsAddState(data: result));
+      }
+      else
+      {
+        emit(ErrorState(message: response.message));
+      }
+    }catch(e)
     {
       emit(ErrorState(message: e.toString()));
     }

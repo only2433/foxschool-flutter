@@ -77,7 +77,11 @@ class MainMyBooksSubScreen extends StatelessWidget {
                     for(int i = 0 ; i < state.bookshelfList.length; i++)
                     {
                       containers.add(
-                          _buildBookshelfItemWidget(context, state, i)
+                          GestureDetector(
+                            onTap: () {
+                              factoryController.onClickMyBookshelf(i);
+                            },
+                              child: _buildBookshelfItemWidget(context, state, i))
                       );
                     }
                     containers.add(

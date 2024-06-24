@@ -8,8 +8,8 @@ import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryTitl
 import 'package:foxschool/bloc/category_contents_list/factory/state/CategoryItemListState.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/state/CategoryTitleColorState.dart';
 import 'package:foxschool/bloc/series_contents_list/SeriesContentsListFactoryController.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/ContentsItemListCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/ContentsItemListState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/view/widget/RobotoBoldText.dart';
 

@@ -12,5 +12,5 @@ class SeriesContentsDataLoadedState extends BlocState
   });
 
   @override
-  List<Object> get props => [data];
+  List<Object> get props => [];
 }

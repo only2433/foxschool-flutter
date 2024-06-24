@@ -12,7 +12,7 @@ import 'package:foxschool/bloc/vocabulary/api/VocabularyBloc.dart';
 import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsAddEvent.dart';
 import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsDeleteEvent.dart';
 import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsListEvent.dart';
-import 'package:foxschool/bloc/vocabulary/api/event/VocabularyShelfListEvent.dart';
+import 'package:foxschool/bloc/vocabulary/api/event/VocabularyMyBooksListEvent.dart';
 import 'package:foxschool/bloc/vocabulary/api/state/VocabularyContentsAddState.dart';
 import 'package:foxschool/bloc/vocabulary/api/state/VocabularyContentsDeleteState.dart';
 import 'package:foxschool/bloc/vocabulary/api/state/VocabularyDataListLoadedState.dart';
@@ -92,7 +92,7 @@ class VocabularyFactoryController extends BlocController
         else
           {
             BlocProvider.of<VocabularyBloc>(context).add(
-              VocabularyShelfListEvent(vocabularyID: vocabularyInformationData.id)
+              VocabularyMyBooksListEvent(vocabularyID: vocabularyInformationData.id)
             );
           }
       },);
@@ -179,11 +179,8 @@ class VocabularyFactoryController extends BlocController
             blocState = state as VocabularyContentsAddState;
             MyVocabularyResult result = blocState.data;
             await _updateVocabularyData(result);
-
             _isHaveSelectedItem = false;
             _setCheckAll(false);
-
-            await _getMainData();
             context.read<MainMyBooksTypeCubit>()
                 .setMyBooksTypeData(
                 MyBooksType.VOCABULARY,
@@ -319,6 +316,7 @@ class VocabularyFactoryController extends BlocController
 
   Future<void> _updateVocabularyData(MyVocabularyResult data) async
   {
+    await _getMainData();
     List<MyVocabularyResult> dataList = _mainData.vocabularyList.toList();
     for(int i = 0 ; i < _mainData.vocabularyList.length; i++)
       {
@@ -329,8 +327,8 @@ class VocabularyFactoryController extends BlocController
             break;
           }
       }
-    final updateMainData = _mainData.copyWith(vocabularyList: dataList);
-    await Preference.setObject(Common.PARAMS_FILE_MAIN_INFO, updateMainData);
+    _mainData = _mainData.copyWith(vocabularyList: dataList);
+    await Preference.setObject(Common.PARAMS_FILE_MAIN_INFO, _mainData);
   }
 
   void _syncVocabularyList()
@@ -347,14 +345,14 @@ class VocabularyFactoryController extends BlocController
 
   void _refreshVocabularyListData() async
   {
+    await _getMainData();
     _syncVocabularyList();
-
     List<MyVocabularyResult> tempVocabularyList = _mainData.vocabularyList.toList();
     for(int i = 0; i < tempVocabularyList.length; i++)
       {
         if(vocabularyInformationData.id == tempVocabularyList[i].id)
           {
-            tempVocabularyList[i] = tempVocabularyList[i].setWordCount(_vocabularyDataList.length);
+            tempVocabularyList[i] = tempVocabularyList[i].copyWith(wordsCount: _vocabularyDataList.length);
             _mainData = _mainData.copyWith(vocabularyList: tempVocabularyList);
             break;
           }
@@ -508,9 +506,8 @@ class VocabularyFactoryController extends BlocController
     _selectDataList = _getSelectedList();
     if(_selectDataList.isNotEmpty)
       {
-        FoxSchoolDialog.showBottomAddBookSelectDialog(
+        FoxSchoolDialog.showBottomAddVocabularySelectDialog(
             context: context,
-            type: MyBooksType.VOCABULARY,
             list: _mainData.vocabularyList,
             onItemPressed: (index) {
               Logger.d("index : $index");

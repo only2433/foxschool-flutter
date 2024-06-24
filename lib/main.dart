@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
+import 'package:foxschool/bloc/bookshelf/api/MyBookshelfBloc.dart';
 import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryTitleColorCubit.dart';
@@ -32,7 +32,6 @@ import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
-import 'package:foxschool/bloc/observer/FoxschoolBlocObserver.dart';
 import 'package:foxschool/bloc/quiz/api/QuizInformationBloc.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizConstituteWidgetCubit.dart';
 import 'package:foxschool/bloc/quiz/factory/cubit/QuizEnableTaskboxCubit.dart';
@@ -44,12 +43,12 @@ import 'package:foxschool/bloc/search/api/SearchContentsBloc.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchItemListCubit.dart';
 import 'package:foxschool/bloc/search/factory/cubit/SearchTypeCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableBottomViewCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/ContentsEnableBottomViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableInformationViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesEnableDataViewCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesLastWatchItemCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesSelectItemCountCubit.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesItemListCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/ContentsSelectItemCountCubit.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/cubit/ContentsItemListCubit.dart';
 import 'package:foxschool/bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import 'package:foxschool/bloc/vocabulary/api/VocabularyBloc.dart';
 import 'package:foxschool/bloc/vocabulary/factory/cubit/VocabularyBottomControllerCubit.dart';
@@ -69,6 +68,7 @@ import 'package:foxschool/view/widget/RobotoBoldText.dart';
 import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import '../../common/Preference.dart' as Preference;
 
+import 'bloc/base/observer/FoxschoolBlocObserver.dart';
 import 'bloc/login/api/LoginBloc.dart';
 import 'bloc/movie/factory/cubit/MoviePlayListCubit.dart';
 import 'bloc/movie/factory/cubit/MoviePlayTimeCubit.dart';
@@ -220,6 +220,20 @@ class MyApp extends StatelessWidget {
               create: (context) => getIt<ManagementMyBooksBloc>()),
           BlocProvider(create: (context) => MyBooksUpdateNameCubit()),
           BlocProvider(create: (context) => MyBooksUpdateColorCubit()),
+
+          /**
+           * MyBookshelf
+           */
+          BlocProvider(create: (context) => getIt<MyBookshelfBloc>()),
+          BlocProvider(create: (context) => ContentsEnableBottomViewCubit()),
+          BlocProvider(create: (context) => ContentsItemListCubit()),
+          BlocProvider(create: (context) => ContentsSelectItemCountCubit()),
+
+          /**
+           * MyBookshelf
+           */
+          BlocProvider(create: (context) => getIt<MyBookshelfBloc>()),
+
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -25,7 +25,7 @@ class LoginBloc extends Bloc<BlocEvent, BlocState>
   }) : super(InitState())
   {
     on<GetSchoolDataEvent>(_onGetSchoolData);
-    on<LoginEvent>(_onLoginData);
+    on<LoginEvent>(_onGetLoginData);
   }
 
   void _onGetSchoolData(GetSchoolDataEvent event, Emitter<BlocState> emit) async
@@ -51,7 +51,7 @@ class LoginBloc extends Bloc<BlocEvent, BlocState>
     }
   }
 
-  void _onLoginData(LoginEvent event,  Emitter<BlocState> emit) async
+  void _onGetLoginData(LoginEvent event,  Emitter<BlocState> emit) async
   {
     try
     {

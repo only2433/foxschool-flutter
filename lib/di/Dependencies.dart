@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:foxschool/api/intercepter/AuthInterceptor.dart';
 import 'package:foxschool/api/intercepter/LoggingInterceptor.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
+import 'package:foxschool/bloc/bookshelf/api/MyBookshelfBloc.dart';
 import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/bloc/intro/api/IntroBloc.dart';
 import 'package:foxschool/bloc/management/api/ManagementMyBooksBloc.dart';
@@ -45,6 +46,7 @@ Future<void> init() async
   getIt.registerLazySingleton(() => QuizInformationBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => VocabularyBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => ManagementMyBooksBloc(repository: getIt<FoxSchoolRepository>()));
+  getIt.registerLazySingleton(() => MyBookshelfBloc(repository: getIt<FoxSchoolRepository>()));
 }
 
 

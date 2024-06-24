@@ -419,7 +419,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<BaseResponse<dynamic>> addVocabularyContents(
+  Future<BaseResponse<dynamic>> addMyVocabularyContentsAsync(
     String vocabularyID,
     Map<String, String> queryMap,
   ) async {
@@ -450,7 +450,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<BaseResponse<dynamic>> deleteVocabularyContents(
+  Future<BaseResponse<dynamic>> deleteMyVocabularyContentsAsync(
     String vocabularyID,
     Map<String, String> queryMap,
   ) async {
@@ -685,6 +685,68 @@ class _ApiClient implements ApiClient {
             .compose(
               _dio.options,
               'contents/bookshelves/${bookshelfID}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseResponse<dynamic>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse<dynamic>> addMyBookshelfContentsAsync(
+    String bookshelfID,
+    Map<String, String> queryMap,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(queryMap);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse<dynamic>>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'contents/bookshelves/${bookshelfID}/contents',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseResponse<dynamic>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse<dynamic>> deleteMyBookshelfContentsAsync(
+    String bookshelfID,
+    Map<String, String> queryMap,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(queryMap);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse<dynamic>>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'contents/bookshelves/${bookshelfID}/contents',
               queryParameters: queryParameters,
               data: _data,
             )

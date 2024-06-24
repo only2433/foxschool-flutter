@@ -20,10 +20,10 @@ class QuizInformationBloc extends Bloc<BlocEvent, BlocState>
     required this.repository
   }) : super(InitState())
   {
-    on<QuizInformationEvent>(_onQuizInformationData);
+    on<QuizInformationEvent>(_onGetQuizInformationData);
   }
 
-  void _onQuizInformationData(QuizInformationEvent event, Emitter<BlocState> state) async
+  void _onGetQuizInformationData(QuizInformationEvent event, Emitter<BlocState> state) async
   {
     try
     {

@@ -16,7 +16,7 @@ import 'package:foxschool/common/Preference.dart' as Preference;
 import '../../../common/Common.dart';
 import '../../base/BlocEvent.dart';
 import '../../base/BlocState.dart';
-import 'event/VocabularyShelfListEvent.dart';
+import 'event/VocabularyMyBooksListEvent.dart';
 
 class VocabularyBloc extends Bloc<BlocEvent, BlocState>
 {
@@ -24,14 +24,14 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
   VocabularyBloc({
     required this.repository
   }) : super(InitState()) {
-    on<VocabularyShelfListEvent>(_onVocabularyShelfList);
-    on<VocabularyContentsListEvent>(_onVocabularyContentsList);
+    on<VocabularyMyBooksListEvent>(_onGetVocabularyMyBooksList);
+    on<VocabularyContentsListEvent>(_onGetVocabularyContentsList);
     on<VocabularyContentsAddEvent>(_onAddVocabularyContents);
     on<VocabularyContentsDeleteEvent>(_onDeleteVocabularyContents);
   }
 
 
-  void _onVocabularyShelfList(VocabularyShelfListEvent event, Emitter<BlocState> state) async
+  void _onGetVocabularyMyBooksList(VocabularyMyBooksListEvent event, Emitter<BlocState> state) async
   {
     try
     {
@@ -61,7 +61,7 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
   }
 
 
-  void _onVocabularyContentsList(VocabularyContentsListEvent event, Emitter<BlocState> state) async
+  void _onGetVocabularyContentsList(VocabularyContentsListEvent event, Emitter<BlocState> state) async
   {
     try
     {
@@ -95,7 +95,7 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
     try
     {
       emit(LoadingState());
-      BaseResponse response = await repository.addVocabularyContentsAsync(event.contentID, event.vocabularyID, event.list);
+      BaseResponse response = await repository.addMyVocabularyContentsAsync(event.contentID, event.vocabularyID, event.list);
       Logger.d("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
         {
@@ -123,7 +123,7 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
     try
     {
       emit(LoadingState());
-      BaseResponse response = await repository.deleteVocabularyContentsAsync(event.vocabularyID, event.data);
+      BaseResponse response = await repository.deleteMyVocabularyContentsAsync(event.vocabularyID, event.data);
       Logger.d("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
         {

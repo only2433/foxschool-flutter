@@ -1,12 +1,12 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/bloc/series_contents_list/factory/state/SeriesItemListState.dart';
+import 'package:foxschool/bloc/series_contents_list/factory/state/ContentsItemListState.dart';
 import '../../../../data/contents/contents_base/ContentsBaseResult.dart';
 import '../../../base/ContentsListBaseState.dart';
 
-class SeriesItemListCubit extends Cubit<ContentsListBaseState>
+class ContentsItemListCubit extends Cubit<ContentsListBaseState>
 {
-  SeriesItemListCubit() : super(LoadingState());
+  ContentsItemListCubit() : super(LoadingState());
 
   void showLoading()
   {
@@ -15,11 +15,16 @@ class SeriesItemListCubit extends Cubit<ContentsListBaseState>
 
   void showSeriesItemList(String seriesColor, bool isFullName, List<ContentsBaseResult> list)
   {
-    emit(SeriesItemListState(
+    emit(ContentsItemListState(
         seriesColor: seriesColor,
         isFullName: isFullName,
         itemList: list)
     );
+  }
+
+  void showContentsItemList(List<ContentsBaseResult> list)
+  {
+    emit(ContentsItemListState(itemList: list));
   }
 }
 

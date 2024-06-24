@@ -87,81 +87,83 @@ class _MainScreenState extends State<MainScreen>  {
   }
 
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: AppColors.color_1fb77c,
-        child: SafeArea(
-          child: Column(
-            children: [
-              BlocBuilder<MainUserInformationCubit, MainUserInformationState>(builder: (context, state) {
-                return MainScreenTitleView(
-                  title: state.userSchoolName,
-                  onMenuPressed: () {
-                    _scaffoldKey.currentState?.openDrawer();
-                  },
-                  onSearchPressed: () {
-                    _factoryController.onClickSearch();
-                  },
-                );
-              }),
-              Expanded(child: PersistentTabView(
-                context,
-                controller: _controller,
-                screens: _buildScreens(),
-                items: _navigationBarItems(),
-                confineInSafeArea: true,
-                backgroundColor: AppColors.color_f5f5f5,
-                // Default is Colors.white.
-                handleAndroidBackButtonPress: true,
-                // Default is true.
-                resizeToAvoidBottomInset: true,
-                // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-                stateManagement: true,
-                // Default is true.
-                hideNavigationBarWhenKeyboardShows: true,
-                // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        _factoryController.onBackPressed();
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          color: AppColors.color_1fb77c,
+          child: SafeArea(
+            child: Column(
+              children: [
+                BlocBuilder<MainUserInformationCubit, MainUserInformationState>(builder: (context, state) {
+                  return MainScreenTitleView(
+                    title: state.userSchoolName,
+                    onMenuPressed: () {
+                      _scaffoldKey.currentState?.openDrawer();
+                    },
+                    onSearchPressed: () {
+                      _factoryController.onClickSearch();
+                    },
+                  );
+                }),
+                Expanded(child: PersistentTabView(
+                  context,
+                  controller: _controller,
+                  screens: _buildScreens(),
+                  items: _navigationBarItems(),
+                  confineInSafeArea: true,
+                  backgroundColor: AppColors.color_f5f5f5,
+                  // Default is Colors.white.
+                  handleAndroidBackButtonPress: true,
+                  // Default is true.
+                  resizeToAvoidBottomInset: true,
+                  // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+                  stateManagement: true,
+                  // Default is true.
+                  hideNavigationBarWhenKeyboardShows: true,
+                  // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
 
 
-                popAllScreensOnTapOfSelectedTab: true,
-                popActionScreens: PopActionScreensType.all,
-                itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
-                  duration: Duration(milliseconds: Common.DURATION_SHORT),
-                  curve: Curves.ease,
-                ),
-                screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
-                  animateTabTransition: true,
-                  curve: Curves.ease,
-                  duration: Duration(milliseconds: Common.DURATION_SHORT),
-                ),
-                navBarStyle: NavBarStyle.style10, // Choose the nav bar style with this property.
-              ))
-            ],
+                  popAllScreensOnTapOfSelectedTab: true,
+                  popActionScreens: PopActionScreensType.all,
+                  itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
+                    duration: Duration(milliseconds: Common.DURATION_SHORT),
+                    curve: Curves.ease,
+                  ),
+                  screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
+                    animateTabTransition: true,
+                    curve: Curves.ease,
+                    duration: Duration(milliseconds: Common.DURATION_SHORT),
+                  ),
+                  navBarStyle: NavBarStyle.style10, // Choose the nav bar style with this property.
+                ))
+              ],
+            ),
           ),
         ),
-      ),
 
-      drawer: Drawer(
-        child: BlocBuilder<MainUserInformationCubit, MainUserInformationState>(builder: (context, state) {
-          return MainMenuDrawerView(
-            userName: state.userName,
-            userClass: state.userClass,
-            onSelected: (type) async {
-              checkDrawerItem(type);
-            },
-          );
-        }),
-      ),
+        drawer: Drawer(
+          child: BlocBuilder<MainUserInformationCubit, MainUserInformationState>(builder: (context, state) {
+            return MainMenuDrawerView(
+              userName: state.userName,
+              userClass: state.userClass,
+              onSelected: (type) async {
+                checkDrawerItem(type);
+              },
+            );
+          }),
+        ),
 
+      ),
     );
   }
 
