@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/bloc/base/BlocController.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
 import 'package:foxschool/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
@@ -74,7 +75,7 @@ class LoginFactoryController extends BlocController {
           {
             var errorState = state as ErrorState;
             LoadingDialog.dismiss(context);
-            CommonUtils.getInstance(context).showErrorMessage(errorState.message);
+            Fluttertoast.showToast(msg: errorState.message);
             break;
           }
       }

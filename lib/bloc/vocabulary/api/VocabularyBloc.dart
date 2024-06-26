@@ -1,7 +1,9 @@
 
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:foxschool/bloc/base/BlocException.dart';
 import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsAddEvent.dart';
 import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsDeleteEvent.dart';
 import 'package:foxschool/bloc/vocabulary/api/event/VocabularyContentsListEvent.dart';
@@ -18,7 +20,7 @@ import '../../base/BlocEvent.dart';
 import '../../base/BlocState.dart';
 import 'event/VocabularyMyBooksListEvent.dart';
 
-class VocabularyBloc extends Bloc<BlocEvent, BlocState>
+class VocabularyBloc extends Bloc<BlocEvent, BlocState> with BlocException
 {
   final FoxSchoolRepository repository;
   VocabularyBloc({
@@ -53,10 +55,9 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
           emit(ErrorState(message: response.message));
         }
     }
-    catch(e)
+    on DioException catch(e)
     {
-      Logger.d("error : ${e.toString()}");
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -84,9 +85,9 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
       }
 
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -112,9 +113,9 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
           emit(ErrorState(message: response.message));
         }
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -138,10 +139,9 @@ class VocabularyBloc extends Bloc<BlocEvent, BlocState>
           emit(ErrorState(message: response.message));
         }
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()
-      ));
+      processException(this, e.response.toString());
     }
   }
 

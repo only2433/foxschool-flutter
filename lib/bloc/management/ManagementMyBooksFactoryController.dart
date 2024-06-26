@@ -26,6 +26,7 @@ import 'package:foxschool/data/main/my_book/MyBookshelfResult.dart';
 import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
 import 'package:foxschool/view/dialog/LoadingDialog.dart' as LoadingDialog;
 import 'package:foxschool/common/Preference.dart' as Preference;
+import 'package:foxschool/common/PageNavigator.dart' as Page;
 import 'package:image/image.dart';
 import '../../enum/MyBooksType.dart';
 import '../../view/dialog/FoxSchoolDialog.dart' as FoxSchoolDialog;
@@ -121,6 +122,20 @@ class ManagementMyBooksFactoryController extends BlocController
           await Future.delayed(const Duration(milliseconds: Common.DURATION_NORMAL), () {
             onBackPressed();
           },);
+          break;
+        case AuthenticationErrorState:
+          blocState = state as AuthenticationErrorState;
+          if(blocState.isAutoRestart == false)
+          {
+            await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+            await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
+          }
+          Fluttertoast.showToast(msg: blocState.message);
+          Navigator.pushAndRemoveUntil(
+            context,
+            Page.getIntroTransition(context),
+                (route) => false,
+          );
           break;
         case ErrorState:
           blocState = state as ErrorState;

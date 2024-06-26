@@ -1,8 +1,10 @@
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
+import 'package:foxschool/bloc/base/BlocException.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 import 'package:foxschool/bloc/management/ManagementMyBooksFactoryController.dart';
 import 'package:foxschool/bloc/management/api/event/MyBooksBookshelfCreateEvent.dart';
@@ -23,7 +25,7 @@ import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
 import '../../../common/Common.dart';
 import 'event/MyBooksBookshelfUpdateEvent.dart';
 
-class ManagementMyBooksBloc extends Bloc<BlocEvent, BlocState>
+class ManagementMyBooksBloc extends Bloc<BlocEvent, BlocState> with BlocException
 {
   final FoxSchoolRepository repository;
   ManagementMyBooksBloc({
@@ -63,9 +65,9 @@ class ManagementMyBooksBloc extends Bloc<BlocEvent, BlocState>
       }
 
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -91,9 +93,9 @@ class ManagementMyBooksBloc extends Bloc<BlocEvent, BlocState>
         }
 
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -118,9 +120,9 @@ class ManagementMyBooksBloc extends Bloc<BlocEvent, BlocState>
         emit(ErrorState(message: response.message));
       }
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -145,9 +147,9 @@ class ManagementMyBooksBloc extends Bloc<BlocEvent, BlocState>
         emit(ErrorState(message: response.message));
       }
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -171,9 +173,9 @@ class ManagementMyBooksBloc extends Bloc<BlocEvent, BlocState>
         emit(ErrorState(message: response.message));
       }
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -197,9 +199,9 @@ class ManagementMyBooksBloc extends Bloc<BlocEvent, BlocState>
         emit(ErrorState(message: response.message));
       }
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 

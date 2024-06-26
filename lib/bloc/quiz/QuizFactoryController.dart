@@ -40,6 +40,8 @@ import '../../data/quiz/file/FileData.dart';
 import '../../data/quiz/quiz_item/QuizItemResult.dart';
 import 'factory/cubit/QuizRemainTimeCubit.dart';
 import 'package:foxschool/view/dialog/LoadingDialog.dart' as LoadingDialog;
+import 'package:foxschool/common/PageNavigator.dart' as Page;
+import 'package:foxschool/common/Preference.dart' as Preference;
 
 class QuizFactoryController extends BlocController {
 
@@ -131,6 +133,34 @@ class QuizFactoryController extends BlocController {
           _settingQuizData();
           await _readyToPlay(PLAY_INIT);
         case LoadingState:
+          break;
+        case AuthenticationErrorState:
+          blocState = state as AuthenticationErrorState;
+          if(blocState.isAutoRestart == false)
+          {
+            await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+            await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
+          }
+          Fluttertoast.showToast(msg: blocState.message);
+
+
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            Page.getIntroTransition(context),
+                (route) => false,
+          );
+
+          await SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+          ]);
+          await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+          await Future.delayed(Duration(milliseconds: Common.DURATION_SHORTER),() {
+            SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.light,
+            ));
+          },);
+
           break;
         case ErrorState:
           blocState = state as ErrorState;

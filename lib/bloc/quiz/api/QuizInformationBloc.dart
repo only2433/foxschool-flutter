@@ -1,7 +1,9 @@
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
+import 'package:foxschool/bloc/base/BlocException.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 import 'package:foxschool/bloc/quiz/api/event/QuizInformationEvent.dart';
 import 'package:foxschool/bloc/quiz/api/state/QuizInformationLoadedState.dart';
@@ -13,7 +15,7 @@ import '../../../common/FoxschoolLocalization.dart';
 import '../../../di/Dependencies.dart';
 import '../../base/BlocEvent.dart';
 
-class QuizInformationBloc extends Bloc<BlocEvent, BlocState>
+class QuizInformationBloc extends Bloc<BlocEvent, BlocState> with BlocException
 {
   final FoxSchoolRepository repository;
   QuizInformationBloc({
@@ -40,9 +42,9 @@ class QuizInformationBloc extends Bloc<BlocEvent, BlocState>
       QuizInformationResult result = QuizInformationResult.fromJson(response.data);
       emit(QuizInformationLoadedState(data: result));
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: getIt<FoxschoolLocalization>().data['message_waring_error']));
+      processException(this, e.response.toString());
     }
   }
 

@@ -29,6 +29,7 @@ Future<void> init() async
   getIt.registerSingleton(foxschoolLocalization);
 
   final dio = Dio();
+
   dio.interceptors.add(AuthInterceptor());
   dio.interceptors.add(LoggingInterceptor());
   getIt.registerSingleton(dio);

@@ -22,6 +22,7 @@ import 'package:foxschool/bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart'
 import 'package:foxschool/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/data/movie/MovieItemResult.dart';
+import 'package:foxschool/main.dart';
 import 'package:foxschool/view/screen/IntroScreen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:foxschool/common/PageNavigator.dart' as Page;
@@ -109,17 +110,24 @@ class MovieFactoryController extends BlocController {
           break;
         case LoadingState:
           break;
+        case AuthenticationErrorState:
+          blocState = state as AuthenticationErrorState;
+          if(blocState.isAutoRestart == false)
+            {
+              await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+              await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
+            }
+          Fluttertoast.showToast(msg: blocState.message);
+          Navigator.pushAndRemoveUntil(
+            context,
+            Page.getIntroTransition(context),
+                (route) => false,
+          );
+          break;
         case ErrorState:
           Logger.d("context : ${context}");
           blocState = state as ErrorState;
           Fluttertoast.showToast(msg: blocState.message);
-          await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
-          await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
-          Navigator.pushAndRemoveUntil(
-            context,
-            Page.getLogoutTransition(context),
-                (route) => false,
-          );
           break;
       }
     });

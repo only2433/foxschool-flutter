@@ -1219,15 +1219,6 @@ class _MoviePlayerScreenState extends State<MoviePlayerScreen> with TickerProvid
                   ),
                 )
             ),
-            Positioned(
-                top: CommonUtils.getInstance(context).getHeight(40),
-                right: CommonUtils.getInstance(context).getWidth(30),
-                child: Image.asset(
-                  'assets/image/icon_learning.png',
-                  width: CommonUtils.getInstance(context).getWidth(92),
-                  height: CommonUtils.getInstance(context).getHeight(125),
-                )
-            )
           ],
         ),
       );

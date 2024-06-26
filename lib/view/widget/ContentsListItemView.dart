@@ -13,24 +13,25 @@ class ContentsListItemView extends StatelessWidget {
 
   final String thumbnailUrl;
   final String title;
-  final VoidCallback onItemPressed;
+
   final VoidCallback  onThumbnailPressed;
   String indexColor;
   int index;
   bool isSelected;
   bool isStoryViewComplete;
+  VoidCallback? onItemPressed;
   VoidCallback? onOptionPressed;
 
   ContentsListItemView({
     super.key,
     required this.thumbnailUrl,
     required this.title,
-    required this.onItemPressed,
     required this.onThumbnailPressed,
     this.indexColor = "",
     this.index = 0,
     this.isSelected = false,
     this.isStoryViewComplete = false,
+    this.onItemPressed,
     this.onOptionPressed
   });
 
@@ -39,7 +40,10 @@ class ContentsListItemView extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        onItemPressed();
+        if(onItemPressed != null)
+          {
+            onItemPressed!();
+          }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -83,7 +87,10 @@ class ContentsListItemView extends StatelessWidget {
             indexColor == "" ? _buildTitleWidget(context) : _buildTitleAndIndexWidget(context),
             GestureDetector(
               onTap: () {
-                onOptionPressed!();
+                if(onOptionPressed != null)
+                  {
+                    onOptionPressed!();
+                  }
               },
               child: Container(
                 width: CommonUtils.getInstance(context).getWidth(92),

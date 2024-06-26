@@ -240,7 +240,10 @@ class MainFactoryController extends BlocController
     Navigator.push(
         context,
         Page.getDefaultTransition(context,  const SearchScreen())
-    );
+    ).then((value){
+      Logger.d(" ----- onResume");
+      _checkUpdateMainData();
+    });
   }
 
   void onClickLogout() async
@@ -249,7 +252,7 @@ class MainFactoryController extends BlocController
     await Preference.setObject(Common.PARAMS_USER_API_INFORMATION, null);
     Navigator.pushAndRemoveUntil(
         context,
-        Page.getLogoutTransition(context),
+        Page.getIntroTransition(context),
        (route) => false,
     );
   }

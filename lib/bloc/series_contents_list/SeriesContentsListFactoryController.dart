@@ -304,9 +304,30 @@ class SeriesContentsListFactoryController extends BlocController {
                     accessToken: accessToken)
             )
         );
+      case ContentsItemType.BOOKSHELF:
+        _addItemInBookshelf(data);
+        break;
       default:
         break;
     }
+  }
+
+  void _addItemInBookshelf(ContentsBaseResult data)
+  {
+    List<ContentsBaseResult> list = [];
+    list.add(data);
+
+    FoxSchoolDialog.showBottomAddBookshelfSelectDialog(
+        context: context,
+        list: _mainData.bookshelfList,
+        onItemPressed: (index) {
+          BlocProvider.of<SeriesContentsBloc>(context).add(
+              BookshelfContentsAddEvent(
+                  bookshelfID: _mainData.bookshelfList[index].id,
+                  data: list)
+          );
+        });
+
   }
 
   @override

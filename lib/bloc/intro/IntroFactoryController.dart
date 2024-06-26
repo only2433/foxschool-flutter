@@ -49,6 +49,7 @@ class IntroFactoryController extends BlocController
   @override
   void init() {
     Logger.d("init");
+
     _settingSubscriptions();
     _checkPermission();
   }
@@ -181,6 +182,7 @@ class IntroFactoryController extends BlocController
 
   Future<void> _executeMain() async
   {
+    context.read<IntroProgressPercentCubit>().setProgressPercent(_PROGRESS_PERCENT[0]);
     context.read<IntroScreenTypeCubit>().setIntroScreenType(IntroScreenType.TYPE_LOGIN_PROGRESS);
     await Future.delayed(Duration(
         milliseconds: Common.DURATION_LONG

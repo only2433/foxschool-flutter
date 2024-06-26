@@ -72,13 +72,13 @@ class MyBookshelfFactoryController extends BlocController
         );
       },);
     });
-    
+
   }
 
   void _settingSubscription()
   {
     var blocState;
-    _subscription = BlocProvider.of<MyBookshelfBloc>(context).stream.listen((state) {
+    _subscription = BlocProvider.of<MyBookshelfBloc>(context).stream.listen((state) async {
 
       Logger.d("state.runtimeType : ${state.runtimeType}");
       switch(state.runtimeType)
@@ -96,6 +96,20 @@ class MyBookshelfFactoryController extends BlocController
           _refreshContentsListData();
           disableBottomSelectViewMode();
           Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_delete_contents']);
+          break;
+        case AuthenticationErrorState:
+          blocState = state as AuthenticationErrorState;
+          if(blocState.isAutoRestart == false)
+          {
+            await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+            await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
+          }
+          Fluttertoast.showToast(msg: blocState.message);
+          Navigator.pushAndRemoveUntil(
+            context,
+            Page.getIntroTransition(context),
+                (route) => false,
+          );
           break;
         case ErrorState:
           blocState = state as ErrorState;
@@ -235,9 +249,30 @@ class MyBookshelfFactoryController extends BlocController
                     accessToken: accessToken)
             )
         );
+      case ContentsItemType.BOOKSHELF:
+        _deleteItemInBookshelf(data);
+        break;
       default:
         break;
     }
+  }
+
+  void _deleteItemInBookshelf(ContentsBaseResult data)
+  {
+    _deleteDataList = [];
+    _deleteDataList.add(data);
+
+    FoxSchoolDialog.showSelectDialog(
+      context: context,
+      message: getIt<FoxschoolLocalization>().data['message_question_delete_contents_in_bookshelf'],
+      buttonText: getIt<FoxschoolLocalization>().data['text_confirm'],
+      onSelected: () {
+        BlocProvider.of<MyBookshelfBloc>(context).add(
+            BookshelfContentsDeleteEvent(
+                bookshelfID: myBookshelfID,
+                data: _deleteDataList)
+        );
+      },);
   }
 
   @override
@@ -336,6 +371,7 @@ class MyBookshelfFactoryController extends BlocController
     BottomContentDialog.showBottomContentItemDialog(
         context: context,
         data: _myBookshelfDataList[index],
+        isDeleteItemInBookshelf: true,
         onItemTypeSelected: (type) async{
           onBackPressed();
           await Future.delayed(Duration(milliseconds: Common.DURATION_SHORT), () {

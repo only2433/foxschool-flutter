@@ -14,6 +14,21 @@ class LoadingState extends BlocState {
 
 }
 
+class SearchListLoadingState extends BlocState
+{
+
+}
+
+class AuthenticationErrorState extends BlocState
+{
+  final bool isAutoRestart;
+  final String message;
+  const AuthenticationErrorState({
+    required this.isAutoRestart,
+    required this.message
+  });
+}
+
 class ErrorState extends BlocState{
   final String message;
 

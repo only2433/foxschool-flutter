@@ -14,8 +14,8 @@ PageTransition getDefaultJoinedTransition(BuildContext context, Widget toWidget)
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_SHORT),
-      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
+      duration: const Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: const Duration(milliseconds: Common.DURATION_SHORT),
       type: PageTransitionType.rightToLeftJoined,
       child: toWidget,
       childCurrent: context.widget
@@ -26,8 +26,8 @@ PageTransition getDefaultTransition(BuildContext context, Widget toWidget)
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_SHORT),
-      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
+      duration: const Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: const Duration(milliseconds: Common.DURATION_SHORT),
       type: PageTransitionType.rightToLeft,
       child: toWidget,
   );
@@ -37,8 +37,8 @@ PageTransition getScaleTransition(BuildContext context, Widget toWidget)
 {
   return PageTransition(
     curve: Curves.decelerate,
-    duration: Duration(milliseconds: Common.DURATION_SHORT),
-    reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
+    duration: const Duration(milliseconds: Common.DURATION_SHORT),
+    reverseDuration: const Duration(milliseconds: Common.DURATION_SHORT),
     type: PageTransitionType.scale,
     alignment: Alignment.center,
     child: toWidget,
@@ -49,30 +49,30 @@ PageTransition getMainTransition()
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_SHORT),
-      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
+      duration: const Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: const Duration(milliseconds: Common.DURATION_SHORT),
       type: PageTransitionType.rightToLeft,
-      child: MainScreen());
+      child: const MainScreen());
 }
 
 PageTransition getSeriesDetailListTransition(BuildContext context, Widget toWidget)
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_SHORT),
-      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
+      duration: const Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: const Duration(milliseconds: Common.DURATION_SHORT),
       type: PageTransitionType.fade,
       child: toWidget,
       childCurrent: context.widget);
 }
 
-PageTransition getLogoutTransition(BuildContext context)
+PageTransition getIntroTransition(BuildContext context)
 {
   return PageTransition(
       curve: Curves.decelerate,
-      duration: Duration(milliseconds: Common.DURATION_SHORT),
-      reverseDuration: Duration(milliseconds: Common.DURATION_SHORT),
-      type: PageTransitionType.rightToLeftWithFade,
+      duration: const Duration(milliseconds: Common.DURATION_SHORT),
+      reverseDuration: const Duration(milliseconds: Common.DURATION_SHORT),
+      type: PageTransitionType.leftToRightWithFade,
       child: const IntroScreen()
   );
 }

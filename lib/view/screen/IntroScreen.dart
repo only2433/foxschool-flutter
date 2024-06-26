@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
@@ -47,6 +48,7 @@ class _IntroScreenState extends State<IntroScreen>  with WidgetsBindingObserver{
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance!.addObserver(this);
     _factoryController = IntroFactoryController(context: context);
     _factoryController.init();

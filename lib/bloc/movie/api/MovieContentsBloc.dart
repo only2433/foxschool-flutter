@@ -1,11 +1,16 @@
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/api/remote_intro/FoxSchoolRepository.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
+import 'package:foxschool/bloc/base/BlocException.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 import 'package:foxschool/bloc/movie/api/event/MovieContentsEvent.dart';
 import 'package:foxschool/bloc/movie/api/state/MovieContentsLoadedState.dart';
+import 'package:foxschool/common/CommonUtils.dart';
 
 import 'package:foxschool/data/base/BaseResponse.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
@@ -15,7 +20,7 @@ import '../../../common/Common.dart';
 import '../../../common/FoxschoolLocalization.dart';
 import '../../../di/Dependencies.dart';
 
-class MovieContentsBloc extends Bloc<BlocEvent, BlocState>
+class MovieContentsBloc extends Bloc<BlocEvent, BlocState> with BlocException
 {
   final FoxSchoolRepository repository;
   MovieContentsBloc({
@@ -41,14 +46,10 @@ class MovieContentsBloc extends Bloc<BlocEvent, BlocState>
         MovieItemResult result = MovieItemResult.fromJson(response.data);
         emit(MovieContentsLoadedState(data: result));
       }
-      else
-      {
-        emit(ErrorState(message: response.message));
-      }
     }
-    catch(e)
+    on DioException catch(e)
     {
-      emit(ErrorState(message: getIt<FoxschoolLocalization>().data['message_waring_error']));
+        processException(this, e.response.toString());
     }
   }
 }

@@ -1,8 +1,10 @@
 
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:foxschool/bloc/base/BlocEvent.dart';
+import 'package:foxschool/bloc/base/BlocException.dart';
 import 'package:foxschool/bloc/base/BlocState.dart';
 import 'package:foxschool/bloc/bookshelf/api/event/BookshelfContentListEvent.dart';
 import 'package:foxschool/bloc/bookshelf/api/event/BookshelfContentsAddEvent.dart';
@@ -17,7 +19,7 @@ import '../../../api/remote_intro/FoxSchoolRepository.dart';
 import '../../../common/Common.dart';
 import '../../../data/base/BaseResponse.dart';
 
-class MyBookshelfBloc extends Bloc<BlocEvent, BlocState>
+class MyBookshelfBloc extends Bloc<BlocEvent, BlocState> with BlocException
 {
   final FoxSchoolRepository repository;
   MyBookshelfBloc({
@@ -48,9 +50,10 @@ class MyBookshelfBloc extends Bloc<BlocEvent, BlocState>
         {
           emit(ErrorState(message: response.message));
         }
-    }catch(e)
+    }
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
 
@@ -75,12 +78,10 @@ class MyBookshelfBloc extends Bloc<BlocEvent, BlocState>
           emit(ErrorState(message: response.message));
         }
       
-    }catch(e)
+    }
+    on DioException catch(e)
     {
-      emit(ErrorState(message: e.toString()));
+      processException(this, e.response.toString());
     }
   }
-
-
-
 }

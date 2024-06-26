@@ -144,11 +144,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                     child: ContentsListItemView(
                                       thumbnailUrl: state.list[index].thumbnailUrl,
                                       title: state.list[index].getContentsName(),
-                                      onItemPressed: () {
-
-                                      },
                                       onThumbnailPressed: () {
                                         Logger.d("");
+                                        _factoryController.onClickThumbnailItem(index);
+                                      },
+                                      onOptionPressed: () {
+                                        _factoryController.onClickOption(index);
                                       },
                                     ),
                                   );

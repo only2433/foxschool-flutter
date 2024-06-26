@@ -32,6 +32,7 @@ import 'package:foxschool/data/main/my_vocabulary/MyVocabularyResult.dart';
 import 'package:foxschool/enum/VocabularySelectType.dart';
 import 'package:foxschool/enum/VocabularyType.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:foxschool/common/PageNavigator.dart' as Page;
 import 'package:foxschool/common/Preference.dart' as Preference;
 import '../../data/main/MainInformationResult.dart';
 import '../../di/Dependencies.dart';
@@ -203,11 +204,25 @@ class VocabularyFactoryController extends BlocController
           _setCheckAll(false);
           Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_delete_contents']);
           break;
+
+        case AuthenticationErrorState:
+          blocState = state as AuthenticationErrorState;
+          if(blocState.isAutoRestart == false)
+          {
+            await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
+            await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
+          }
+          Fluttertoast.showToast(msg: blocState.message);
+          Navigator.pushAndRemoveUntil(
+            context,
+            Page.getIntroTransition(context),
+                (route) => false,
+          );
+          break;
         case ErrorState:
           blocState = state as ErrorState;
           Fluttertoast.showToast(msg: blocState.message);
           onBackPressed();
-
           break;
       }
     });
