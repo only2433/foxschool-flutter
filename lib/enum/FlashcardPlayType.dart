@@ -1,0 +1,6 @@
+
+enum FlashcardPlayType
+{
+  DEFAULT,
+  BOOKMARKED
+}

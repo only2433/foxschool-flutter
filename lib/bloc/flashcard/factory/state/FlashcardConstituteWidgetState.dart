@@ -2,13 +2,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-class QuizConstituteWidgetState extends Equatable
+class FlashcardConstituteWidgetState extends Equatable
 {
   final List<Widget> list;
-  const QuizConstituteWidgetState({
+  const FlashcardConstituteWidgetState({
     required this.list
   });
 
   @override
-  List<Object> get props => [list];
+  List<Object?> get props => [list];
+
 }

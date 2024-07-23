@@ -21,6 +21,7 @@ import 'package:foxschool/data/contents/DetailItemInformationResult.dart';
 import 'package:foxschool/data/main/my_book/MyBookshelfResult.dart';
 import 'package:foxschool/data/vocabulary/information/VocabularyInformationData.dart';
 import 'package:foxschool/enum/VocabularyType.dart';
+import 'package:foxschool/view/screen/FlashcardScreen.dart';
 import 'package:foxschool/view/screen/MoviePlayerScreen.dart';
 import 'package:foxschool/view/screen/QuizScreen.dart';
 import 'package:foxschool/view/screen/VocabularyScreen.dart';
@@ -245,6 +246,19 @@ class SeriesContentsListFactoryController extends BlocController {
                     title: data.name,
                     subTitle: data.subName
             ))
+        );
+        break;
+      case ContentsItemType.FLASHCARD:
+        Navigator.push(
+            context,
+            Page.getScaleTransition(context,
+                 FlashcardScreen(
+                  contentID: data.id,
+                  type: VocabularyType.VOCABULARY_CONTENTS,
+                  title: data.name,
+                  subtitle: data.subName,
+                  list: const [],
+                ))
         );
         break;
       case ContentsItemType.VOCABULARY:

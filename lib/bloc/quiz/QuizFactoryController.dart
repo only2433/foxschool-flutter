@@ -127,13 +127,12 @@ class QuizFactoryController extends BlocController {
         .listen((state) async {
       Logger.d("state.runtimeType : ${state.runtimeType}");
       switch (state.runtimeType) {
+
         case QuizInformationLoadedState:
           blocState = state as QuizInformationLoadedState;
           _quizInformationResult = blocState.data;
           _settingQuizData();
           await _readyToPlay(PLAY_INIT);
-        case LoadingState:
-          break;
         case AuthenticationErrorState:
           blocState = state as AuthenticationErrorState;
           if(blocState.isAutoRestart == false)
@@ -142,8 +141,6 @@ class QuizFactoryController extends BlocController {
             await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
           }
           Fluttertoast.showToast(msg: blocState.message);
-
-
 
           Navigator.pushAndRemoveUntil(
             context,

@@ -13,6 +13,12 @@ import 'package:foxschool/bloc/bookshelf/api/MyBookshelfBloc.dart';
 import 'package:foxschool/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
 import 'package:foxschool/bloc/category_contents_list/factory/cubit/CategoryTitleColorCubit.dart';
+import 'package:foxschool/bloc/flashcard/factory/cubit/FlashcardBookmarkedCubit.dart';
+import 'package:foxschool/bloc/flashcard/factory/cubit/FlashcardConstituteWidgetCubit.dart';
+import 'package:foxschool/bloc/flashcard/factory/cubit/FlashcardHelpPageCubit.dart';
+import 'package:foxschool/bloc/flashcard/factory/cubit/FlashcardOptionSelectCubit.dart';
+import 'package:foxschool/bloc/flashcard/factory/cubit/FlashcardStudyCurrentIndexCubit.dart';
+import 'package:foxschool/bloc/flashcard/factory/cubit/FlashcardStudyListUpdateCubit.dart';
 import 'package:foxschool/bloc/intro/api/IntroBloc.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
 import 'package:foxschool/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
@@ -69,6 +75,8 @@ import 'package:mobile_device_identifier/mobile_device_identifier.dart';
 import '../../common/Preference.dart' as Preference;
 
 import 'bloc/base/observer/FoxschoolBlocObserver.dart';
+import 'bloc/flashcard/api/FlashcardBloc.dart';
+import 'bloc/flashcard/factory/cubit/FlashcardBookmarkOptionSelectCubit.dart';
 import 'bloc/login/api/LoginBloc.dart';
 import 'bloc/movie/factory/cubit/MoviePlayListCubit.dart';
 import 'bloc/movie/factory/cubit/MoviePlayTimeCubit.dart';
@@ -234,6 +242,14 @@ class MyApp extends StatelessWidget {
            */
           BlocProvider(create: (context) => getIt<MyBookshelfBloc>()),
 
+          BlocProvider(create: (context) => getIt<FlashcardBloc>()),
+          BlocProvider(create: (context) => FlashcardConstituteWidgetCubit()),
+          BlocProvider(create: (context) => FlashcardHelpPageCubit()),
+          BlocProvider(create: (context) => FlashcardOptionSelectCubit()),
+          BlocProvider(create: (context) => FlashcardBookmarkOptionSelectCubit()),
+          BlocProvider(create: (context) => FlashcardBookmarkedCubit()),
+          BlocProvider(create: (context) => FlashcardStudyCurrentIndexCubit()),
+          BlocProvider(create: (context) => FlashcardStudyListUpdateCubit()),
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,

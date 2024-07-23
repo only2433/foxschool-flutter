@@ -47,21 +47,23 @@ class _QuizScreenState extends State<QuizScreen> {
 
   late QuizFactoryController _factoryController;
   late PageController _pageController;
-  int _currentPageIndex = 0;
+
   @override
   void initState() {
     super.initState();
-
-    _pageController = PageController(initialPage: _currentPageIndex);
-
-    _factoryController = QuizFactoryController(context: context, contentID: widget.contentID, pageController: _pageController);
-    _factoryController.init();
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
+
+    _pageController = PageController(initialPage: 0);
+    _factoryController = QuizFactoryController(
+        context: context,
+        contentID: widget.contentID,
+        pageController: _pageController);
+    _factoryController.init();
 
   }
 

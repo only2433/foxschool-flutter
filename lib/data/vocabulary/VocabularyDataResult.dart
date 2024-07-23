@@ -4,12 +4,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'VocabularyDataResult.freezed.dart';
 part 'VocabularyDataResult.g.dart';
 
-
 @freezed
 class VocabularyDataResult with _$VocabularyDataResult
 {
   factory VocabularyDataResult({
-
     @JsonKey(name: 'content_id')
     @Default("")
     String contentID,
