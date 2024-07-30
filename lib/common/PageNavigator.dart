@@ -1,13 +1,8 @@
 
-
 import 'package:flutter/cupertino.dart';
-import 'package:foxschool/data/main/series/SeriesInformationResult.dart';
 import 'package:page_transition/page_transition.dart';
-
-import '../data/main/series/base/SeriesBaseResult.dart';
-import '../view/screen/IntroScreen.dart';
-import '../view/screen/MainScreen.dart';
-import '../view/screen/SeriesContentListScreen.dart';
+import 'package:foxschool/presentation/view/screen/IntroScreen.dart';
+import 'package:foxschool/presentation/view/screen/MainScreen.dart';
 import 'Common.dart';
 
 PageTransition getDefaultJoinedTransition(BuildContext context, Widget toWidget)

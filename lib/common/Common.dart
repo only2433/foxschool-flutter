@@ -1,8 +1,4 @@
 
-import 'package:foxschool/common/FoxschoolLocalization.dart';
-
-import '../di/Dependencies.dart';
-
 class Common
 {
   static const String PACKAGE_NAME = "com.littlefox.app.foxschool";
