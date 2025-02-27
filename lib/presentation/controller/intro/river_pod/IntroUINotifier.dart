@@ -1,9 +1,14 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/enum/IntroScreenType.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'data/IntroUIState.dart';
 
-class IntroUINotifier extends Notifier<IntroUIState>{
+
+part 'IntroUINotifier.g.dart';
+
+@riverpod
+class IntroUINotifier extends _$IntroUINotifier{
   @override
   IntroUIState build() {
     return IntroUIState(
@@ -25,7 +30,3 @@ class IntroUINotifier extends Notifier<IntroUIState>{
     );
   }
 }
-
-final introUIStateProvider = NotifierProvider<IntroUINotifier, IntroUIState>((){
-  return IntroUINotifier();
-});

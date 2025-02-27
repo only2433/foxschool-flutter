@@ -18,9 +18,6 @@ import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardHel
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardOptionSelectCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyCurrentIndexCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyListUpdateCubit.dart';
-import 'package:foxschool/presentation/bloc/intro/api/IntroBloc.dart';
-import 'package:foxschool/presentation/bloc/intro/factory/cubit/IntroProgressPercentCubit.dart';
-import 'package:foxschool/presentation/bloc/intro/factory/cubit/IntroScreenTypeCubit.dart';
 import 'package:foxschool/presentation/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
 import 'package:foxschool/presentation/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
 import 'package:foxschool/presentation/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
@@ -122,14 +119,6 @@ class MyApp extends StatelessWidget {
       BlocProvider(create: (context) => LoginAutoCheckCubit()),
       BlocProvider(create: (context) => LoginFindSchoolListCubit()),
       BlocProvider(create: (context) => LoginSchoolNameCubit()),
-
-
-    BlocProvider(create: (context) => MainUserInformationCubit()),
-    BlocProvider(create: (context) => MainStorySelectTypeListCubit()),
-    BlocProvider(create: (context) => MainSongCategoryListCubit()),
-    BlocProvider(create: (context) => MainMyBooksTypeCubit()),
-
-
     ], child: const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: IntroScreen(),

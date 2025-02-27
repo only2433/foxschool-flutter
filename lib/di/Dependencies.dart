@@ -7,7 +7,6 @@ import 'package:foxschool/data/repository/FoxSchoolRepositoryImpl.dart';
 import 'package:foxschool/presentation/bloc/bookshelf/api/MyBookshelfBloc.dart';
 import 'package:foxschool/presentation/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/presentation/bloc/flashcard/api/FlashcardBloc.dart';
-import 'package:foxschool/presentation/bloc/intro/api/IntroBloc.dart';
 import 'package:foxschool/presentation/bloc/login/api/LoginBloc.dart';
 import 'package:foxschool/presentation/bloc/management/api/ManagementMyBooksBloc.dart';
 import 'package:foxschool/presentation/bloc/movie/api/MovieContentsBloc.dart';
@@ -36,7 +35,6 @@ Future<void> init() async
   getIt.registerSingleton(apiClient);
 
   getIt.registerLazySingleton<FoxSchoolRepository>(() => FoxSchoolRepositoryImpl(dio: getIt<Dio>(), apiClient: getIt<ApiClient>()));
-  getIt.registerLazySingleton(() => IntroBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => LoginBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => SeriesContentsBloc(repository: getIt<FoxSchoolRepository>()));
   getIt.registerLazySingleton(() => CategoryContentsDataBloc(repository: getIt<FoxSchoolRepository>()));
