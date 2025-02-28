@@ -18,13 +18,6 @@ import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardHel
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardOptionSelectCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyCurrentIndexCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyListUpdateCubit.dart';
-import 'package:foxschool/presentation/bloc/login/factory/cubit/LoginAutoCheckCubit.dart';
-import 'package:foxschool/presentation/bloc/login/factory/cubit/LoginFindSchoolListCubit.dart';
-import 'package:foxschool/presentation/bloc/login/factory/cubit/LoginSchoolNameCubit.dart';
-import 'package:foxschool/presentation/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
-import 'package:foxschool/presentation/bloc/main/factory/cubit/MainSongCategoryListCubit.dart';
-import 'package:foxschool/presentation/bloc/main/factory/cubit/MainStorySelectTypeListCubit.dart';
-import 'package:foxschool/presentation/bloc/main/factory/cubit/MainUserInformationCubit.dart';
 import 'package:foxschool/presentation/bloc/management/api/ManagementMyBooksBloc.dart';
 import 'package:foxschool/presentation/bloc/management/factory/cubit/MyBooksUpdateColorCubit.dart';
 import 'package:foxschool/presentation/bloc/management/factory/cubit/MyBooksUpdateNameCubit.dart';
@@ -63,7 +56,6 @@ import 'package:foxschool/common/Preference.dart' as Preference;
 import 'presentation/bloc/base/observer/FoxschoolBlocObserver.dart';
 import 'presentation/bloc/flashcard/api/FlashcardBloc.dart';
 import 'presentation/bloc/flashcard/factory/cubit/FlashcardBookmarkOptionSelectCubit.dart';
-import 'presentation/bloc/login/api/LoginBloc.dart';
 import 'presentation/bloc/movie/factory/cubit/MoviePlayListCubit.dart';
 import 'presentation/bloc/movie/factory/cubit/MoviePlayTimeCubit.dart';
 import 'presentation/bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart';
@@ -112,13 +104,100 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return  MultiBlocProvider(providers: [
+    /**
+    *  SeriesContentsScreen
+    */
+    BlocProvider(
+    create: (context) => getIt<SeriesContentsBloc>(),
+    ),
+    BlocProvider(create: (context) => SeriesEnableInformationViewCubit()),
+    BlocProvider(create: (context) => SeriesDataViewCubit()),
+    BlocProvider(create: (context) => SeriesLastWatchItemCubit()),
+    BlocProvider(create: (context) => SeriesTitleColorCubit()),
 
-      BlocProvider(
-        create: (context) => getIt<LoginBloc>(),
-      ),
-      BlocProvider(create: (context) => LoginAutoCheckCubit()),
-      BlocProvider(create: (context) => LoginFindSchoolListCubit()),
-      BlocProvider(create: (context) => LoginSchoolNameCubit()),
+    /**
+    * StoryCategoryListScreen
+    */
+    BlocProvider(
+    create: (context) => getIt<CategoryContentsDataBloc>()
+    ),
+    BlocProvider(create: (context) => CategoryItemListCubit()),
+    BlocProvider(create: (context) => CategoryTitleColorCubit()),
+
+    /**
+    * Search
+    */
+    BlocProvider(
+    create: (context) => getIt<SearchContentsBloc>()
+    ),
+    BlocProvider(create: (context) => SearchItemListCubit()),
+    BlocProvider(create: (context) => SearchTypeCubit()),
+
+    /**
+    * Movie
+    */
+    BlocProvider(
+    create: (context) => getIt<MovieContentsBloc>()
+    ),
+    BlocProvider(create: (context) => MoviePlayerSettingCubit()),
+    BlocProvider(create: (context) => MoviePlayListCubit()),
+    BlocProvider(create: (context) => MoviePlayTitleCubit()),
+    BlocProvider(create: (context) => MoviePlayCompleteCubit()),
+    BlocProvider(create: (context) => MovieSeekProgressCubit()),
+    BlocProvider(create: (context) => MoviePlayerMenuCubit()),
+    BlocProvider(create: (context) => MovieCaptionTextCubit()),
+    BlocProvider(create: (context) => MoviePlayTimeCubit()),
+
+    /**
+    * QUIZ
+    */
+    BlocProvider(
+    create: (context) => getIt<QuizInformationBloc>()),
+    BlocProvider(create: (context) => QuizReadyDataCubit()),
+    BlocProvider(create: (context) => QuizEnableTaskboxCubit()),
+    BlocProvider(create: (context) => QuizConstituteWidgetCubit()),
+    BlocProvider(create: (context) => QuizRemainTimeCubit()),
+    BlocProvider(create: (context) => QuizCorrectCountCubit()),
+
+    /**
+    * Vocabulary
+    */
+    BlocProvider(
+    create: (context) => getIt<VocabularyBloc>()),
+    BlocProvider(create: (context) => VocabularyItemListCubit()),
+    BlocProvider(create: (context) => VocabularyPlayingCubit()),
+    BlocProvider(create: (context) => VocabularyBottomControllerCubit()),
+    BlocProvider(create: (context) => VocabularyStudyTypeCubit()),
+
+    /**
+    * Management MyBooks
+    */
+    BlocProvider(
+    create: (context) => getIt<ManagementMyBooksBloc>()),
+    BlocProvider(create: (context) => MyBooksUpdateNameCubit()),
+    BlocProvider(create: (context) => MyBooksUpdateColorCubit()),
+
+    /**
+    * MyBookshelf
+    */
+    BlocProvider(create: (context) => getIt<MyBookshelfBloc>()),
+    BlocProvider(create: (context) => ContentsEnableBottomViewCubit()),
+    BlocProvider(create: (context) => ContentsItemListCubit()),
+    BlocProvider(create: (context) => ContentsSelectItemCountCubit()),
+
+    /**
+    * MyBookshelf
+    */
+    BlocProvider(create: (context) => getIt<MyBookshelfBloc>()),
+
+    BlocProvider(create: (context) => getIt<FlashcardBloc>()),
+    BlocProvider(create: (context) => FlashcardConstituteWidgetCubit()),
+    BlocProvider(create: (context) => FlashcardHelpPageCubit()),
+    BlocProvider(create: (context) => FlashcardOptionSelectCubit()),
+    BlocProvider(create: (context) => FlashcardBookmarkOptionSelectCubit()),
+    BlocProvider(create: (context) => FlashcardBookmarkedCubit()),
+    BlocProvider(create: (context) => FlashcardStudyCurrentIndexCubit()),
+    BlocProvider(create: (context) => FlashcardStudyListUpdateCubit()),
     ], child: const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: IntroScreen(),

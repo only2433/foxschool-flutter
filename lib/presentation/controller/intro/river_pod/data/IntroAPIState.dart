@@ -1,9 +1,8 @@
 
+import 'package:foxschool/data/model/login/LoginInformationResult.dart';
+import 'package:foxschool/data/model/main/MainInformationResult.dart';
+import 'package:foxschool/data/model/version_data_result/VersionDataResult.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../../../../../data/model/login/LoginInformationResult.dart';
-import '../../../../../../data/model/main/MainInformationResult.dart';
-import '../../../../../../data/model/version_data_result/VersionDataResult.dart';
 
 part 'IntroAPIState.freezed.dart';
 
