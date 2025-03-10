@@ -12,7 +12,6 @@ import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/common/Common.dart';
 import 'package:foxschool/data/model/school_data/SchoolData.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
-import 'package:foxschool/presentation/controller/intro/river_pod/IntroAPINotifier.dart';
 import 'package:foxschool/presentation/controller/login/river_pod/LoginAPINotifier.dart';
 import 'package:foxschool/presentation/controller/login/river_pod/LoginUINotifier.dart';
 import 'package:foxschool/presentation/view/dialog/LoadingDialog.dart' as LoadingDialog;
@@ -49,13 +48,17 @@ class LoginFactoryController extends BlocController {
   {
     widgetRef.listenManual(_repositoryProvider, (previous, next) {
       next.when(
-          initialState: (){},
-          loadingState: (){
-            LoadingDialog.show(context);
-          },
-          errorState: (message){
-            LoadingDialog.dismiss(context);
-            Fluttertoast.showToast(msg: message);
+          common: (common){
+            common.maybeWhen(
+                loadingState: (){
+                  LoadingDialog.show(context);
+                },
+                errorState: (message){
+                  LoadingDialog.dismiss(context);
+                  Fluttertoast.showToast(msg: message);
+                },
+                orElse: (){}
+             );
           },
           schoolDataLoadedState: (data){
             Logger.d("LoadedState : ${data.toString()}");

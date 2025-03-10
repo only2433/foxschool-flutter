@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foxschool/presentation/bloc/bookshelf/api/MyBookshelfBloc.dart';
+
 import 'package:foxschool/presentation/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
 import 'package:foxschool/presentation/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
 import 'package:foxschool/presentation/bloc/category_contents_list/factory/cubit/CategoryTitleColorCubit.dart';
@@ -36,14 +36,6 @@ import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizRemainTimeCub
 import 'package:foxschool/presentation/bloc/search/api/SearchContentsBloc.dart';
 import 'package:foxschool/presentation/bloc/search/factory/cubit/SearchItemListCubit.dart';
 import 'package:foxschool/presentation/bloc/search/factory/cubit/SearchTypeCubit.dart';
-import 'package:foxschool/presentation/bloc/series_contents_list/api/SeriesContentsListBloc.dart';
-import 'package:foxschool/presentation/bloc/series_contents_list/factory/cubit/ContentsEnableBottomViewCubit.dart';
-import 'package:foxschool/presentation/bloc/series_contents_list/factory/cubit/SeriesEnableInformationViewCubit.dart';
-import 'package:foxschool/presentation/bloc/series_contents_list/factory/cubit/SeriesEnableDataViewCubit.dart';
-import 'package:foxschool/presentation/bloc/series_contents_list/factory/cubit/SeriesLastWatchItemCubit.dart';
-import 'package:foxschool/presentation/bloc/series_contents_list/factory/cubit/ContentsSelectItemCountCubit.dart';
-import 'package:foxschool/presentation/bloc/series_contents_list/factory/cubit/ContentsItemListCubit.dart';
-import 'package:foxschool/presentation/bloc/series_contents_list/factory/cubit/SeriesTitleColorCubit.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/api/VocabularyBloc.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyBottomControllerCubit.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyItemListCubit.dart';
@@ -104,16 +96,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return  MultiBlocProvider(providers: [
-    /**
-    *  SeriesContentsScreen
-    */
-    BlocProvider(
-    create: (context) => getIt<SeriesContentsBloc>(),
-    ),
-    BlocProvider(create: (context) => SeriesEnableInformationViewCubit()),
-    BlocProvider(create: (context) => SeriesDataViewCubit()),
-    BlocProvider(create: (context) => SeriesLastWatchItemCubit()),
-    BlocProvider(create: (context) => SeriesTitleColorCubit()),
 
     /**
     * StoryCategoryListScreen
@@ -176,14 +158,6 @@ class MyApp extends StatelessWidget {
     create: (context) => getIt<ManagementMyBooksBloc>()),
     BlocProvider(create: (context) => MyBooksUpdateNameCubit()),
     BlocProvider(create: (context) => MyBooksUpdateColorCubit()),
-
-    /**
-    * MyBookshelf
-    */
-    BlocProvider(create: (context) => getIt<MyBookshelfBloc>()),
-    BlocProvider(create: (context) => ContentsEnableBottomViewCubit()),
-    BlocProvider(create: (context) => ContentsItemListCubit()),
-    BlocProvider(create: (context) => ContentsSelectItemCountCubit()),
 
     /**
     * MyBookshelf

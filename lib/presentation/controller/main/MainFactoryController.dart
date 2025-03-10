@@ -15,7 +15,7 @@ import 'package:foxschool/enum/ManagementMyBooksStatus.dart';
 import 'package:foxschool/enum/MyBooksType.dart';
 import 'package:foxschool/presentation/controller/main/river_pod/MainUINotifier.dart';
 import 'package:foxschool/presentation/view/screen/ManagementMyBooksScreen.dart';
-import 'package:foxschool/presentation/view/screen/MyBookshelfScreen.dart';
+import 'package:foxschool/presentation/view/screen/MyBookshelfContentsScreen.dart';
 import 'package:foxschool/presentation/view/screen/SearchScreen.dart';
 import 'package:foxschool/presentation/view/screen/SeriesContentListScreen.dart';
 import 'package:foxschool/presentation/view/screen/StoryCategoryListScreen.dart';
@@ -168,7 +168,7 @@ class MainFactoryController extends BlocController
     if(_currentStorySeriesType == StorySeriesType.LEVEL) {
        Navigator.push(
         context,
-          Page.getSeriesDetailListTransition(context, SeriesContentScreen(seriesBaseResult: data))
+          Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
       ).then((value) {
         Logger.d(" ----- onResume");
         _checkUpdateMainData();
@@ -190,7 +190,7 @@ class MainFactoryController extends BlocController
   {
     Navigator.push(
         context,
-        Page.getSeriesDetailListTransition(context, SeriesContentScreen(seriesBaseResult: data))
+        Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
     );
   }
 
@@ -199,7 +199,7 @@ class MainFactoryController extends BlocController
     Logger.d("index : $index");
     Navigator.push(context,
         Page.getDefaultTransition(context,
-            MyBookshelfScreen(
+            MyBookshelfContentsScreen(
                 id: _mainData.bookshelfList[index].id,
                 title: _mainData.bookshelfList[index].name)
         )

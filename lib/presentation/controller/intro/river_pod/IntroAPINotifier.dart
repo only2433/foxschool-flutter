@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/data/model/main/MainInformationResult.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
+import 'package:foxschool/presentation/controller/common/CommonAPIState.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../common/Common.dart';
 import '../../../../common/FoxschoolLocalization.dart';
@@ -24,14 +25,18 @@ class IntroAPINotifier extends _$IntroAPINotifier
   @override
   IntroAPIState build(FoxSchoolRepository repo) {
     repository = repo;
-    return const IntroAPIState.initialState();
+    return const IntroAPIState.common(
+        CommonAPIState.initState()
+    );
   }
 
   void requestVersion(String deviceID, String pushAddress, String pushOn) async
   {
     try
     {
-      state = IntroAPIState.loadingState();
+      state = const IntroAPIState.common(
+        CommonAPIState.loadingState()
+      );
       BaseResponse response = await repository.getVersion(deviceID, pushAddress, pushOn);
       Logger.d("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
@@ -41,12 +46,14 @@ class IntroAPINotifier extends _$IntroAPINotifier
         }
       else
         {
-          state = IntroAPIState.errorState(response.message);
+          state = IntroAPIState.common(
+              CommonAPIState.errorState(response.message)
+          );
         }
     }catch(e)
     {
-      state = IntroAPIState.errorState(
-          getIt<FoxschoolLocalization>().data['message_waring_error']
+      state = IntroAPIState.common(
+          CommonAPIState.errorState(getIt<FoxschoolLocalization>().data['message_waring_error'])
       );
     }
   }
@@ -55,7 +62,9 @@ class IntroAPINotifier extends _$IntroAPINotifier
   {
     try
     {
-      state = IntroAPIState.loadingState();
+      state = const IntroAPIState.common(
+          CommonAPIState.loadingState()
+      );
       BaseResponse response = await repository.authMe();
       if(response.status == Common.SUCCESS_CODE_OK)
         {
@@ -68,13 +77,15 @@ class IntroAPINotifier extends _$IntroAPINotifier
         }
       else
         {
-          state = IntroAPIState.errorState(response.message);
+          state = IntroAPIState.common(
+              CommonAPIState.errorState(response.message)
+          );
         }
     }
     catch(e)
     {
-      state = IntroAPIState.errorState(
-          getIt<FoxschoolLocalization>().data['message_waring_error']
+      state = IntroAPIState.common(
+          CommonAPIState.errorState(getIt<FoxschoolLocalization>().data['message_waring_error'])
       );
     }
   }
@@ -83,7 +94,9 @@ class IntroAPINotifier extends _$IntroAPINotifier
   {
     try
     {
-      state = IntroAPIState.loadingState();
+      state = const IntroAPIState.common(
+          CommonAPIState.loadingState()
+      );
       BaseResponse response = await repository.mainInformation();
       Logger.d("response : ${response.data.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
@@ -97,12 +110,16 @@ class IntroAPINotifier extends _$IntroAPINotifier
         }
       else
         {
-          state = IntroAPIState.errorState(response.message);
+          state = IntroAPIState.common(
+              CommonAPIState.errorState(response.message)
+          );
         }
     }
     catch(e)
     {
-      state = IntroAPIState.errorState(getIt<FoxschoolLocalization>().data['message_warning_error']);
+      state = IntroAPIState.common(
+          CommonAPIState.errorState(getIt<FoxschoolLocalization>().data['message_warning_error'])
+      );
     }
   }
 }

@@ -6,6 +6,7 @@ import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/login/LoginInformationResult.dart';
 import 'package:foxschool/data/model/school_data/SchoolData.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
+import 'package:foxschool/presentation/controller/common/CommonAPIState.dart';
 import 'package:foxschool/presentation/controller/login/river_pod/data/LoginAPIState.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:foxschool/common/Preference.dart' as Preference;
@@ -19,14 +20,18 @@ class LoginAPINotifier extends _$LoginAPINotifier
   @override
   LoginAPIState build(FoxSchoolRepository repo) {
     repository = repo;
-    return const LoginAPIState.initialState();
+    return const LoginAPIState.common(
+        CommonAPIState.initState()
+    );
   }
 
   void requestSchoolData() async
   {
     try
     {
-       state = LoginAPIState.loadingState();
+       state = const LoginAPIState.common(
+           CommonAPIState.loadingState()
+       );
        BaseResponse response = await repository.getSchoolList();
        Logger.d("response : ${response.toString()}");
        if(response.status == Common.SUCCESS_CODE_OK)
@@ -37,11 +42,15 @@ class LoginAPINotifier extends _$LoginAPINotifier
        }
        else
        {
-         state = LoginAPIState.errorState(response.message);
+         state = LoginAPIState.common(
+             CommonAPIState.errorState(response.message)
+         );
        }
     }catch(e)
     {
-      state = LoginAPIState.errorState(e.toString());
+      state = LoginAPIState.common(
+          CommonAPIState.errorState(e.toString())
+      );
     }
   }
 
@@ -50,7 +59,9 @@ class LoginAPINotifier extends _$LoginAPINotifier
     try
     {
 
-      state = LoginAPIState.loadingState();
+      state = const LoginAPIState.common(
+          CommonAPIState.loadingState()
+      );
       BaseResponse response = await repository.login(loginID, password, schoolCode);
       Logger.d("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
@@ -63,11 +74,15 @@ class LoginAPINotifier extends _$LoginAPINotifier
       }
       else
       {
-        state = LoginAPIState.errorState(response.message);
+        state = LoginAPIState.common(
+            CommonAPIState.errorState(response.message)
+        );
       }
     }catch(e)
     {
-      state = LoginAPIState.errorState(e.toString());
+      state = LoginAPIState.common(
+          CommonAPIState.errorState(e.toString())
+      );
     }
   }
 
