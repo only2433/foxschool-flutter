@@ -106,14 +106,6 @@ class MyApp extends StatelessWidget {
     BlocProvider(create: (context) => CategoryItemListCubit()),
     BlocProvider(create: (context) => CategoryTitleColorCubit()),
 
-    /**
-    * Search
-    */
-    BlocProvider(
-    create: (context) => getIt<SearchContentsBloc>()
-    ),
-    BlocProvider(create: (context) => SearchItemListCubit()),
-    BlocProvider(create: (context) => SearchTypeCubit()),
 
     /**
     * Movie
@@ -159,10 +151,7 @@ class MyApp extends StatelessWidget {
     BlocProvider(create: (context) => MyBooksUpdateNameCubit()),
     BlocProvider(create: (context) => MyBooksUpdateColorCubit()),
 
-    /**
-    * MyBookshelf
-    */
-    BlocProvider(create: (context) => getIt<MyBookshelfBloc>()),
+
 
     BlocProvider(create: (context) => getIt<FlashcardBloc>()),
     BlocProvider(create: (context) => FlashcardConstituteWidgetCubit()),

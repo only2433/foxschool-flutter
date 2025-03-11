@@ -1,0 +1,9 @@
+
+
+enum SearchItemLoadType
+{
+  DEFAULT,
+  INIT,
+  PAGING_LIST_LOADING,
+  PAGING_LIST_COMPLETE
+}
