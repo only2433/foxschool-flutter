@@ -3,7 +3,6 @@
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
 import 'package:foxschool/enum/SearchItemLoadType.dart';
 import 'package:foxschool/enum/SearchType.dart';
-import 'package:foxschool/presentation/bloc/search/factory/state/SearchTypeState.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'SearchUIState.freezed.dart';

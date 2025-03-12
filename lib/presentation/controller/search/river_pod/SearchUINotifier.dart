@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
 import 'package:foxschool/enum/SearchItemLoadType.dart';
 import 'package:foxschool/enum/SearchType.dart';
-import 'package:foxschool/presentation/bloc/search/factory/state/SearchTypeState.dart';
 import 'package:foxschool/presentation/controller/search/river_pod/data/SearchUIState.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

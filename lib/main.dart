@@ -33,9 +33,6 @@ import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizEnableTaskbox
 import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizCorrectCountCubit.dart';
 import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizReadyDataCubit.dart';
 import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizRemainTimeCubit.dart';
-import 'package:foxschool/presentation/bloc/search/api/SearchContentsBloc.dart';
-import 'package:foxschool/presentation/bloc/search/factory/cubit/SearchItemListCubit.dart';
-import 'package:foxschool/presentation/bloc/search/factory/cubit/SearchTypeCubit.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/api/VocabularyBloc.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyBottomControllerCubit.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyItemListCubit.dart';
