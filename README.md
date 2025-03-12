@@ -10,9 +10,10 @@ Bloc , Cubit을 이용한 상태관리 패턴을 적용하였으며, DI 는 getI
 
 # Architecture
 이 앱은 **MVVM** 구조로 개발되어 있으며, **View**는 Screen에서 담당하고 있으며, <br>
-**ViewModel**은 **Factory** 와 **bloc**으로 나누어져 있습니다.<br>
-**Factory**는 Screen 과의 이벤트 처리 , **bloc**은 API 와의 이벤트 처리를 담당학고 있습니다.<br>
-**Controller**가 **Factory**와 **bloc** 사이에서 중개인 역활을 수행합니다.<br>
+**RiverPod**를 사용하여 개발 진행 되었습니다.<br>
+**ViewModel**은 **UI Notifier** 와 **API Notifier**으로 나누어져 있습니다.<br>
+**UI Notifier**는 Screen 과의 이벤트 처리 , **API Notifier**은 API 와의 이벤트 처리를 담당학고 있습니다.<br>
+**Controller**가 **UI Notifier**와 **API Notifier** 사이에서 중개인 역활을 수행합니다.<br>
 **Model**은 **Data Class**에서 담당하며 Freezed를 사용하여 구성 하였습니다. 
 
     Factory 패키지는 Controller 에서 Screen 으로 이벤트를 발행 할 때 사용합니다. 
@@ -37,12 +38,12 @@ flowchart LR
     end
 
         A(Screen)-- Action --> B(Controller)
-        B(Controller)-- Server Request --> C(Bloc)
-        C(Bloc)-- Get Data --> E(Service)
-        E(Service) -. Response .-> C(Bloc)
-        C(Bloc) -. Stream Subscription .-> B(Controller)
+        B(Controller)-- Server Request --> C(API Notifier)
+        C(API Notifier)-- Get Data --> E(Service)
+        E(Service) -. Response .-> C(API Notifier)
+        C(API Notifier) -. Watch .-> B(Controller)
         B(Controller)-- UI Update --> D(Factory)
-        D(Factory) -. BlucBuilder .-> A(Screen)
+        D(Factory) -. UI Notifier .-> A(Screen)
 ~~~
 
 # TEST
