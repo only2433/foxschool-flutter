@@ -11,6 +11,7 @@ Bloc , Cubit을 이용한 상태관리 패턴을 적용하였으며, DI 는 getI
 # Architecture
 이 앱은 **MVVM** 구조로 개발되어 있으며, **View**는 Screen에서 담당하고 있으며, <br>
 **RiverPod**를 사용하여 개발 진행 되었습니다.<br>
+
 **ViewModel**은 **UI Notifier** 와 **API Notifier**으로 나누어져 있습니다.<br>
 **UI Notifier**는 Screen 과의 이벤트 처리 , **API Notifier**은 API 와의 이벤트 처리를 담당학고 있습니다.<br>
 **Controller**가 **UI Notifier**와 **API Notifier** 사이에서 중개인 역활을 수행합니다.<br>
