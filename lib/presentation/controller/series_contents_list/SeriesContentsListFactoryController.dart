@@ -24,6 +24,7 @@ import 'package:foxschool/data/model/main/my_book/MyBookshelfResult.dart';
 import 'package:foxschool/data/model/vocabulary/information/VocabularyInformationData.dart';
 import 'package:foxschool/enum/VocabularyType.dart';
 import 'package:foxschool/presentation/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
+import 'package:foxschool/presentation/controller/main/river_pod/MainUINotifier.dart';
 import 'package:foxschool/presentation/controller/series_contents_list/river_pod/SeriesListAPINotifier.dart';
 import 'package:foxschool/presentation/controller/series_contents_list/river_pod/SeriesListUINotifier.dart';
 import 'package:foxschool/values/AppColors.dart';
@@ -151,13 +152,17 @@ class SeriesContentsListFactoryController extends BlocController {
             await _updateBookshelfData(data);
             _setSelectAllItem(false);
 
-            //추후 제거
+/*            //추후 제거
             context.read<MainMyBooksTypeCubit>()
                 .setMyBooksTypeData(
                 MyBooksType.BOOKSHELF,
                 _mainData.bookshelfList,
                 _mainData.vocabularyList
-            );
+            );*/
+            widgetRef.read(mainUINotifierProvider.notifier).setMyBooksTypeList(
+                MyBooksType.BOOKSHELF,
+                _mainData.bookshelfList,
+                _mainData.vocabularyList);
 
             MainObserver().update();
             LoadingDialog.dismiss(context);

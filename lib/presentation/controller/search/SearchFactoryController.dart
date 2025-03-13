@@ -14,6 +14,7 @@ import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/enum/ContentsItemType.dart';
 import 'package:foxschool/enum/SearchType.dart';
+import 'package:foxschool/presentation/controller/main/river_pod/MainUINotifier.dart';
 import 'package:foxschool/presentation/controller/search/river_pod/SearchAPINotifier.dart';
 import 'package:foxschool/presentation/controller/search/river_pod/SearchUINotifier.dart';
 import 'package:foxschool/presentation/controller/series_contents_list/river_pod/SeriesListUINotifier.dart';
@@ -134,12 +135,10 @@ class SearchFactoryController extends BlocController
           bookshelfContentsAddState: (data) async{
            
             await _updateBookshelfData(data);
-            /*context.read<MainMyBooksTypeCubit>()
-                .setMyBooksTypeData(
+            widgetRef.read(mainUINotifierProvider.notifier).setMyBooksTypeList(
                 MyBooksType.BOOKSHELF,
                 _mainData.bookshelfList,
-                _mainData.vocabularyList
-            );*/
+                _mainData.vocabularyList);
             MainObserver().update();
             LoadingDialog.dismiss(context);
             Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_save_contents_in_bookshelf']);
@@ -322,11 +321,9 @@ class SearchFactoryController extends BlocController
         context: context,
         list: _mainData.bookshelfList,
         onItemPressed: (index) {
-/*          BlocProvider.of<SearchContentsBloc>(context).add(
-              BookshelfContentsAddEvent(
-                  bookshelfID: _mainData.bookshelfList[index].id,
-                  data: list)
-          );*/
+        widgetRef.read(_repositoryProvider.notifier).requestAddBookshelfContents(
+            _mainData.bookshelfList[index].id,
+            list);
         });
   }
 
