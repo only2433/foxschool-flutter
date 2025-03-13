@@ -5,23 +5,24 @@
 단순히 Flutter를 배우는게 목적이 아닌, 실제 사용할 수 있는 회사 내에서 사용할 수 있게 MVVM <br> 
 Architecture 까지 적용 하였습니다.
 
-Bloc , Cubit을 이용한 상태관리 패턴을 적용하였으며, DI 는 getIt을 사용 하였습니다. 
+RiverPod를 이용한 상태관리 패턴을 적용하였으며, DI 는 getIt을 사용 하였습니다. 
 
 
 # Architecture
 이 앱은 **MVVM** 구조로 개발되어 있으며, **View**는 Screen에서 담당하고 있으며, <br>
-**ViewModel**은 **Factory** 와 **bloc**으로 나누어져 있습니다.<br>
-**Factory**는 Screen 과의 이벤트 처리 , **bloc**은 API 와의 이벤트 처리를 담당학고 있습니다.<br>
-**Controller**가 **Factory**와 **bloc** 사이에서 중개인 역활을 수행합니다.<br>
+**RiverPod**를 사용하여 개발 진행 되었습니다.<br>
+
+**ViewModel**은 **UI Notifier** 와 **API Notifier**으로 나누어져 있습니다.<br>
+**UI Notifier**는 Screen 과의 이벤트 처리 , **API Notifier**은 API 와의 이벤트 처리를 담당학고 있습니다.<br>
+**Controller**가 **UI Notifier**와 **API Notifier** 사이에서 중개인 역활을 수행합니다.<br>
 **Model**은 **Data Class**에서 담당하며 Freezed를 사용하여 구성 하였습니다. 
 
-    Factory 패키지는 Controller 에서 Screen 으로 이벤트를 발행 할 때 사용합니다. 
-    Controller는 Screen 에서 Action을 했을 때, 이에 대한 처리를 하고, Cubit으로 이벤트를 발행하여 
-    Screen 에서 UI를 갱신하게 합니다. 
+    
+    Controller는 Screen 에서 Action을 했을 때, 이에 대한 처리를 하고, UI Notifier로 이벤트를 발행하여 
+    Screen 에서 해당 Provider를 Watch 하며, UI를 갱신하게 합니다. 
 
-    Bloc 패키지는 API 진행에 관련된 처리 이벤트를 Controller에 발행 할 때 사용합니다.
-    API 통신은 Retrofit 라이브러리를 사용 하였으며, Controller 는 이에 대한 상황을 Stream 으로 계속 감시를 하고 있으며,
-    BlocState 에 따라 처리를 달리 합니다. 
+    API 통신은 Retrofit 라이브러리를 사용 하였으며, 이에 대한 결과 정보를 API Notifier에서 state로 Controller에 
+    전달하며, Controller는 해당 Provider를 계속 listen 하면서, 이벤트가 발생할 시 이를 처리 합니다.
 
     이러한 구조를 통해 View 와 비즈니스 로직을 분리하고, 코드의 재사용성과 유지보수성을 높일 수 있습니다.
     
@@ -37,12 +38,12 @@ flowchart LR
     end
 
         A(Screen)-- Action --> B(Controller)
-        B(Controller)-- Server Request --> C(Bloc)
-        C(Bloc)-- Get Data --> E(Service)
-        E(Service) -. Response .-> C(Bloc)
-        C(Bloc) -. Stream Subscription .-> B(Controller)
+        B(Controller)-- Server Request --> C(API Notifier)
+        C(API Notifier)-- Get Data --> E(Service)
+        E(Service) -. Response .-> C(API Notifier)
+        C(API Notifier) -. Watch .-> B(Controller)
         B(Controller)-- UI Update --> D(Factory)
-        D(Factory) -. BlucBuilder .-> A(Screen)
+        D(Factory) -. UI Notifier .-> A(Screen)
 ~~~
 
 # TEST
