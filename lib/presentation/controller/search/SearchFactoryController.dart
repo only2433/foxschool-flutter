@@ -64,14 +64,13 @@ class SearchFactoryController extends BlocController
   {
     _repositoryProvider = searchAPINotifierProvider(getIt<FoxSchoolRepository>());
     _initData();
-    settingRequestDataNotifier();
+    _settingRequestDataNotifier();
     await _getMainData();
   }
 
 
-  void settingRequestDataNotifier()
+  void _settingRequestDataNotifier()
   {
-    Logger.i("settingRequestDataNotifier");
     widgetRef.listenManual(_repositoryProvider, (previous, next) {
       next.when(
           common: (state){

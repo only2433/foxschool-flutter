@@ -9,9 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:foxschool/presentation/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
-import 'package:foxschool/presentation/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
-import 'package:foxschool/presentation/bloc/category_contents_list/factory/cubit/CategoryTitleColorCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardBookmarkedCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardConstituteWidgetCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardHelpPageCubit.dart';
@@ -93,15 +90,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return  MultiBlocProvider(providers: [
-
-    /**
-    * StoryCategoryListScreen
-    */
-    BlocProvider(
-    create: (context) => getIt<CategoryContentsDataBloc>()
-    ),
-    BlocProvider(create: (context) => CategoryItemListCubit()),
-    BlocProvider(create: (context) => CategoryTitleColorCubit()),
 
 
     /**

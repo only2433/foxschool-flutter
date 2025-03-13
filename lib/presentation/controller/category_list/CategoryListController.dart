@@ -5,24 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/di/Dependencies.dart';
+import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
-import 'package:foxschool/presentation/bloc/category_contents_list/api/CategoryContentsDataBloc.dart';
-import 'package:foxschool/presentation/bloc/category_contents_list/api/state/CategoryContentsLoadedState.dart';
-import 'package:foxschool/presentation/bloc/category_contents_list/factory/cubit/CategoryItemListCubit.dart';
-import 'package:foxschool/presentation/bloc/category_contents_list/factory/cubit/CategoryTitleColorCubit.dart';
 import 'package:foxschool/common/PageNavigator.dart' as Page;
 import 'package:foxschool/common/Common.dart';
 import 'package:foxschool/data/model/main/series/SeriesInformationResult.dart';
 import 'package:foxschool/data/model/main/series/base/SeriesBaseResult.dart';
 import 'package:foxschool/data/model/story_category_contents/StoryCategoryContentsResult.dart';
+import 'package:foxschool/presentation/controller/category_list/river_pod/CategoryListAPINotifier.dart';
+import 'package:foxschool/presentation/controller/category_list/river_pod/CategoryListUINotifier.dart';
 import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/presentation/view/screen/SeriesContentListScreen.dart';
-import 'api/event/CategoryContentsEvent.dart';
 
 class CategoryListController extends BlocController
 {
-  late StreamSubscription _subscription;
   late StoryCategoryContentsResult _storyCategoryContentsResult;
+  late CategoryListAPINotifierProvider _repositoryProvider;
   final List<SeriesInformationResult> _currentCategoryItemList = [];
   Color _currentTitleColor = Colors.transparent;
   ScrollDirection _currentScrollDirection = ScrollDirection.idle;
@@ -31,25 +32,62 @@ class CategoryListController extends BlocController
   final BuildContext context;
   final SeriesBaseResult currentSeriesBaseResult;
   final ScrollController scrollController;
+  final WidgetRef widgetRef;
   CategoryListController({
     required this.context,
     required this.currentSeriesBaseResult,
-    required this.scrollController
+    required this.scrollController,
+    required this.widgetRef
   });
 
   @override
-  void init()
+  void init() async
   {
-    context.read<CategoryItemListCubit>().showLoading();
-    context.read<CategoryTitleColorCubit>().setTitleColor(_currentTitleColor);
-    _settingSubscription();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
-      await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
-      BlocProvider.of<CategoryContentsDataBloc>(context).add(
-        CategoryContentsEvent(displayID: currentSeriesBaseResult.id)
-      );
+    _repositoryProvider = CategoryListAPINotifierProvider(getIt<FoxSchoolRepository>());
+    Future.delayed(Duration.zero, (){
+      widgetRef.read(categoryListUINotifierProvider.notifier).enableContentLoading(true);
+      widgetRef.read(categoryListUINotifierProvider.notifier).setTitleColor(_currentTitleColor);
     });
 
+    _settingRequestDataNotifier();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+      await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG));
+      widgetRef.read(_repositoryProvider.notifier).requestCategoryListData(currentSeriesBaseResult.id);
+    });
+    _initScrollerListener();
+  }
+
+  void _settingRequestDataNotifier()
+  {
+    widgetRef.listenManual(_repositoryProvider, (previous, next) {
+      next.when(
+          common: (state){
+            state.maybeWhen(
+                errorState: (message){
+                  Fluttertoast.showToast(msg: message);
+                  onBackPressed();
+                },
+                orElse: (){}
+            );
+          },
+          contentsLoadedState: (data){
+            widgetRef.read(categoryListUINotifierProvider.notifier).enableContentLoading(false);
+            _storyCategoryContentsResult = data;
+            _initCategoryList();
+          });
+    });
+  }
+
+  void _initCategoryList()
+  {
+    Logger.d("_initCategoryList");
+    _currentCategoryItemList.clear();
+    _currentCategoryItemList.addAll(_storyCategoryContentsResult.itemList);
+    widgetRef.read(categoryListUINotifierProvider.notifier).notifyCategoryList(_currentCategoryItemList);
+  }
+
+  void _initScrollerListener()
+  {
     scrollController.addListener(() {
       if (_currentScrollDirection != scrollController.position.userScrollDirection) {
         _currentScrollDirection = scrollController.position.userScrollDirection;
@@ -64,42 +102,23 @@ class CategoryListController extends BlocController
       double currentOffset = _lastOffset - scrollController.offset;
 
 
-      if (_currentScrollDirection == ScrollDirection.reverse && currentOffset.toInt() <= -60) {
-        if (_currentTitleColor != AppColors.color_ffffff) {
-          _currentTitleColor = AppColors.color_ffffff;
-          context.read<CategoryTitleColorCubit>().setTitleColor(_currentTitleColor);
-        }
-      }
-      else if (_currentScrollDirection == ScrollDirection.forward && currentOffset.toInt() > 60) {
-        if (_currentTitleColor != Colors.transparent) {
-          _currentTitleColor = Colors.transparent;
-          context.read<CategoryTitleColorCubit>().setTitleColor(_currentTitleColor);
-        }
-      }
-    });
-
-  }
-
-  void _settingSubscription()
-  {
-    CategoryContentsLoadedState blocState;
-    _subscription = BlocProvider.of<CategoryContentsDataBloc>(context).stream.listen((state) async {
-      switch(state.runtimeType)
+      if (_currentScrollDirection == ScrollDirection.reverse && currentOffset.toInt() <= -60)
       {
-        case CategoryContentsLoadedState:
-          blocState = state as CategoryContentsLoadedState;
-          _storyCategoryContentsResult = blocState.data;
-          _initCategoryList();
-          break;
+        if (_currentTitleColor != AppColors.color_ffffff)
+        {
+          _currentTitleColor = AppColors.color_ffffff;
+          widgetRef.read(categoryListUINotifierProvider.notifier).setTitleColor(_currentTitleColor);
+        }
+      }
+      else if (_currentScrollDirection == ScrollDirection.forward && currentOffset.toInt() > 60)
+      {
+        if (_currentTitleColor != Colors.transparent)
+        {
+          _currentTitleColor = Colors.transparent;
+          widgetRef.read(categoryListUINotifierProvider.notifier).setTitleColor(_currentTitleColor);
+        }
       }
     });
-  }
-
-  void _initCategoryList()
-  {
-    _currentCategoryItemList.clear();
-    _currentCategoryItemList.addAll(_storyCategoryContentsResult.itemList);
-    context.read<CategoryItemListCubit>().setCategoryItemList(_currentCategoryItemList);
   }
 
   void onClickStorySeriesItem(SeriesInformationResult data, Widget widget)
@@ -117,7 +136,5 @@ class CategoryListController extends BlocController
 
   @override
   void dispose() {
-    _subscription.cancel();
   }
-
 }
