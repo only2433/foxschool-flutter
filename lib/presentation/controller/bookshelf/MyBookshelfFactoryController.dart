@@ -15,6 +15,7 @@ import 'package:foxschool/data/model/main/my_book/MyBookshelfResult.dart';
 import 'package:foxschool/enum/ContentsItemType.dart';
 import 'package:foxschool/presentation/controller/bookshelf/river_pod/BookshelfListAPINotifier.dart';
 import 'package:foxschool/presentation/controller/bookshelf/river_pod/BookshelfListUINotifier.dart';
+import 'package:foxschool/presentation/controller/main/river_pod/MainUINotifier.dart';
 import 'package:foxschool/presentation/view/screen/MoviePlayerScreen.dart';
 import 'package:foxschool/common/Common.dart';
 import 'package:foxschool/common/MainObserver.dart';
@@ -36,7 +37,7 @@ import 'package:foxschool/presentation/view/screen/webview/EbookScreen.dart';
 import 'package:foxschool/presentation/view/screen/webview/GameCrosswordScreen.dart';
 import 'package:foxschool/presentation/view/screen/webview/GameStarwordsScreen.dart';
 import 'package:foxschool/presentation/view/screen/webview/TranslateScreen.dart';
-import 'package:foxschool/presentation/bloc/main/factory/cubit/MainMyBooksTypeCubit.dart';
+
 
 class MyBookshelfFactoryController extends BlocController
 {
@@ -115,52 +116,6 @@ class MyBookshelfFactoryController extends BlocController
     });
   }
 
-/*
-  void _settingSubscription()
-  {
-    BlocState blocState;
-    _subscription = BlocProvider.of<MyBookshelfBloc>(context).stream.listen((state) async {
-
-      Logger.d("state.runtimeType : ${state.runtimeType}");
-      switch(state.runtimeType)
-      {
-        case LoadingState:
-          LoadingDialog.show(context);
-          break;
-        case BookshelfContentListLoadedState:
-          blocState = state as BookshelfContentListLoadedState;
-          _myBookshelfDataList = blocState.data;
-          context.read<ContentsItemListCubit>().showContentsItemList(_myBookshelfDataList);
-          break;
-        case BookshelfContentsDeleteState:
-          LoadingDialog.dismiss(context);
-          _refreshContentsListData();
-          disableBottomSelectViewMode();
-          Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_delete_contents']);
-          break;
-        case AuthenticationErrorState:
-          blocState = state as AuthenticationErrorState;
-          if(blocState.isAutoRestart == false)
-          {
-            await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
-            await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
-          }
-          Fluttertoast.showToast(msg: blocState.message);
-          Navigator.pushAndRemoveUntil(
-            context,
-            Page.getIntroTransition(context),
-                (route) => false,
-          );
-          break;
-        case ErrorState:
-          blocState = state as ErrorState;
-          LoadingDialog.dismiss(context);
-          Fluttertoast.showToast(msg: blocState.message);
-          break;
-      }
-    });
-  }
-*/
 
   void _syncContentsList()
   {
@@ -182,12 +137,10 @@ class MyBookshelfFactoryController extends BlocController
       }
     }
 
-    context.read<MainMyBooksTypeCubit>()
-        .setMyBooksTypeData(
+    widgetRef.read(mainUINotifierProvider.notifier).setMyBooksTypeList(
         MyBooksType.BOOKSHELF,
         _mainData.bookshelfList,
-        _mainData.vocabularyList
-    );
+        _mainData.vocabularyList);
 
     await Preference.setObject(Common.PARAMS_FILE_MAIN_INFO, _mainData);
     MainObserver().update();

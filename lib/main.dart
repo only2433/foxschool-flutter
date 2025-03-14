@@ -15,9 +15,6 @@ import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardHel
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardOptionSelectCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyCurrentIndexCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyListUpdateCubit.dart';
-import 'package:foxschool/presentation/bloc/management/api/ManagementMyBooksBloc.dart';
-import 'package:foxschool/presentation/bloc/management/factory/cubit/MyBooksUpdateColorCubit.dart';
-import 'package:foxschool/presentation/bloc/management/factory/cubit/MyBooksUpdateNameCubit.dart';
 import 'package:foxschool/presentation/bloc/movie/api/MovieContentsBloc.dart';
 import 'package:foxschool/presentation/bloc/movie/factory/cubit/MovieCaptionTextCubit.dart';
 import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
@@ -127,15 +124,6 @@ class MyApp extends StatelessWidget {
     BlocProvider(create: (context) => VocabularyPlayingCubit()),
     BlocProvider(create: (context) => VocabularyBottomControllerCubit()),
     BlocProvider(create: (context) => VocabularyStudyTypeCubit()),
-
-    /**
-    * Management MyBooks
-    */
-    BlocProvider(
-    create: (context) => getIt<ManagementMyBooksBloc>()),
-    BlocProvider(create: (context) => MyBooksUpdateNameCubit()),
-    BlocProvider(create: (context) => MyBooksUpdateColorCubit()),
-
 
 
     BlocProvider(create: (context) => getIt<FlashcardBloc>()),

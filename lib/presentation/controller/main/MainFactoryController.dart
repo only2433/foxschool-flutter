@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foxschool/data/model/management/ManagementMyBooksData.dart';
+import 'package:foxschool/enum/MyBooksColorType.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -253,9 +255,11 @@ class MainFactoryController extends BlocController
   void onClickCreateMyBooks(ManagementMyBooksStatus status)
   {
     Logger.d("status : $status");
+
+    ManagementMyBooksData data = ManagementMyBooksData.withStatus(status);
     Navigator.push(context,
         Page.getDefaultTransition(context,
-            ManagementMyBooksScreen(status: status))
+            ManagementMyBooksScreen(data: data))
     ).then((value){
       Logger.d(" ----- onResume");
       _checkUpdateMainData();
@@ -264,28 +268,27 @@ class MainFactoryController extends BlocController
 
   void onClickModifyMyBooks(ManagementMyBooksStatus status, int index)
   {
-    ManagementMyBooksScreen screen;
-
+    ManagementMyBooksData data;
     if(status == ManagementMyBooksStatus.BOOKSHELF_MODIFY)
       {
-        screen = ManagementMyBooksScreen(
+        data = ManagementMyBooksData(
             status: status,
             id: _mainData.bookshelfList[index].id,
             name: _mainData.bookshelfList[index].name,
-            type: CommonUtils.getInstance(context).getMyBooksType(_mainData.bookshelfList[index].color));
+            colorType: CommonUtils.getInstance(context).getMyBooksType(_mainData.bookshelfList[index].color));
       }
     else
       {
-        screen = ManagementMyBooksScreen(
+        data = ManagementMyBooksData(
             status: status,
             id: _mainData.vocabularyList[index].id,
             name: _mainData.vocabularyList[index].name,
-            type: CommonUtils.getInstance(context).getMyBooksType(_mainData.vocabularyList[index].color));
+            colorType: CommonUtils.getInstance(context).getMyBooksType(_mainData.vocabularyList[index].color));
       }
 
     Navigator.push(context,
         Page.getDefaultTransition(context,
-            screen)
+            ManagementMyBooksScreen(data: data))
     ).then((value){
       Logger.d(" ----- onResume");
       _checkUpdateMainData();
