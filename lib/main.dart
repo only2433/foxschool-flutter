@@ -21,12 +21,6 @@ import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayComplet
 import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
 import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/presentation/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
-import 'package:foxschool/presentation/bloc/quiz/api/QuizInformationBloc.dart';
-import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizConstituteWidgetCubit.dart';
-import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizEnableTaskboxCubit.dart';
-import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizCorrectCountCubit.dart';
-import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizReadyDataCubit.dart';
-import 'package:foxschool/presentation/bloc/quiz/factory/cubit/QuizRemainTimeCubit.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/api/VocabularyBloc.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyBottomControllerCubit.dart';
 import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyItemListCubit.dart';
@@ -103,17 +97,6 @@ class MyApp extends StatelessWidget {
     BlocProvider(create: (context) => MoviePlayerMenuCubit()),
     BlocProvider(create: (context) => MovieCaptionTextCubit()),
     BlocProvider(create: (context) => MoviePlayTimeCubit()),
-
-    /**
-    * QUIZ
-    */
-    BlocProvider(
-    create: (context) => getIt<QuizInformationBloc>()),
-    BlocProvider(create: (context) => QuizReadyDataCubit()),
-    BlocProvider(create: (context) => QuizEnableTaskboxCubit()),
-    BlocProvider(create: (context) => QuizConstituteWidgetCubit()),
-    BlocProvider(create: (context) => QuizRemainTimeCubit()),
-    BlocProvider(create: (context) => QuizCorrectCountCubit()),
 
     /**
     * Vocabulary

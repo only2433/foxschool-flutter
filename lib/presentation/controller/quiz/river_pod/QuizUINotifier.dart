@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foxschool/presentation/bloc/quiz/factory/state/QuizUserInteractionState.dart';
+import 'package:foxschool/data/model/quiz/save_data/QuizUserInteractionState.dart';
 import 'package:foxschool/presentation/controller/quiz/river_pod/data/QuizUIState.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

@@ -14,6 +14,7 @@ import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/data/model/quiz/save_data/QuizStudyRecordData.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
+import 'package:foxschool/enum/Grade.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
 import 'package:foxschool/presentation/bloc/base/BlocState.dart';
 
@@ -23,7 +24,7 @@ import 'package:foxschool/data/model/quiz/quiz_data/picture/ExamplePictureData.d
 import 'package:foxschool/data/model/quiz/quiz_data/picture/QuizPictureData.dart';
 import 'package:foxschool/data/model/quiz/quiz_data/text/QuizPhonicsTextData.dart';
 import 'package:foxschool/data/model/quiz/quiz_data/text/QuizTextData.dart';
-import 'package:foxschool/presentation/bloc/quiz/factory/state/QuizUserInteractionState.dart';
+import 'package:foxschool/data/model/quiz/save_data/QuizUserInteractionState.dart';
 import 'package:foxschool/presentation/controller/quiz/river_pod/QuizAPINotifier.dart';
 import 'package:foxschool/presentation/controller/quiz/river_pod/QuizTaskNotifier.dart';
 import 'package:foxschool/presentation/controller/quiz/river_pod/QuizUINotifier.dart';
@@ -444,34 +445,42 @@ class QuizFactoryController extends BlocController {
     if (newPageIndex != _currentPageIndex) {
       Logger.d("update currentPage : $_currentPageIndex, newPage : $newPageIndex,  maxQuizCount : $_maxPageCount");
       _currentPageIndex = newPageIndex;
+
       if (_currentPageIndex == _maxPageCount) {
+        pageController.removeListener(_handlePageChange);
         _enableTimer(false);
         Future.delayed(Duration.zero, (){
           widgetRef.read(quizUINotifierProvider.notifier).enableTaskBox(false);
         });
+        Future.delayed(const Duration(milliseconds: Common.DURATION_NORMAL), (){
+          _playGradeAudio();
+        });
       }
-      else {
-        if (_currentPageIndex == 1) {
-          _userSelectDataList.clear();
-          Future.delayed(Duration.zero, (){
-            widgetRef.read(quizUINotifierProvider.notifier).enableTaskBox(true);
-          });
-          await Future.delayed(Duration(milliseconds: Common.DURATION_NORMAL), (){
-            _initTaskboxData();
-          });
-          _enableTimer(true);
-        }
-        _currentQuizIndex = _currentPageIndex - 1;
-        if (_currentQuizType == Common.QUIZ_CODE_PICTURE || _currentQuizType == Common.QUIZ_CODE_PHONICS_SOUND_TEXT)
+      else
         {
-          Logger.d("quizIndex : $_currentQuizIndex , url : ${_originQuizItemList[_currentQuizIndex].questionSoundUrl}");
-          _playAudio(_originQuizItemList[_currentQuizIndex].questionSoundUrl);
+          if (_currentPageIndex == 1)
+          {
+            _userSelectDataList.clear();
+            Future.delayed(Duration.zero, (){
+              widgetRef.read(quizUINotifierProvider.notifier).enableTaskBox(true);
+            });
+            await Future.delayed(Duration(milliseconds: Common.DURATION_NORMAL), (){
+              _initTaskboxData();
+            });
+            _enableTimer(true);
+          }
+          _currentQuizIndex = _currentPageIndex - 1;
+          if (_currentQuizType == Common.QUIZ_CODE_PICTURE || _currentQuizType == Common.QUIZ_CODE_PHONICS_SOUND_TEXT)
+          {
+            Logger.d("quizIndex : $_currentQuizIndex , url : ${_originQuizItemList[_currentQuizIndex].questionSoundUrl}");
+            _playAudio(_originQuizItemList[_currentQuizIndex].questionSoundUrl);
+          }
+          else if(_currentQuizType == Common.QUIZ_CODE_SOUND_TEXT)
+          {
+            _playAudioList(_getQuizExampleSoundList(_currentQuizIndex));
+          }
         }
-        else if(_currentQuizType == Common.QUIZ_CODE_SOUND_TEXT)
-        {
-          _playAudioList(getQuizExampleSoundList(_currentQuizIndex));
-        }
-      }
+
     }
   }
 
@@ -489,6 +498,36 @@ class QuizFactoryController extends BlocController {
     {
       await _effectPlayer.play(AssetSource(MEDIA_INCORRECT_PATH));
     }
+  }
+
+  void _playGradeAudio() async
+  {
+    final grade = CommonUtils.getInstance(context).getMyGrade(_correctQuizCount, _totalQuizCount);
+    String path = "";
+    switch(grade)
+    {
+      case Grade.EXCELLENT:
+        {
+          path = MEDIA_EXCELLENT_PATH;
+        }
+      case Grade.VERY_GOOD:
+        {
+          path = MEDIA_VERYGOOD_PATH;
+        }
+      case Grade.GOOD:
+        {
+          path = MEDIA_GOODS_PATH;
+        }
+      case Grade.POOL:
+        {
+          path = MEDIA_POOL_PATH;
+        }
+    }
+    if(_effectPlayer.state == PlayerState.playing)
+    {
+      await _effectPlayer.stop();
+    }
+    await _effectPlayer.play(AssetSource(path));
   }
 
   void _playAudio(String url) async
@@ -532,12 +571,18 @@ class QuizFactoryController extends BlocController {
     }
     else
     {
+      Logger.d("_currentPageIndex : $_currentPageIndex, _maxPageCount : $_maxPageCount");
+      _currentPageIndex = _maxPageCount;
+      pageController.removeListener(_handlePageChange);
       _enableTimer(false);
-      _currentPageIndex = _maxPageCount - 1;
-
-      Logger.d("_currentPageIndex : $_currentPageIndex");
+      Future.delayed(Duration.zero, (){
+        widgetRef.read(quizUINotifierProvider.notifier).enableTaskBox(false);
+      });
+      Future.delayed(const Duration(milliseconds: Common.DURATION_NORMAL), (){
+        _playGradeAudio();
+      });
       pageController.animateToPage(
-          _currentPageIndex + 1,
+          _maxPageCount,
           duration: const Duration(milliseconds: Common.DURATION_NORMAL),
           curve: Curves.fastOutSlowIn);
     }
@@ -624,7 +669,7 @@ class QuizFactoryController extends BlocController {
     return result;
   }
 
-  List<String> getQuizExampleSoundList(int index)
+  List<String> _getQuizExampleSoundList(int index)
   {
     List<String> result = [];
     result.add(_textQuizItemList[index].soundUrl);
@@ -736,6 +781,7 @@ class QuizFactoryController extends BlocController {
     });
     _settingQuizData();
     await _readyToPlay(PLAY_REPLAY);
+    pageController.addListener(_handlePageChange);
     pageController.animateToPage(
         1,
         duration: const Duration(milliseconds: Common.DURATION_NORMAL),
