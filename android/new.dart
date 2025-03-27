@@ -1,0 +1,1 @@
+Future<BaseResponse<void>> saveQuizRecord(QuizStudyRecordData data, {int homeworkNumber = 0});

@@ -1,7 +1,10 @@
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:foxschool/data/model/quiz/save_data/QuizStudyRecordData.dart';
 import 'package:foxschool/data/remote/ApiClient.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
@@ -72,6 +75,28 @@ class FoxSchoolRepositoryImpl extends FoxSchoolRepository
   @override
   Future<BaseResponse> quizInformationAsync(String contentID) {
     return apiClient.quizInformationAsync(contentID);
+  }
+
+  @override
+  Future<BaseResponse> saveQuizRecord(QuizStudyRecordData data, {int homeworkNumber = 0}) {
+    List<Map<String, dynamic>> answerDataArray = [];
+    for(int i = 0; i < data.getDataList().length; i++)
+      {
+        final itemObject = {
+          "chosen_number": data.getDataList()[i].chosenNo.toString(),
+          "correct_number": data.getDataList()[i].correctNo.toString(),
+          "question_numbers": data.getDataList()[i].quizSequence.toString()
+        };
+        answerDataArray.add(itemObject);
+      }
+    final Map<String, dynamic> remoteObject = {
+      "results_json":  jsonEncode(answerDataArray)
+    };
+    if(homeworkNumber != 0)
+      {
+        remoteObject["hw_no"] = homeworkNumber;
+      }
+    return apiClient.saveQuizRecordAsync(data.contentsID, remoteObject);
   }
 
   @override
@@ -172,6 +197,8 @@ class FoxSchoolRepositoryImpl extends FoxSchoolRepository
       }
     return apiClient.deleteMyBookshelfContentsAsync(bookshelfID, queriesMap);
   }
+
+
 
 
 }

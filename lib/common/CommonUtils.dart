@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:foxschool/enum/Grade.dart';
 import 'package:foxschool/enum/MyBooksColorType.dart';
 import 'package:foxschool/enum/DeviceType.dart';
 
@@ -219,6 +220,95 @@ class CommonUtils
         return getWidth(330);
       default:
         return getWidth(390);
+    }
+  }
+
+
+  Grade getMyGrade(int quizCorrectCount, int quizTotalCount)
+  {
+    if (quizCorrectCount == quizTotalCount)
+    {
+      return Grade.EXCELLENT;
+    }
+
+    switch (quizTotalCount) {
+      case < 6:
+        if (quizCorrectCount >= quizTotalCount - 1)
+        {
+          return Grade.VERY_GOOD;
+        }
+        else if (quizCorrectCount >= quizTotalCount - 2)
+        {
+          return Grade.GOOD;
+        }
+        else
+        {
+          return Grade.POOL;
+        }
+      case < 11:
+        if (quizCorrectCount >= quizTotalCount - 1)
+        {
+          return Grade.VERY_GOOD;
+        }
+        else if (quizCorrectCount >= quizTotalCount - 3)
+        {
+          return Grade.GOOD;
+        }
+        else
+        {
+          return Grade.POOL;
+        }
+      case < 15:
+        if (quizCorrectCount >= 8)
+        {
+          return Grade.VERY_GOOD;
+        }
+        else if (quizCorrectCount >= 6)
+        {
+          return Grade.GOOD;
+        }
+        else
+        {
+          return Grade.POOL;
+        }
+      case < 17:
+        if (quizCorrectCount >= 13)
+        {
+          return Grade.VERY_GOOD;
+        }
+        else if (quizCorrectCount >= 11) {
+          return Grade.GOOD;
+        }
+        else
+        {
+          return Grade.POOL;
+        }
+      case < 20:
+        if (quizCorrectCount >= 15)
+        {
+          return Grade.VERY_GOOD;
+        }
+        else if (quizCorrectCount >= 13)
+        {
+          return Grade.GOOD;
+        }
+        else
+        {
+          return Grade.POOL;
+        }
+      default:
+        if (quizCorrectCount >= 18)
+        {
+          return Grade.VERY_GOOD;
+        }
+        else if (quizCorrectCount >= 16)
+        {
+          return Grade.GOOD;
+        }
+        else
+        {
+          return Grade.POOL;
+        }
     }
   }
 

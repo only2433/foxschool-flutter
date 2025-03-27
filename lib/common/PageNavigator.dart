@@ -34,8 +34,7 @@ PageTransition getScaleTransition(BuildContext context, Widget toWidget)
     curve: Curves.decelerate,
     duration: const Duration(milliseconds: Common.DURATION_SHORT),
     reverseDuration: const Duration(milliseconds: Common.DURATION_SHORT),
-    type: PageTransitionType.scale,
-    alignment: Alignment.center,
+    type: PageTransitionType.fade,
     child: toWidget,
   );
 }

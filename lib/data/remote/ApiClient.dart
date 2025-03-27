@@ -74,6 +74,12 @@ abstract class ApiClient
       @Path('contentID') String requestID
       );
 
+  @POST('contents/quiz/{content_id}/result')
+   Future<BaseResponse> saveQuizRecordAsync(
+       @Path("content_id") String contentsID,
+       @Body() Map<String, dynamic> data
+       );
+
   @GET('contents/vocabularies/{contentID}')
   Future<BaseResponse> vocabularyContentsListAsync(
       @Path('contentID') String requestID

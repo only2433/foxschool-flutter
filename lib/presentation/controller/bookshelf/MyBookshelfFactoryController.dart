@@ -3,6 +3,7 @@ import 'dart:async';
 
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -179,12 +180,12 @@ class MyBookshelfFactoryController extends BlocController
       case ContentsItemType.QUIZ:
         Navigator.push(
             context,
-            Page.getScaleTransition(context,
-                QuizScreen(
-                    contentID: data.id,
-                    title: data.name,
-                    subTitle: data.subName
-                ))
+            MaterialPageRoute(builder: (context) {
+              return  QuizScreen(
+                  contentID: data.id,
+                  title: data.name,
+                  subTitle: data.subName);
+            })
         );
         break;
       case ContentsItemType.VOCABULARY:
@@ -215,12 +216,12 @@ class MyBookshelfFactoryController extends BlocController
         String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
         Navigator.push(
             context,
-            Page.getScaleTransition(context,
-                GamsStarwordsScreen(
-                    starwordsID: data.id,
-                    accessToken: accessToken
-                )
-            )
+            MaterialPageRoute(builder: (context) {
+              return GamsStarwordsScreen(
+                  starwordsID: data.id,
+                  accessToken: accessToken
+              );
+            })
         );
         break;
       case ContentsItemType.TRANSLATE:

@@ -1,4 +1,5 @@
 
+import 'package:foxschool/data/model/quiz/save_data/QuizStudyRecordData.dart';
 import 'package:foxschool/data/model/version_data_result/VersionDataResult.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
@@ -15,6 +16,7 @@ abstract class FoxSchoolRepository{
   Future<BaseResponse> authContentsPlayAsync(String data);
   Future<BaseResponse> saveMovieStudyAsync(String contentID, String playType, String playTime, int? homeworkNumber);
   Future<BaseResponse> quizInformationAsync(String contentID);
+  Future<BaseResponse> saveQuizRecord(QuizStudyRecordData data, {int homeworkNumber = 0});
   Future<BaseResponse> vocabularyContentsListAsync(String contentID);
   Future<BaseResponse> vocabularyShelfListAsync(String vocabularyID);
   Future<BaseResponse> addMyVocabularyContentsAsync(String contentID, String vocabularyID, List<VocabularyDataResult> data);

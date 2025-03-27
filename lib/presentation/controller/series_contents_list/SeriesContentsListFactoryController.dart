@@ -171,64 +171,6 @@ class SeriesContentsListFactoryController extends BlocController {
     });
   }
 
-/*  void _settingSubscriptions() {
-    BlocState blocState;
-
-    _subscription = BlocProvider.of<SeriesContentsBloc>(context).stream.listen((state) async {
-      Logger.d("state : ${state.toString()}");
-
-      if(state is LoadingState)
-        {
-
-        }
-      else if (state is SeriesContentsDataLoadedState)
-        {
-          _seriesContentsData = state.data;
-          if (_seriesContentsData.getSeriesID() != "")
-          {
-            if (_seriesContentsData.isSingleSeries() == false && _seriesContentsData.isStillOnSeries())
-            {
-              isStillOnSeries = true;
-            }
-          }
-        }
-      switch (state) {
-        case LoadingState:
-          LoadingDialog.show(context);
-          break;
-        case SeriesContentsDataLoadedState:
-          _seriesContentsData = state.data;
-          if (_seriesContentsData.getSeriesID() != "")
-          {
-            if (_seriesContentsData.isSingleSeries() == false && _seriesContentsData.isStillOnSeries())
-            {
-              isStillOnSeries = true;
-            }
-          }
-          _initContentsItemList();
-          break;
-        case BookshelfContentsAddState:
-          blocState = state as BookshelfContentsAddState;
-          await _updateBookshelfData(state.data);
-          _setSelectAllItem(false);
-          context.read<MainMyBooksTypeCubit>()
-              .setMyBooksTypeData(
-              MyBooksType.BOOKSHELF,
-              _mainData.bookshelfList,
-              _mainData.vocabularyList
-          );
-          MainObserver().update();
-          LoadingDialog.dismiss(context);
-          Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_save_contents_in_bookshelf']);
-          break;
-        case ErrorState:
-          LoadingDialog.dismiss(context);
-          break;
-      }
-    });
-    _subscription.resume();
-  }*/
-
   Future<void> _getMainData() async
   {
     Object? mainObject = await Preference.getObject(Common.PARAMS_FILE_MAIN_INFO);
@@ -303,25 +245,26 @@ class SeriesContentsListFactoryController extends BlocController {
       case ContentsItemType.QUIZ:
         Navigator.push(
             context,
-            Page.getScaleTransition(context,
-                QuizScreen(
-                    contentID: data.id,
-                    title: data.name,
-                    subTitle: data.subName
-            ))
+            MaterialPageRoute(builder: (context) {
+              return  QuizScreen(
+                  contentID: data.id,
+                  title: data.name,
+                  subTitle: data.subName);
+            })
         );
         break;
       case ContentsItemType.FLASHCARD:
         Navigator.push(
             context,
-            Page.getScaleTransition(context,
-                 FlashcardScreen(
-                  contentID: data.id,
-                  type: VocabularyType.VOCABULARY_CONTENTS,
-                  title: data.name,
-                  subtitle: data.subName,
-                  list: const [],
-                ))
+            MaterialPageRoute(builder: (context) {
+              return  FlashcardScreen(
+                contentID: data.id,
+                type: VocabularyType.VOCABULARY_CONTENTS,
+                title: data.name,
+                subtitle: data.subName,
+                list: const [],
+              );
+            })
         );
         break;
       case ContentsItemType.VOCABULARY:
@@ -352,12 +295,12 @@ class SeriesContentsListFactoryController extends BlocController {
         String accessToken = await Preference.getString(Common.PARAMS_ACCESS_TOKEN);
         Navigator.push(
             context,
-            Page.getScaleTransition(context,
-                GamsStarwordsScreen(
-                    starwordsID: data.id,
-                    accessToken: accessToken
-                )
-            )
+            MaterialPageRoute(builder: (context) {
+              return GamsStarwordsScreen(
+                  starwordsID: data.id,
+                  accessToken: accessToken
+              );
+            })
         );
         break;
       case ContentsItemType.TRANSLATE:
