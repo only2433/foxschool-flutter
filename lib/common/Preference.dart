@@ -8,11 +8,11 @@ Future<String> getString(String key) async
   return result ?? "";
 }
 
-Future<int> getInt(String key) async
+Future<int> getInt(String key, {int defaultData = 0}) async
 {
   final SharedPreferences preferences = await SharedPreferences.getInstance();
   final int? result = preferences.getInt(key);
-  return result ?? 0;
+  return result ?? defaultData;
 }
 
 Future<bool> getBoolean(String key) async

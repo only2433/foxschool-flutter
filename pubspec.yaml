@@ -68,14 +68,14 @@ dependencies:
   permission_handler: ^11.3.1
   fluttertoast: ^8.2.4
   video_player: ^2.8.5
-  flutter_widget_from_html: ^0.14.10
+
   image: ^4.1.7
   flutter_cache_manager: ^3.3.1
   audioplayers: ^6.0.0
   scroll_to_index:
   flutter_riverpod: ^2.6.1
   riverpod_annotation:
-
+  flutter_widget_from_html_core: ^0.14.9
 
 dev_dependencies:
   flutter_test:

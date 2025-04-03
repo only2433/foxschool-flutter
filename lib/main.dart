@@ -21,11 +21,6 @@ import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayComplet
 import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
 import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
 import 'package:foxschool/presentation/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
-import 'package:foxschool/presentation/bloc/vocabulary/api/VocabularyBloc.dart';
-import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyBottomControllerCubit.dart';
-import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyItemListCubit.dart';
-import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyPlayingCubit.dart';
-import 'package:foxschool/presentation/bloc/vocabulary/factory/cubit/VocabularyStudyTypeCubit.dart';
 import 'package:foxschool/common/CommonHttpOverrides.dart';
 import 'package:foxschool/presentation/view/screen/IntroScreen.dart';
 import 'package:foxschool/di/Dependencies.dart' as Dependencies;
@@ -97,16 +92,6 @@ class MyApp extends StatelessWidget {
     BlocProvider(create: (context) => MoviePlayerMenuCubit()),
     BlocProvider(create: (context) => MovieCaptionTextCubit()),
     BlocProvider(create: (context) => MoviePlayTimeCubit()),
-
-    /**
-    * Vocabulary
-    */
-    BlocProvider(
-    create: (context) => getIt<VocabularyBloc>()),
-    BlocProvider(create: (context) => VocabularyItemListCubit()),
-    BlocProvider(create: (context) => VocabularyPlayingCubit()),
-    BlocProvider(create: (context) => VocabularyBottomControllerCubit()),
-    BlocProvider(create: (context) => VocabularyStudyTypeCubit()),
 
 
     BlocProvider(create: (context) => getIt<FlashcardBloc>()),
