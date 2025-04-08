@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/quiz/save_data/QuizStudyRecordData.dart';
 import 'package:foxschool/data/remote/ApiClient.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
@@ -113,13 +113,13 @@ class FoxSchoolRepositoryImpl extends FoxSchoolRepository
   @override
   Future<BaseResponse> addMyVocabularyContentsAsync(String contentID, String vocabularyID, List<VocabularyDataResult> data) {
 
-    Logger.d("contentID : $contentID, vocabularyID : $vocabularyID");
+    Logcats.message("contentID : $contentID, vocabularyID : $vocabularyID");
     Map<String, String> queriesMap = {};
     queriesMap['content_id'] = contentID;
 
     for(int i = 0; i < data.length; i++)
       {
-        Logger.d("word_ids[$i] : ${data[i].vocabularyID}");
+        Logcats.message("word_ids[$i] : ${data[i].vocabularyID}");
         queriesMap['word_ids[$i]'] = data[i].vocabularyID;
       }
 

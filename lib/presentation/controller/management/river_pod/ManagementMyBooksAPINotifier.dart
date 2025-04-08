@@ -1,8 +1,8 @@
 
 import 'package:dio/dio.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/Common.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/main/my_book/MyBookshelfResult.dart';
 import 'package:foxschool/data/model/main/my_vocabulary/MyVocabularyResult.dart';
@@ -36,7 +36,7 @@ class ManagementMyBooksAPINotifier extends _$ManagementMyBooksAPINotifier with B
           CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.createBookshelfAsync(name, color);
-      Logger.d('response : ${response.toString()}');
+      Logcats.message('response : ${response.toString()}');
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")
@@ -44,7 +44,7 @@ class ManagementMyBooksAPINotifier extends _$ManagementMyBooksAPINotifier with B
           await Preference.setString(Common.PARAMS_ACCESS_TOKEN, response.access_token);
         }
         MyBookshelfResult result = MyBookshelfResult.fromJson(response.data);
-        Logger.d('result : ${result.toString()}');
+        Logcats.message('result : ${result.toString()}');
         state = ManagementMybooksAPIState.createBookshelf(result);
       }
       else
@@ -69,7 +69,7 @@ class ManagementMyBooksAPINotifier extends _$ManagementMyBooksAPINotifier with B
           CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.createVocabularyAsync(name, color);
-      Logger.d('response : ${response.toString()}');
+      Logcats.message('response : ${response.toString()}');
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")
@@ -101,7 +101,7 @@ class ManagementMyBooksAPINotifier extends _$ManagementMyBooksAPINotifier with B
           CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.updateBookshelfAsync(bookshelfID, name, color);
-      Logger.d('response : ${response.toString()}');
+      Logcats.message('response : ${response.toString()}');
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")
@@ -132,7 +132,7 @@ class ManagementMyBooksAPINotifier extends _$ManagementMyBooksAPINotifier with B
           CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.updateVocabularyAsync(vocabularyID, name, color);
-      Logger.d('response : ${response.toString()}');
+      Logcats.message('response : ${response.toString()}');
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")
@@ -163,7 +163,7 @@ class ManagementMyBooksAPINotifier extends _$ManagementMyBooksAPINotifier with B
           CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.deleteBookshelfAsync(bookshelfID);
-      Logger.d('response : ${response.toString()}');
+      Logcats.message('response : ${response.toString()}');
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")
@@ -193,7 +193,7 @@ class ManagementMyBooksAPINotifier extends _$ManagementMyBooksAPINotifier with B
           CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.deleteVocabularyAsync(vocabularyID);
-      Logger.d('response : ${response.toString()}');
+      Logcats.message('response : ${response.toString()}');
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")

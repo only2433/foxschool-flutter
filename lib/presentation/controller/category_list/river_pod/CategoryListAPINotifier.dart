@@ -1,6 +1,7 @@
-import 'package:flutter_easylogger/flutter_logger.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/Common.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/story_category_contents/StoryCategoryContentsResult.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
@@ -29,7 +30,7 @@ class CategoryListAPINotifier extends _$CategoryListAPINotifier
     {
       state = CategoryListAPIState.common(CommonAPIState.loadingState());
       BaseResponse response = await repository.seriesStoryData(displayID);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")

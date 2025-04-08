@@ -1,7 +1,8 @@
 
-import 'package:flutter_easylogger/flutter_logger.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/Common.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/contents/DetailItemInformationResult.dart';
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
@@ -31,7 +32,7 @@ class SeriesListAPINotifier extends _$SeriesListAPINotifier
     try
     {
       BaseResponse response = await repository.seriesStoryData(displayID);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "") {

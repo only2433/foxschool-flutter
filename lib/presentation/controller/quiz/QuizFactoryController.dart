@@ -7,17 +7,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/quiz/save_data/QuizStudyRecordData.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/enum/Grade.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
-import 'package:foxschool/presentation/bloc/base/BlocState.dart';
-
 import 'package:foxschool/data/model/quiz/QuizInformationResult.dart';
 import 'package:foxschool/data/model/quiz/quiz_data/QuizUserInteractionData.dart';
 import 'package:foxschool/data/model/quiz/quiz_data/picture/ExamplePictureData.dart';
@@ -206,7 +204,7 @@ class QuizFactoryController extends BlocController {
     _quizLimitTime = _quizInformationResult.quizLimitTime;
     _currentQuizType = _quizInformationResult.quizType;
     _originQuizItemList = List.from(_quizInformationResult.questions!);
-    Logger.d("origin list size : ${_originQuizItemList.length}");
+    Logcats.message("origin list size : ${_originQuizItemList.length}");
     if (_currentQuizType == Common.QUIZ_CODE_TEXT && _originQuizItemList[0].questionSoundUrl != "")
     {
       _currentQuizType = Common.QUIZ_CODE_SOUND_TEXT;
@@ -250,7 +248,7 @@ class QuizFactoryController extends BlocController {
 
   void _initTaskboxData() {
     String timeText = CommonUtils.getInstance(context).getFormatTimeText(_quizLimitTime);
-    Logger.d("_correctQuizCount:$_correctQuizCount, _totalQuizCount: $_totalQuizCount, timeText: $timeText");
+    Logcats.message("_correctQuizCount:$_correctQuizCount, _totalQuizCount: $_totalQuizCount, timeText: $timeText");
     widgetRef.read(quizUINotifierProvider.notifier).setUserAnswerData(_correctQuizCount, _totalQuizCount);
     widgetRef.read(quizTaskNotifierProvider.notifier).setRemainTime(timeText);
   }
@@ -443,7 +441,7 @@ class QuizFactoryController extends BlocController {
     final newPageIndex = pageController.page!.round();
 
     if (newPageIndex != _currentPageIndex) {
-      Logger.d("update currentPage : $_currentPageIndex, newPage : $newPageIndex,  maxQuizCount : $_maxPageCount");
+      Logcats.message("update currentPage : $_currentPageIndex, newPage : $newPageIndex,  maxQuizCount : $_maxPageCount");
       _currentPageIndex = newPageIndex;
 
       if (_currentPageIndex == _maxPageCount) {
@@ -472,7 +470,7 @@ class QuizFactoryController extends BlocController {
           _currentQuizIndex = _currentPageIndex - 1;
           if (_currentQuizType == Common.QUIZ_CODE_PICTURE || _currentQuizType == Common.QUIZ_CODE_PHONICS_SOUND_TEXT)
           {
-            Logger.d("quizIndex : $_currentQuizIndex , url : ${_originQuizItemList[_currentQuizIndex].questionSoundUrl}");
+            Logcats.message("quizIndex : $_currentQuizIndex , url : ${_originQuizItemList[_currentQuizIndex].questionSoundUrl}");
             _playAudio(_originQuizItemList[_currentQuizIndex].questionSoundUrl);
           }
           else if(_currentQuizType == Common.QUIZ_CODE_SOUND_TEXT)
@@ -571,7 +569,7 @@ class QuizFactoryController extends BlocController {
     }
     else
     {
-      Logger.d("_currentPageIndex : $_currentPageIndex, _maxPageCount : $_maxPageCount");
+      Logcats.message("_currentPageIndex : $_currentPageIndex, _maxPageCount : $_maxPageCount");
       _currentPageIndex = _maxPageCount;
       pageController.removeListener(_handlePageChange);
       _enableTimer(false);
@@ -686,14 +684,14 @@ class QuizFactoryController extends BlocController {
         result.add("http://${INDEX_SOUND_LIST[i]}");
       }
       result.add(_textQuizItemList[index].exampleList[i].soundUrl!);
-      Logger.d("index : $i , url : ${_textQuizItemList[index].exampleList[i].soundUrl}");
+      Logcats.message("index : $i , url : ${_textQuizItemList[index].exampleList[i].soundUrl}");
     }
     return result;
   }
 
   @override
   void onBackPressed() async{
-    Logger.d("onBackPressed");
+    Logcats.message("onBackPressed");
     Navigator.of(context).pop();
   }
 
@@ -744,7 +742,7 @@ class QuizFactoryController extends BlocController {
 
   void onClickNextButton() async
   {
-    Logger.d("");
+    Logcats.message("");
     await Future.delayed(Duration.zero, (){
       widgetRef.read(quizUINotifierProvider.notifier).initUserInteraction();
     });

@@ -3,8 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foxschool/common/LogCats.dart';
+
 import 'package:foxschool/data/model/management/ManagementMyBooksData.dart';
 import 'package:foxschool/enum/MyBooksColorType.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
@@ -60,6 +61,7 @@ class MainFactoryController extends BlocController
 
   @override
   void init() {
+    Logcats.message("init");
     _initData();
   }
 
@@ -72,7 +74,6 @@ class MainFactoryController extends BlocController
     _bookshelfList = _mainData.bookshelfList;
     _vocabularyList =_mainData.vocabularyList;
 
-    Logger.d("_vocabularyList data : ${_vocabularyList.toString()}");
     _settingStoryPageData(StorySeriesType.LEVEL);
     _settingSongPageData();
     _settingMyBooksData(MyBooksType.BOOKSHELF);
@@ -106,7 +107,7 @@ class MainFactoryController extends BlocController
   {
     if(MainObserver().isUpdate())
     {
-      Logger.d(" 메인 데이터 업데이트 ");
+      Logcats.message(" 메인 데이터 업데이트 ");
       await _loadMainInformation();
       _bookshelfList = _mainData.bookshelfList;
       _vocabularyList =_mainData.vocabularyList;
@@ -144,7 +145,7 @@ class MainFactoryController extends BlocController
 
   @override
   void onBackPressed() {
-    Logger.d("");
+    Logcats.message("");
     FoxSchoolDialog.showSelectDialog(
         context: context,
         message: getIt<FoxschoolLocalization>().data['message_check_end_app'],
@@ -156,7 +157,7 @@ class MainFactoryController extends BlocController
 
   void onClickStorySelectType(StorySeriesType type)
   {
-    Logger.d("type : $type");
+    Logcats.message("type : $type");
     _settingStoryPageData(type);
   }
 
@@ -172,7 +173,7 @@ class MainFactoryController extends BlocController
         context,
           Page.getSeriesDetailListTransition(context, SeriesContentListScreen(seriesBaseResult: data))
       ).then((value) {
-        Logger.d(" ----- onResume");
+        Logcats.message(" ----- onResume");
         _checkUpdateMainData();
        });
     }
@@ -182,7 +183,7 @@ class MainFactoryController extends BlocController
           context,
           Page.getSeriesDetailListTransition(context, StoryCategoryListScreen(seriesBaseResult: data))
       ).then((value) {
-          Logger.d(" ----- onResume");
+          Logcats.message(" ----- onResume");
           _checkUpdateMainData();
         });
     }
@@ -198,7 +199,7 @@ class MainFactoryController extends BlocController
 
   void onClickMyBookshelf(int index)
   {
-    Logger.d("index : $index");
+    Logcats.message("index : $index");
     Navigator.push(context,
         Page.getDefaultTransition(context,
             MyBookshelfContentsScreen(
@@ -206,14 +207,14 @@ class MainFactoryController extends BlocController
                 title: _mainData.bookshelfList[index].name)
         )
     ).then((value){
-      Logger.d(" ----- onResume");
+      Logcats.message(" ----- onResume");
       _checkUpdateMainData();
     });
   }
 
   void onClickMyVocabulary(int index)
   {
-    Logger.d("index : $index");
+    Logcats.message("index : $index");
     VocabularyInformationData vocabularyInformationData = VocabularyInformationData(
         id: _mainData.vocabularyList[index].id,
         type: VocabularyType.VOCABULARY_SHELF,
@@ -225,7 +226,7 @@ class MainFactoryController extends BlocController
                 data: vocabularyInformationData)
         )
     ).then((value){
-      Logger.d(" ----- onResume");
+      Logcats.message(" ----- onResume");
       _checkUpdateMainData();
     });
   }
@@ -236,7 +237,7 @@ class MainFactoryController extends BlocController
         context,
         Page.getDefaultTransition(context,  const SearchScreen())
     ).then((value){
-      Logger.d(" ----- onResume");
+      Logcats.message(" ----- onResume");
       _checkUpdateMainData();
     });
   }
@@ -254,14 +255,14 @@ class MainFactoryController extends BlocController
 
   void onClickCreateMyBooks(ManagementMyBooksStatus status)
   {
-    Logger.d("status : $status");
+    Logcats.message("status : $status");
 
     ManagementMyBooksData data = ManagementMyBooksData.withStatus(status);
     Navigator.push(context,
         Page.getDefaultTransition(context,
             ManagementMyBooksScreen(data: data))
     ).then((value){
-      Logger.d(" ----- onResume");
+      Logcats.message(" ----- onResume");
       _checkUpdateMainData();
     });
   }
@@ -290,7 +291,7 @@ class MainFactoryController extends BlocController
         Page.getDefaultTransition(context,
             ManagementMyBooksScreen(data: data))
     ).then((value){
-      Logger.d(" ----- onResume");
+      Logcats.message(" ----- onResume");
       _checkUpdateMainData();
     });
   }

@@ -1,7 +1,8 @@
 
-import 'package:flutter_easylogger/flutter_logger.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/Common.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/login/LoginInformationResult.dart';
 import 'package:foxschool/data/model/school_data/SchoolData.dart';
@@ -33,11 +34,11 @@ class LoginAPINotifier extends _$LoginAPINotifier
            CommonAPIState.loadingState()
        );
        BaseResponse response = await repository.getSchoolList();
-       Logger.d("response : ${response.toString()}");
+       Logcats.message("response : ${response.toString()}");
        if(response.status == Common.SUCCESS_CODE_OK)
        {
          List<SchoolData> result = (response.data as List<dynamic>).map((item) => SchoolData.fromJson(item)).toList();
-         Logger.d("result : ${result.toString()}");
+         Logcats.message("result : ${result.toString()}");
          state = LoginAPIState.schoolDataLoadedState(result);
        }
        else
@@ -63,7 +64,7 @@ class LoginAPINotifier extends _$LoginAPINotifier
           CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.login(loginID, password, schoolCode);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "") {

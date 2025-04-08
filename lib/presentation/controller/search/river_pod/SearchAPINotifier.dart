@@ -1,8 +1,9 @@
 
 
 import 'package:dio/dio.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
+
 import 'package:foxschool/common/Common.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
 import 'package:foxschool/data/model/main/my_book/MyBookshelfResult.dart';
@@ -34,7 +35,7 @@ class SearchAPINotifier extends _$SearchAPINotifier with BlocException
     {
       state = SearchAPIState.contentsLoadingState();
       BaseResponse response = await repository.getSearchList(type, keyword, currentPage);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")

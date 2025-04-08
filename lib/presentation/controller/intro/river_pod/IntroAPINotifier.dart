@@ -1,7 +1,7 @@
 
 
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/main/MainInformationResult.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
@@ -38,7 +38,7 @@ class IntroAPINotifier extends _$IntroAPINotifier
         CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.getVersion(deviceID, pushAddress, pushOn);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
         {
           VersionDataResult result = VersionDataResult.fromJson(response.data);
@@ -98,7 +98,7 @@ class IntroAPINotifier extends _$IntroAPINotifier
           CommonAPIState.loadingState()
       );
       BaseResponse response = await repository.mainInformation();
-      Logger.d("response : ${response.data.toString()}");
+      Logcats.message("response : ${response.data.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
         {
           if(response.access_token != "")

@@ -1,9 +1,9 @@
 
 
 import 'package:dio/dio.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/Common.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/quiz/QuizInformationResult.dart';
 import 'package:foxschool/data/model/quiz/save_data/QuizStudyRecordData.dart';
@@ -33,7 +33,7 @@ class QuizAPINotifier extends _$QuizAPINotifier with BlocException
     try
     {
       BaseResponse response = await repository.quizInformationAsync(contentsID);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")
@@ -56,7 +56,7 @@ class QuizAPINotifier extends _$QuizAPINotifier with BlocException
     {
       state = QuizAPIState.common(CommonAPIState.loadingState());
       BaseResponse response = await repository.saveQuizRecord(data, homeworkNumber: homeworkNo);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
       {
          if(response.access_token != "")

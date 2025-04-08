@@ -51,7 +51,6 @@ dependencies:
   http: ^0.13.5
   intl:
   flutter_inappwebview: ^5.7.2+3
-  flutter_easylogger:
   page_transition: ^2.1.0
   simple_loading_dialog:
   freezed: ^2.4.7
@@ -76,6 +75,7 @@ dependencies:
   flutter_riverpod: ^2.6.1
   riverpod_annotation:
   flutter_widget_from_html_core: ^0.14.9
+  stack_trace: ^1.11.1
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,8 @@
 
 import 'package:dio/dio.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/Common.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/vocabulary/VocabularyDataResult.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
@@ -30,7 +30,7 @@ class VocabularyAPINotifier extends _$VocabularyAPINotifier with BlocException
     try
     {
       BaseResponse response = await repository.vocabularyShelfListAsync(vocabularyID);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
 
       if(response.status == Common.SUCCESS_CODE_OK)
       {
@@ -39,7 +39,7 @@ class VocabularyAPINotifier extends _$VocabularyAPINotifier with BlocException
           await Preference.setString(Common.PARAMS_ACCESS_TOKEN, response.access_token);
         }
         List<VocabularyDataResult> result = (response.data as List<dynamic>).map((item) => VocabularyDataResult.fromJson(item)).toList();
-        Logger.d("result : ${result.toString()}");
+        Logcats.message("result : ${result.toString()}");
         state = VocabularyAPIState.vocabularyContentsLoadedState(result);
       }
       else
@@ -59,7 +59,7 @@ class VocabularyAPINotifier extends _$VocabularyAPINotifier with BlocException
     try
     {
       BaseResponse response = await repository.vocabularyContentsListAsync(contentsID);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
 
       if(response.status == Common.SUCCESS_CODE_OK)
       {
@@ -68,7 +68,7 @@ class VocabularyAPINotifier extends _$VocabularyAPINotifier with BlocException
           await Preference.setString(Common.PARAMS_ACCESS_TOKEN, response.access_token);
         }
         List<VocabularyDataResult> result = (response.data as List<dynamic>).map((item) => VocabularyDataResult.fromJson(item)).toList();
-        Logger.d("result : ${result.toString()}");
+        Logcats.message("result : ${result.toString()}");
         state = VocabularyAPIState.vocabularyContentsLoadedState(result);
       }
       else
@@ -90,7 +90,7 @@ class VocabularyAPINotifier extends _$VocabularyAPINotifier with BlocException
     {
       state = const VocabularyAPIState.common(CommonAPIState.loadingState());
       BaseResponse response = await repository.addMyVocabularyContentsAsync(contentsID, vocabularyID, list);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")
@@ -98,7 +98,7 @@ class VocabularyAPINotifier extends _$VocabularyAPINotifier with BlocException
           await Preference.setString(Common.PARAMS_ACCESS_TOKEN, response.access_token);
         }
         MyVocabularyResult result = MyVocabularyResult.fromJson(response.data);
-        Logger.d("result : ${result.toString()}");
+        Logcats.message("result : ${result.toString()}");
 
         state = VocabularyAPIState.addContentsState(result);
       }
@@ -120,7 +120,7 @@ class VocabularyAPINotifier extends _$VocabularyAPINotifier with BlocException
     {
       state = const VocabularyAPIState.common(CommonAPIState.loadingState());
       BaseResponse response = await repository.deleteMyVocabularyContentsAsync(vocabularyID, list);
-      Logger.d("response : ${response.toString()}");
+      Logcats.message("response : ${response.toString()}");
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")

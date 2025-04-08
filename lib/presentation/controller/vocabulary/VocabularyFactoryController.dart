@@ -5,9 +5,10 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -114,7 +115,7 @@ class VocabularyFactoryController extends BlocController
         {
           _playIndex++;
         }
-        Logger.d("play index : $_playIndex,  length: ${_selectDataList.length}");
+        Logcats.message("play index : $_playIndex,  length: ${_selectDataList.length}");
         await Future.delayed(Duration(seconds: INTERVAL_SECONDS[_currentIntervalIndex]), () async{
           await autoScrollController.scrollToIndex(_playIndex, preferPosition: AutoScrollPosition.begin);
           _playAudio(_selectDataList[_playIndex].soundUrl);
@@ -156,7 +157,7 @@ class VocabularyFactoryController extends BlocController
           },
           vocabularyContentsLoadedState: (data) {
             _vocabularyDataList = data;
-            Logger.d("_vocabularyDataList.size: ${_vocabularyDataList.length}");
+            Logcats.message("_vocabularyDataList.size: ${_vocabularyDataList.length}");
 
             // 새로운 리스트 생성
             List<VocabularyDataResult> newVocabularyDataList = [];
@@ -176,7 +177,7 @@ class VocabularyFactoryController extends BlocController
               // 새로운 객체를 생성하고 setLineCount() 호출
               VocabularyDataResult newVocabularyData = _vocabularyDataList[i].setLineCount(meanLineCount + exampleLineCount);
               newVocabularyDataList.add(newVocabularyData);
-              Logger.i("index : $i , title : ${_vocabularyDataList[i].wordText}, meanLineCount: $meanLineCount, exampleLineCount: $exampleLineCount");
+              Logcats.message("index : $i , title : ${_vocabularyDataList[i].wordText}, meanLineCount: $meanLineCount, exampleLineCount: $exampleLineCount");
             }
             _vocabularyDataList = newVocabularyDataList;
             widgetRef.read(vocabularyUINotifierProvider.notifier).notifyVocabularyItemList(_vocabularyDataList);
@@ -311,7 +312,7 @@ class VocabularyFactoryController extends BlocController
     {
       if(_mainData.vocabularyList[i].id == data.id)
       {
-        Logger.d("change Voca ID : ${data.id}");
+        Logcats.message("change Voca ID : ${data.id}");
         dataList[i] = data;
         break;
       }
@@ -329,14 +330,14 @@ class VocabularyFactoryController extends BlocController
 
   void _syncVocabularyList()
   {
-    Logger.d(" size : ${_vocabularyDataList.length}");
+    Logcats.message(" size : ${_vocabularyDataList.length}");
     // Create a set from the vocabularyIDs in _selectDataList
     Set<String> selectedVocabularyIDs = _selectDataList.map((item) => item.vocabularyID).toSet();
 
     // Remove items from _vocabularyDataList that match the selected IDs
     _vocabularyDataList.removeWhere((item) => selectedVocabularyIDs.contains(item.vocabularyID));
 
-    Logger.d("removed list size : ${_vocabularyDataList.length}");
+    Logcats.message("removed list size : ${_vocabularyDataList.length}");
   }
 
   void _refreshVocabularyListData() async
@@ -374,7 +375,7 @@ class VocabularyFactoryController extends BlocController
 
   void onClickSelectType(VocabularySelectType type)
   {
-    Logger.d("_isSequencePlay : $_isSequencePlay");
+    Logcats.message("_isSequencePlay : $_isSequencePlay");
 
     if(_isSequencePlay)
       {
@@ -440,7 +441,7 @@ class VocabularyFactoryController extends BlocController
 
     _currentSelectedItemCount = _getSelectedItemCount();
 
-    Logger.d("index : $index, isSelected : ${_vocabularyDataList[index].isSelected}, selectCount: $_currentSelectedItemCount");
+    Logcats.message("index : $index, isSelected : ${_vocabularyDataList[index].isSelected}, selectCount: $_currentSelectedItemCount");
     if(_currentSelectedItemCount  > 0)
     {
       _isHaveSelectedItem = true;
@@ -461,7 +462,7 @@ class VocabularyFactoryController extends BlocController
 
   void onClickInterval() async
   {
-    Logger.d("");
+    Logcats.message("");
     int currentIndex = await Preference.getInt(Common.PARAMS_VOCABULARY_INTERVAL);
     FoxSchoolDialog.showBottomIntervalSelectDialog(
       context: context,
@@ -476,7 +477,7 @@ class VocabularyFactoryController extends BlocController
   {
     _isHaveSelectedItem = !_isHaveSelectedItem;
 
-    Logger.d("_isSelectAll : $_isHaveSelectedItem");
+    Logcats.message("_isSelectAll : $_isHaveSelectedItem");
     _setCheckAll(_isHaveSelectedItem);
   }
 
@@ -522,7 +523,7 @@ class VocabularyFactoryController extends BlocController
           context: context,
           list: _mainData.vocabularyList,
           onItemPressed: (index) {
-            Logger.d("index : $index");
+            Logcats.message("index : $index");
             _selectMyVocabularyResult = _mainData.vocabularyList[index];
             widgetRef.read(_repositoryProvider.notifier).requestAddContents(
                 vocabularyInformationData.id,

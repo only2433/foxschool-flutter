@@ -3,10 +3,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
@@ -80,7 +79,7 @@ class CategoryListController extends BlocController
 
   void _initCategoryList()
   {
-    Logger.d("_initCategoryList");
+    Logcats.message("_initCategoryList");
     _currentCategoryItemList.clear();
     _currentCategoryItemList.addAll(_storyCategoryContentsResult.itemList);
     widgetRef.read(categoryListUINotifierProvider.notifier).notifyCategoryList(_currentCategoryItemList);
@@ -92,10 +91,10 @@ class CategoryListController extends BlocController
       if (_currentScrollDirection != scrollController.position.userScrollDirection) {
         _currentScrollDirection = scrollController.position.userScrollDirection;
         if (_currentScrollDirection == ScrollDirection.forward) {
-          Logger.d("아래로 스크롤");
+          Logcats.message("아래로 스크롤");
         }
         else {
-          Logger.d("위로 스크롤");
+          Logcats.message("위로 스크롤");
         }
         _lastOffset = scrollController.offset;
       }

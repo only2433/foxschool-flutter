@@ -4,11 +4,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/Common.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/common/MainObserver.dart';
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
 import 'package:foxschool/data/model/main/MainInformationResult.dart';
@@ -89,11 +89,11 @@ class SeriesContentsListFactoryController extends BlocController {
           _currentScrollDirection = scrollController.position.userScrollDirection;
           if(_currentScrollDirection == ScrollDirection.forward)
             {
-              Logger.d("아래로 스크롤");
+              Logcats.message("아래로 스크롤");
             }
           else
             {
-              Logger.d("위로 스크롤");
+              Logcats.message("위로 스크롤");
             }
           _lastOffset = scrollController.offset;
         }
@@ -407,7 +407,7 @@ class SeriesContentsListFactoryController extends BlocController {
 
   void onClickThumbnailItem(int index)
   {
-    Logger.d("index : $index");
+    Logcats.message("index : $index");
     List<ContentsBaseResult> list = [];
     list.add(_currentContentsItemList[index]);
 
@@ -435,7 +435,7 @@ class SeriesContentsListFactoryController extends BlocController {
   {
     BottomContentDialog.showBottomContentItemDialog(
         context: context, data: _currentContentsItemList[index], onItemTypeSelected: (type) async {
-          Logger.d("type : $type");
+          Logcats.message("type : $type");
 
           Navigator.of(context).pop();
 
@@ -447,7 +447,7 @@ class SeriesContentsListFactoryController extends BlocController {
 
   void onClickAddMyBookshelf()
   {
-    Logger.d("");
+    Logcats.message("");
     List<ContentsBaseResult> list = _getSelectedList();
     if(list.isNotEmpty)
       {

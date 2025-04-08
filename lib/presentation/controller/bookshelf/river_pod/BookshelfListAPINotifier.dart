@@ -1,9 +1,10 @@
 
 
 import 'package:dio/dio.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/Common.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/base/BaseResponse.dart';
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
 import 'package:foxschool/data/model/main/my_book/MyBookshelfResult.dart';
@@ -30,11 +31,11 @@ class BookshelfListAPINotifier extends _$BookshelfListAPINotifier with BlocExcep
 
   void requestBookshelfContentsData(String bookshelfID) async
   {
-    Logger.d("---------- API Request");
+    Logcats.message("---------- API Request");
     try
     {
       BaseResponse response = await repository.bookshelfContentListAsync(bookshelfID);
-      Logger.d('response : ${response.toString()}');
+      Logcats.message('response : ${response.toString()}');
       if(response.status == Common.SUCCESS_CODE_OK)
       {
         if(response.access_token != "")

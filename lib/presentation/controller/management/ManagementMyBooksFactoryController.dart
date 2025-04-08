@@ -3,9 +3,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/management/ManagementMyBooksData.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
@@ -162,7 +162,7 @@ class ManagementMyBooksFactoryController extends BlocController
 
   Future<void> _createMyBooksBookshelf(MyBookshelfResult data) async
   {
-    Logger.d("");
+    Logcats.message("");
     await _getMainData();
     List<MyBookshelfResult> dataList = _mainData.bookshelfList.toList();
     dataList.add(data);
@@ -250,7 +250,7 @@ class ManagementMyBooksFactoryController extends BlocController
 
   void _showDeleteVocabularyAction()
   {
-    Logger.d("");
+    Logcats.message("");
     FoxSchoolDialog.showSelectDialog(
       context: context,
       message: myBooksData.status == ManagementMyBooksStatus.BOOKSHELF_MODIFY ? getIt<FoxschoolLocalization>().data['message_delete_bookshelf'] : getIt<FoxschoolLocalization>().data['message_delete_vocabulary'],
@@ -289,7 +289,7 @@ class ManagementMyBooksFactoryController extends BlocController
 
   void onClickSaveButton(String name)
   {
-    Logger.d("");
+    Logcats.message("");
     BlocEvent event;
     if(name != "")
       {

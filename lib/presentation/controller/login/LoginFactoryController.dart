@@ -3,10 +3,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/common/Common.dart';
@@ -61,12 +60,12 @@ class LoginFactoryController extends BlocController {
              );
           },
           schoolDataLoadedState: (data){
-            Logger.d("LoadedState : ${data.toString()}");
+            Logcats.message("LoadedState : ${data.toString()}");
             LoadingDialog.dismiss(context);
             _schoolDataList = data;
           },
           loginLoadedState: (data){
-            Logger.d("LoadedState : ${data.toString()}");
+            Logcats.message("LoadedState : ${data.toString()}");
             LoadingDialog.dismiss(context);
             Navigator.of(context).pop(true);
           });
@@ -120,7 +119,7 @@ class LoginFactoryController extends BlocController {
 
   void onSetSchoolName(String value)
   {
-    Logger.d("value : $value");
+    Logcats.message("value : $value");
     _schoolName = value;
     widgetRef.read(loginUINotifierProvider.notifier).setSchoolName(_schoolName);
   }

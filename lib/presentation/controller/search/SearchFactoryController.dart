@@ -5,9 +5,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/enum/SearchItemLoadType.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
@@ -111,7 +111,6 @@ class SearchFactoryController extends BlocController
                 );
           }, 
           contentsLoadingState: (){
-            Logger.i("-------- Init Loading ------");
             if(_searchListPagingResult != null)
             {
               widgetRef.read(searchUINotifierProvider.notifier).updateLoadTypeAndItemList(
@@ -120,8 +119,6 @@ class SearchFactoryController extends BlocController
             }
             else
             {
-              //context.read<SearchItemListCubit>().showLoading();
-              Logger.i("-------- Init Loading  ------>>>>>>>------");
               widgetRef.read(searchUINotifierProvider.notifier).updateItemLoadType(SearchItemLoadType.INIT);
             }
             isRequestLoading = true;
@@ -172,7 +169,7 @@ class SearchFactoryController extends BlocController
 
   void _settingSearchItemList()
   {
-    Logger.d("_currentItemList size : ${_currentItemList.length}, pageIngResultList Size : ${_searchListPagingResult!.list.length}");
+    Logcats.message("_currentItemList size : ${_currentItemList.length}, pageIngResultList Size : ${_searchListPagingResult!.list.length}");
     _currentItemList.addAll(_searchListPagingResult!.list);
     widgetRef.read(searchUINotifierProvider.notifier).updateLoadTypeAndItemList(
         SearchItemLoadType.PAGING_LIST_COMPLETE,
@@ -357,7 +354,7 @@ class SearchFactoryController extends BlocController
 
   void onClickSearchExecute(String keyword)
   {
-    Logger.d("keyword : $keyword");
+    Logcats.message("keyword : $keyword");
     if(keyword.trim().length < 2)
       {
         CommonUtils.getInstance(context).showErrorMessage(
@@ -375,7 +372,7 @@ class SearchFactoryController extends BlocController
 
   void onClickThumbnailItem(int index)
   {
-    Logger.d("index : $index");
+    Logcats.message("index : $index");
     List<ContentsBaseResult> list = [];
     list.add(_currentItemList[index]);
     Navigator.push(context,
@@ -400,7 +397,7 @@ class SearchFactoryController extends BlocController
 
   void onFetchData()
   {
-    Logger.d("isRequestLoading : $isRequestLoading");
+    Logcats.message("isRequestLoading : $isRequestLoading");
     if(isRequestLoading)
       {
         return;

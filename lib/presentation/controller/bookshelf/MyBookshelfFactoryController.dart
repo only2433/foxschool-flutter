@@ -4,10 +4,9 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
 
@@ -59,7 +58,7 @@ class MyBookshelfFactoryController extends BlocController
   @override
   void init() async
   {
-    Logger.d("init");
+    Logcats.message("init");
     _repositoryProvider = bookshelfListAPINotifierProvider(getIt<FoxSchoolRepository>());
     Future.delayed(Duration.zero, (){
       widgetRef.read(bookshelfListUINotifierProvider.notifier).enableContentsLoading(true);
@@ -69,7 +68,7 @@ class MyBookshelfFactoryController extends BlocController
     await _getMainData();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
       await Future.delayed(const Duration(milliseconds: Common.DURATION_LONG), () {
-        Logger.d("");
+        Logcats.message("");
         widgetRef.read(_repositoryProvider.notifier).requestBookshelfContentsData(myBookshelfID);
       },);
     });
@@ -280,13 +279,13 @@ class MyBookshelfFactoryController extends BlocController
 
   void enableBottomSelectViewMode()
   {
-    Logger.d("");
+    Logcats.message("");
     widgetRef.read(bookshelfListUINotifierProvider.notifier).enableBottomSelectView(true);
   }
 
   void disableBottomSelectViewMode()
   {
-    Logger.d("");
+    Logcats.message("");
     widgetRef.read(bookshelfListUINotifierProvider.notifier).enableBottomSelectView(false);
     _setSelectAllItem(false);
     widgetRef.read(bookshelfListUINotifierProvider.notifier).setSelectItemCount(0);
@@ -294,7 +293,7 @@ class MyBookshelfFactoryController extends BlocController
 
   void onSelectItem(int index)
   {
-    Logger.d("index : $index");
+    Logcats.message("index : $index");
     int itemCount = 0;
     if(_myBookshelfDataList[index].isSelected)
     {
@@ -319,14 +318,14 @@ class MyBookshelfFactoryController extends BlocController
 
   void onSelectAll()
   {
-    Logger.d("");
+    Logcats.message("");
     _setSelectAllItem(true);
     widgetRef.read(bookshelfListUINotifierProvider.notifier).setSelectItemCount(_myBookshelfDataList.length);
   }
 
   void onClickThumbnailItem(int index)
   {
-    Logger.d("index : $index");
+    Logcats.message("index : $index");
     List<ContentsBaseResult> list = [];
     list.add(_myBookshelfDataList[index]);
 
@@ -339,7 +338,7 @@ class MyBookshelfFactoryController extends BlocController
 
   void onClickSelectedListPlay()
   {
-    Logger.d("");
+    Logcats.message("");
     List<ContentsBaseResult> list = [];
     for(int i = 0; i < _myBookshelfDataList.length; i++)
     {
@@ -358,7 +357,7 @@ class MyBookshelfFactoryController extends BlocController
 
   void onClickOption(int index)
   {
-    Logger.d("index : $index");
+    Logcats.message("index : $index");
     BottomContentDialog.showBottomContentItemDialog(
       context: context,
       data: _myBookshelfDataList[index],

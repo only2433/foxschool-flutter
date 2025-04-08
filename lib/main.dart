@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foxschool/common/LogCats.dart';
 
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardBookmarkedCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardConstituteWidgetCubit.dart';
@@ -39,7 +39,7 @@ void main() async {
   await Firebase.initializeApp();
   final fcmToken = await FirebaseMessaging.instance.getToken() ?? "";
   Preference.setString(Common.PARAMS_FIREBASE_PUSH_TOKEN, fcmToken);
-  Logger.d("fcmToken : ${fcmToken}");
+  Logcats.message("fcmToken : $fcmToken");
 
   //DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
  // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -48,7 +48,7 @@ void main() async {
   const _androidIdPlugin = AndroidId();
   final String androidId = await _androidIdPlugin.getId() ?? "";
   await Preference.setString(Common.PARAMS_SECURE_ANDROID_ID, androidId);
-  Logger.d("secureID : ${androidId}");
+  Logcats.message("secureID : ${androidId}");
   Bloc.observer = FoxschoolBlocObserver();
   await Dependencies.init();
   HttpOverrides.global = CommonHttpOverrides();
@@ -60,11 +60,15 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarIconBrightness: Brightness.light,
   ));
+
+  await Logcats.initialize();
+
   runApp(
       const ProviderScope(
           child: MyApp())
   );
 }
+
 
 
 
