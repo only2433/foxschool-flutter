@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
+import 'package:foxschool/data/model/movie/intent_data/PlayerIntentParamsObject.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/enum/SearchItemLoadType.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
@@ -373,11 +374,14 @@ class SearchFactoryController extends BlocController
   void onClickThumbnailItem(int index)
   {
     Logcats.message("index : $index");
-    List<ContentsBaseResult> list = [];
-    list.add(_currentItemList[index]);
+    List<ContentsBaseResult> list = [_currentItemList[index]];
+    PlayerIntentParamsObject data = PlayerIntentParamsObject(list: list);
+
     Navigator.push(context,
         Page.getDefaultTransition(context,
-            MoviePlayerScreen(playList: list)));
+            MoviePlayerScreen(playerIntentParamsObject: data)
+        )
+    );
   }
 
   void onClickOption(int index)

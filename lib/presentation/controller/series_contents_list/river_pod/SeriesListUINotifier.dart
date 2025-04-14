@@ -22,10 +22,10 @@ class SeriesListUINotifier extends _$SeriesListUINotifier
         isEnableBottomSelectView: false);
   }
 
-  void enableContentsLoading(bool isEnable)
+  void updateContentsLoadingState({required bool isDataLoading})
   {
     state = state.copyWith(
-      isContentsLoading: isEnable
+      isContentsLoading: isDataLoading
     );
   }
 
@@ -39,6 +39,7 @@ class SeriesListUINotifier extends _$SeriesListUINotifier
   void notifySeriesItemList(String color, bool isEnable, List<ContentsBaseResult> list)
   {
     state = state.copyWith(
+      isContentsLoading: false,
       seriesColor: color,
       isFullName: isEnable,
         itemList: list

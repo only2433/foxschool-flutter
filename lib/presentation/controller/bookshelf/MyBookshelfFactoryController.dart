@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
+import 'package:foxschool/data/model/movie/intent_data/PlayerIntentParamsObject.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
 
@@ -61,7 +62,7 @@ class MyBookshelfFactoryController extends BlocController
     Logcats.message("init");
     _repositoryProvider = bookshelfListAPINotifierProvider(getIt<FoxSchoolRepository>());
     Future.delayed(Duration.zero, (){
-      widgetRef.read(bookshelfListUINotifierProvider.notifier).enableContentsLoading(true);
+      widgetRef.read(bookshelfListUINotifierProvider.notifier).updateContentsLoadingState(isDataLoading: true);
     });
 
     _settingRequestDataNotifier();
@@ -326,12 +327,12 @@ class MyBookshelfFactoryController extends BlocController
   void onClickThumbnailItem(int index)
   {
     Logcats.message("index : $index");
-    List<ContentsBaseResult> list = [];
-    list.add(_myBookshelfDataList[index]);
+    List<ContentsBaseResult> list = [_myBookshelfDataList[index]];
+    PlayerIntentParamsObject data = PlayerIntentParamsObject(list: list);
 
     Navigator.push(context,
         Page.getDefaultTransition(context,
-            MoviePlayerScreen(playList: list)
+            MoviePlayerScreen(playerIntentParamsObject: data)
         )
     );
   }
@@ -347,10 +348,11 @@ class MyBookshelfFactoryController extends BlocController
         list.add(_myBookshelfDataList[i].setSelected(false));
       }
     }
+    PlayerIntentParamsObject data = PlayerIntentParamsObject(list: list);
     disableBottomSelectViewMode();
     Navigator.push(context,
         Page.getDefaultTransition(context,
-            MoviePlayerScreen(playList: list)
+            MoviePlayerScreen(playerIntentParamsObject: data)
         )
     );
   }

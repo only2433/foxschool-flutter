@@ -44,7 +44,7 @@ class CategoryListController extends BlocController
   {
     _repositoryProvider = CategoryListAPINotifierProvider(getIt<FoxSchoolRepository>());
     Future.delayed(Duration.zero, (){
-      widgetRef.read(categoryListUINotifierProvider.notifier).enableContentLoading(true);
+      widgetRef.read(categoryListUINotifierProvider.notifier).updateContentsLoadingState(isDataLoading: true);
       widgetRef.read(categoryListUINotifierProvider.notifier).setTitleColor(_currentTitleColor);
     });
 
@@ -70,7 +70,7 @@ class CategoryListController extends BlocController
             );
           },
           contentsLoadedState: (data){
-            widgetRef.read(categoryListUINotifierProvider.notifier).enableContentLoading(false);
+            widgetRef.read(categoryListUINotifierProvider.notifier).updateContentsLoadingState(isDataLoading: false);
             _storyCategoryContentsResult = data;
             _initCategoryList();
           });

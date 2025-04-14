@@ -32,10 +32,10 @@ class QuizUINotifier extends _$QuizUINotifier
     );
   }
 
-  void enableContentsLoading(bool isEnable)
+  void updateContentsLoadingState({required bool isDataLoading})
   {
     state = state.copyWith(
-      isContentsLoading: isEnable
+      isContentsLoading: isDataLoading
     );
   }
 

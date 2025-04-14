@@ -70,7 +70,7 @@ class VocabularyFactoryController extends BlocController
   void init() async {
     _repositoryProvider = vocabularyAPINotifierProvider(getIt<FoxSchoolRepository>());
     Future.delayed(Duration.zero, (){
-      widgetRef.read(vocabularyUINotifierProvider.notifier).enableContentsLoading(true);
+      widgetRef.read(vocabularyUINotifierProvider.notifier).updateContentsLoadingState(isDataLoading: true);
     });
     await _getMainData();
     _currentIntervalIndex = await Preference.getInt(Common.PARAMS_VOCABULARY_INTERVAL, defaultData: 2);

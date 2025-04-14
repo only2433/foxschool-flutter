@@ -24,14 +24,15 @@ class VocabularyUINotifier extends _$VocabularyUINotifier {
         isPlaying: false);
   }
 
-  void enableContentsLoading(bool isEnable) {
+  void updateContentsLoadingState({required bool isDataLoading}) {
     state = state.copyWith(
-        isContentsLoading: isEnable
+        isContentsLoading: isDataLoading
     );
   }
 
   void notifyVocabularyItemList(List<VocabularyDataResult> list) {
     state = state.copyWith(
+        isContentsLoading: false,
         itemList: list
     );
   }

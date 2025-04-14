@@ -15,12 +15,6 @@ import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardHel
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardOptionSelectCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyCurrentIndexCubit.dart';
 import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyListUpdateCubit.dart';
-import 'package:foxschool/presentation/bloc/movie/api/MovieContentsBloc.dart';
-import 'package:foxschool/presentation/bloc/movie/factory/cubit/MovieCaptionTextCubit.dart';
-import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayCompleteCubit.dart';
-import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayTitleCubit.dart';
-import 'package:foxschool/presentation/bloc/movie/factory/cubit/MoviePlayerMenuCubit.dart';
-import 'package:foxschool/presentation/bloc/movie/factory/cubit/MovieSeekProgressCubit.dart';
 import 'package:foxschool/common/CommonHttpOverrides.dart';
 import 'package:foxschool/presentation/view/screen/IntroScreen.dart';
 import 'package:foxschool/di/Dependencies.dart' as Dependencies;
@@ -28,9 +22,6 @@ import 'package:foxschool/common/Preference.dart' as Preference;
 import 'presentation/bloc/base/observer/FoxschoolBlocObserver.dart';
 import 'presentation/bloc/flashcard/api/FlashcardBloc.dart';
 import 'presentation/bloc/flashcard/factory/cubit/FlashcardBookmarkOptionSelectCubit.dart';
-import 'presentation/bloc/movie/factory/cubit/MoviePlayListCubit.dart';
-import 'presentation/bloc/movie/factory/cubit/MoviePlayTimeCubit.dart';
-import 'presentation/bloc/movie/factory/cubit/MoviePlayerSettingCubit.dart';
 import 'common/Common.dart';
 import 'di/Dependencies.dart';
 
@@ -80,23 +71,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return  MultiBlocProvider(providers: [
-
-
-    /**
-    * Movie
-    */
-    BlocProvider(
-    create: (context) => getIt<MovieContentsBloc>()
-    ),
-    BlocProvider(create: (context) => MoviePlayerSettingCubit()),
-    BlocProvider(create: (context) => MoviePlayListCubit()),
-    BlocProvider(create: (context) => MoviePlayTitleCubit()),
-    BlocProvider(create: (context) => MoviePlayCompleteCubit()),
-    BlocProvider(create: (context) => MovieSeekProgressCubit()),
-    BlocProvider(create: (context) => MoviePlayerMenuCubit()),
-    BlocProvider(create: (context) => MovieCaptionTextCubit()),
-    BlocProvider(create: (context) => MoviePlayTimeCubit()),
-
 
     BlocProvider(create: (context) => getIt<FlashcardBloc>()),
     BlocProvider(create: (context) => FlashcardConstituteWidgetCubit()),

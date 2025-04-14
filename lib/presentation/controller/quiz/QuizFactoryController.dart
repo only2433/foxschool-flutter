@@ -230,16 +230,16 @@ class QuizFactoryController extends BlocController {
             await _startFileDownload(fileList);
           }
         await _makePictureQuizData();
-        widgetRef.read(quizUINotifierProvider.notifier).enableContentsLoading(false);
+        widgetRef.read(quizUINotifierProvider.notifier).updateContentsLoadingState(isDataLoading: false);
         break;
       case Common.QUIZ_CODE_TEXT:
       case Common.QUIZ_CODE_SOUND_TEXT:
         _makeTextQuizData();
-        widgetRef.read(quizUINotifierProvider.notifier).enableContentsLoading(false);
+        widgetRef.read(quizUINotifierProvider.notifier).updateContentsLoadingState(isDataLoading: false);
         break;
       case Common.QUIZ_CODE_PHONICS_SOUND_TEXT:
         _makePhonicsQuestion();
-        widgetRef.read(quizUINotifierProvider.notifier).enableContentsLoading(false);
+        widgetRef.read(quizUINotifierProvider.notifier).updateContentsLoadingState(isDataLoading: false);
         break;
       default:
         break;

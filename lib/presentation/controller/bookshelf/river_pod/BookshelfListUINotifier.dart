@@ -18,16 +18,17 @@ class BookshelfListUINotifier extends _$BookshelfListUINotifier {
         isEnableBottomSelectView: false);
   }
 
-  void enableContentsLoading(bool isEnable)
+  void updateContentsLoadingState({required bool isDataLoading})
   {
     state = state.copyWith(
-        isContentsLoading: isEnable
+        isContentsLoading: isDataLoading
     );
   }
 
   void notifyBookshelfItemList(List<ContentsBaseResult> list)
   {
     state = state.copyWith(
+        isContentsLoading: false,
         itemList: list
     );
   }

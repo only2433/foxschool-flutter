@@ -13,6 +13,7 @@ import 'package:foxschool/common/MainObserver.dart';
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
 import 'package:foxschool/data/model/main/MainInformationResult.dart';
 import 'package:foxschool/data/model/main/series/base/SeriesBaseResult.dart';
+import 'package:foxschool/data/model/movie/intent_data/PlayerIntentParamsObject.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/enum/ContentsItemType.dart';
@@ -71,7 +72,7 @@ class SeriesContentsListFactoryController extends BlocController {
     _repositoryProvider = seriesListAPINotifierProvider(getIt<FoxSchoolRepository>());
 
     Future.delayed(Duration.zero, () {
-      widgetRef.read(seriesListUINotifierProvider.notifier).enableContentsLoading(true);
+      widgetRef.read(seriesListUINotifierProvider.notifier).updateContentsLoadingState(isDataLoading: true);
       widgetRef.read(seriesListUINotifierProvider.notifier).setTitleColor(_currentTitleColor);
     });
     await _getMainData();
@@ -408,13 +409,13 @@ class SeriesContentsListFactoryController extends BlocController {
   void onClickThumbnailItem(int index)
   {
     Logcats.message("index : $index");
-    List<ContentsBaseResult> list = [];
-    list.add(_currentContentsItemList[index]);
+    List<ContentsBaseResult> list = [_currentContentsItemList[index]];
+    PlayerIntentParamsObject data = PlayerIntentParamsObject(list: list);
 
     Navigator.push(
         context,
         Page.getDefaultTransition(context,
-            MoviePlayerScreen(playList: list)
+            MoviePlayerScreen(playerIntentParamsObject: data)
         )
     );
   }
@@ -422,11 +423,12 @@ class SeriesContentsListFactoryController extends BlocController {
   void onClickSelectedListPlay()
   {
     List<ContentsBaseResult> list = _getSelectedList();
+    PlayerIntentParamsObject data = PlayerIntentParamsObject(list: list);
     disableBottomSelectViewMode();
     Navigator.push(
         context,
         Page.getDefaultTransition(context,
-            MoviePlayerScreen(playList: list)
+            MoviePlayerScreen(playerIntentParamsObject: data)
         )
     );
   }

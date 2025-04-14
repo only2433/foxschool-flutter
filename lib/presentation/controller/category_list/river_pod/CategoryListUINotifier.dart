@@ -19,10 +19,10 @@ class CategoryListUINotifier extends _$CategoryListUINotifier
         contentsList: []);
   }
 
-  void enableContentLoading(bool isEnable)
+  void updateContentsLoadingState({required bool isDataLoading})
   {
     state = state.copyWith(
-      isContentsLoading: isEnable
+      isContentsLoading: isDataLoading
     );
   }
 
