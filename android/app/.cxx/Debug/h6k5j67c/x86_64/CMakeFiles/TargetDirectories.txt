@@ -1,0 +1,2 @@
+D:/android_workspace/flutter/test/foxschool/android/app/.cxx/Debug/h6k5j67c/x86_64/CMakeFiles/edit_cache.dir
+D:/android_workspace/flutter/test/foxschool/android/app/.cxx/Debug/h6k5j67c/x86_64/CMakeFiles/rebuild_cache.dir
