@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/presentation/bloc/base/BlocController.dart';
@@ -136,7 +135,7 @@ class VocabularyFactoryController extends BlocController
                 },
                 errorState: (message){
                   LoadingDialog.dismiss(context);
-                  Fluttertoast.showToast(msg: message);
+                  //Fluttertoast.showToast(msg: message);
                   onBackPressed();
                 },
                 authenticationErrorState: (isAutoRestart, message) async{
@@ -145,7 +144,7 @@ class VocabularyFactoryController extends BlocController
                     await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
                     await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
                   }
-                  Fluttertoast.showToast(msg: message);
+                 // Fluttertoast.showToast(msg: message);
                   Navigator.pushAndRemoveUntil(
                     context,
                     Page.getIntroTransition(context),
@@ -197,7 +196,7 @@ class VocabularyFactoryController extends BlocController
             _refreshVocabularyListData();
             _isHaveSelectedItem = false;
             _setCheckAll(false);
-            Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_delete_contents']);
+            //Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_delete_contents']);
           },);
     });
   }
@@ -509,7 +508,7 @@ class VocabularyFactoryController extends BlocController
       }
       else
       {
-        Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_not_have_play_vocabulary']);
+        //Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_not_have_play_vocabulary']);
       }
     }
   }
@@ -533,7 +532,7 @@ class VocabularyFactoryController extends BlocController
     }
     else
     {
-      Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_select_words_put_in_vocabulary']);
+      //Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_select_words_put_in_vocabulary']);
     }
   }
 
@@ -554,7 +553,7 @@ class VocabularyFactoryController extends BlocController
     }
     else
     {
-      Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_select_words_delete_in_vocabulary']);
+      //Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_select_words_delete_in_vocabulary']);
     }
   }
 

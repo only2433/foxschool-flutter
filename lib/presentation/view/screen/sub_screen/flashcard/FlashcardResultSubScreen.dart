@@ -2,23 +2,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardBookmarkedCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardBookmarkedState.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/presentation/controller/flashcard/FlashcardFactoryController.dart';
+import 'package:foxschool/presentation/controller/flashcard/river_pod/FlashcardUINotifier.dart';
 import 'package:foxschool/presentation/view/widget/RobotoNormalText.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/FlashcardFactoryController.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/values/AppColors.dart';
 
-class FlashcardResultSubScreen extends StatelessWidget {
+class FlashcardResultSubScreen extends ConsumerWidget {
   final FlashcardFactoryController factoryController;
   const FlashcardResultSubScreen({
     super.key, 
     required this.factoryController});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -46,7 +46,8 @@ class FlashcardResultSubScreen extends StatelessWidget {
               SizedBox(
                 height: CommonUtils.getInstance(context).getHeight(84),
               ),
-              BlocBuilder<FlashcardBookmarkedCubit, FlashcardBookmarkedState>(builder: (context, state) {
+              Consumer(builder: (context, ref, child) {
+                final isBookmarked = ref.watch(flashcardUINotifierProvider.select((it) => it.isBookmarked));
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -84,7 +85,7 @@ class FlashcardResultSubScreen extends StatelessWidget {
                       ),
                     ),
 
-                    state.isBookmarked ? GestureDetector(
+                    isBookmarked ? GestureDetector(
                       onTap: (){
                         factoryController.onClickBookmarkedPlay();
                       },

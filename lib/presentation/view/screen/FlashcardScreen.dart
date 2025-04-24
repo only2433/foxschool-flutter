@@ -2,37 +2,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/FlashcardFactoryController.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardConstituteWidgetCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardHelpPageCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardConstituteWidgetState.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardHelpPageState.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foxschool/data/model/flashcard/FlashcardDataObject.dart';
 import 'package:foxschool/enum/VocabularyType.dart';
+import 'package:foxschool/presentation/controller/flashcard/FlashcardFactoryController.dart';
+import 'package:foxschool/presentation/controller/flashcard/river_pod/FlashcardUINotifier.dart';
 import 'package:foxschool/presentation/view/screen/sub_screen/flashcard/FlashcardIntroSubScreen.dart';
 import 'package:foxschool/common/Common.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/data/model/flashcard/FlashcardDataResult.dart';
 import 'package:foxschool/values/AppColors.dart';
 
-class FlashcardScreen extends StatefulWidget {
-  final String contentID;
-  final VocabularyType type;
-  final String title;
-  final String subtitle;
-  final List<FlashcardDataResult> list;
+class FlashcardScreen extends ConsumerStatefulWidget {
+  final FlashcardDataObject flashcardDataObject;
   const FlashcardScreen({
     super.key,
-    this.contentID = "",
-    required this.type,
-    required this.title,
-    this.subtitle = "",
-    required this.list});
+    required this.flashcardDataObject});
 
   @override
-  State<FlashcardScreen> createState() => _FlashcardScreenState();
+  FlashcardScreenState createState() => FlashcardScreenState();
 }
 
-class _FlashcardScreenState extends State<FlashcardScreen> {
+class FlashcardScreenState extends ConsumerState<FlashcardScreen> {
 
   late FlashcardFactoryController _factoryController;
   late PageController _pageController;
@@ -52,9 +43,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     _factoryController = FlashcardFactoryController(
         context: context,
         subScreenPageController: _pageController,
-        contentID: widget.contentID,
-        vocabularyType: widget.type,
-        flashcardList: widget.list);
+        flashcardDataObject: widget.flashcardDataObject,
+        widgetRef: ref);
     _factoryController.init();
   }
 
@@ -77,29 +67,35 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           backgroundColor: AppColors.color_c1f8ff,
           body: Stack(
             children: [
-
-              BlocBuilder<FlashcardConstituteWidgetCubit, FlashcardConstituteWidgetState>(builder: (context, state) {
-                return PageView(
+              Consumer(builder: (context, ref, child) {
+                final widgetList = ref.watch(flashcardUINotifierProvider.select((value) => value.pageList));
+                return PageView.builder(
                   controller: _pageController,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    FlashcardIntroSubScreen(
-                      factoryController: _factoryController,
-                      title: widget.title,
-                      subTitle: widget.subtitle,
-                    ),
-                    ...state.list
-                  ],
+                  itemBuilder: (context, index) {
+                    if(index == 0)
+                      {
+                        return FlashcardIntroSubScreen(
+                          factoryController: _factoryController,
+                          title: widget.flashcardDataObject.title,
+                          subTitle: widget.flashcardDataObject.subTitle,
+                        );
+                      }
+                    else
+                      {
+                        return widgetList[index - 1];
+                      }
+                  },
                 );
               }),
-
-              BlocBuilder<FlashcardHelpPageCubit, FlashcardHelpPageState>(builder: (context, state) {
+              Consumer(builder: (context, ref, child) {
+                final isShowHelpPage = ref.watch(flashcardUINotifierProvider.select((value) => value.isShowHelpPage));
                 return Positioned(
                   right: CommonUtils.getInstance(context).getWidth(30),
                   top: CommonUtils.getInstance(context).getHeight(30),
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: Common.DURATION_NORMAL),
-                    opacity: state.isShowHelpPage ? 0.0 : 1.0,
+                    opacity: isShowHelpPage ? 0.0 : 1.0,
                     child: GestureDetector(
                       onTap: () {
                         _factoryController.onBackPressed();
@@ -111,7 +107,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                     ),
                   ),
                 );
-              }),
+              })
             ],
           ),
         )

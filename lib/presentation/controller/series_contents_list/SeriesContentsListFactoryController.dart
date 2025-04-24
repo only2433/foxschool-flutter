@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/Common.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/common/MainObserver.dart';
 import 'package:foxschool/data/model/contents/contents_base/ContentsBaseResult.dart';
+import 'package:foxschool/data/model/flashcard/FlashcardDataObject.dart';
 import 'package:foxschool/data/model/main/MainInformationResult.dart';
 import 'package:foxschool/data/model/main/series/base/SeriesBaseResult.dart';
 import 'package:foxschool/data/model/movie/intent_data/PlayerIntentParamsObject.dart';
@@ -132,7 +132,7 @@ class SeriesContentsListFactoryController extends BlocController {
                 },
                 errorState: (message){
                   LoadingDialog.dismiss(context);
-                  Fluttertoast.showToast(msg: message);
+                 // Fluttertoast.showToast(msg: message);
                 },
                 orElse: (){}
                 );
@@ -166,7 +166,7 @@ class SeriesContentsListFactoryController extends BlocController {
 
             MainObserver().update();
             LoadingDialog.dismiss(context);
-            Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_save_contents_in_bookshelf']);
+            //Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_success_save_contents_in_bookshelf']);
           }
       );
     });
@@ -258,12 +258,13 @@ class SeriesContentsListFactoryController extends BlocController {
         Navigator.push(
             context,
             MaterialPageRoute(builder: (context) {
+              final item = FlashcardDataObject(
+                  contentsID: data.id,
+                  title: data.name,
+                  subTitle: data.subName,
+                  vocabularyType: VocabularyType.VOCABULARY_CONTENTS);
               return  FlashcardScreen(
-                contentID: data.id,
-                type: VocabularyType.VOCABULARY_CONTENTS,
-                title: data.name,
-                subtitle: data.subName,
-                list: const [],
+                flashcardDataObject: item
               );
             })
         );
@@ -464,7 +465,7 @@ class SeriesContentsListFactoryController extends BlocController {
       }
     else
       {
-        Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_not_add_selected_contents_bookshelf']);
+        //Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_not_add_selected_contents_bookshelf']);
       }
   }
 }

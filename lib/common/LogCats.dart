@@ -9,7 +9,7 @@ class Logcats {
   static final Logcats _instance = Logcats._internal();
   final String TAG = "System.out";
 
-  static const MethodChannel _channel = MethodChannel('com.littlefox.app.foxschool/log');
+  static const MethodChannel _channel = MethodChannel('com.littlefox.app.foxschool/event');
 
   Logcats._internal();
 

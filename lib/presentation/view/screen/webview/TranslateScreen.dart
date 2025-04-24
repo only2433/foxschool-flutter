@@ -106,7 +106,7 @@ class _TranslateScreenState extends State<TranslateScreen> {
 
   @override
   void dispose() {
-    _webViewController.clearCache();
+    //_webViewController.clearCache();
     super.dispose();
   }
 }

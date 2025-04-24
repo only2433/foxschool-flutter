@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/Common.dart';
 
 class CrosswordWebviewBridge {
@@ -21,7 +20,7 @@ class CrosswordWebviewBridge {
 
   void _onInterfaceExitView(String message) async
   {
-    Fluttertoast.showToast(msg: message);
+   //Fluttertoast.showToast(msg: message);
     await Future.delayed(const Duration(milliseconds: Common.DURATION_NORMAL), () {
       Navigator.of(context).pop();
     },);

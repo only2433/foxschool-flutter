@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
@@ -54,7 +53,7 @@ class LoginFactoryController extends BlocController {
                 },
                 errorState: (message){
                   LoadingDialog.dismiss(context);
-                  Fluttertoast.showToast(msg: message);
+                  //Fluttertoast.showToast(msg: message);
                 },
                 orElse: (){}
              );

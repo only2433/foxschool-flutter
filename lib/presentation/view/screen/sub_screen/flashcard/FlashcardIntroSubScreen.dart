@@ -2,12 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/FlashcardFactoryController.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardHelpPageCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardOptionSelectCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardHelpPageState.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardOptionSelectState.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/presentation/controller/flashcard/FlashcardFactoryController.dart';
+import 'package:foxschool/presentation/controller/flashcard/river_pod/FlashcardUINotifier.dart';
 import 'package:foxschool/presentation/view/widget/HtmlTextWidget.dart';
 import 'package:foxschool/presentation/view/widget/RobotoBoldText.dart';
 import 'package:foxschool/presentation/view/widget/RobotoNormalText.dart';
@@ -16,7 +14,7 @@ import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/values/AppColors.dart';
 
-class FlashcardIntroSubScreen extends StatefulWidget {
+class FlashcardIntroSubScreen extends ConsumerWidget {
   final FlashcardFactoryController factoryController;
   final String title;
   final String subTitle;
@@ -27,32 +25,26 @@ class FlashcardIntroSubScreen extends StatefulWidget {
     required this.subTitle});
 
   @override
-  State<FlashcardIntroSubScreen> createState() => _FlashcardIntroSubScreenState();
-}
-
-class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
-
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      child: Stack(
-        children: [
-          Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Image.asset('assets/image/flashcard_bottom_bg_img01.png',
-              width: MediaQuery.of(context).size.width,
-              height: CommonUtils.getInstance(context).getHeight(370),
-              fit: BoxFit.cover)),
+      child: Consumer(builder: (context, ref, child) {
+        final isShowHelpPage = ref.watch(flashcardUINotifierProvider.select((value) => value.isShowHelpPage));
+        return Stack(
+          children: [
+            Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Image.asset('assets/image/flashcard_bottom_bg_img01.png',
+                    width: MediaQuery.of(context).size.width,
+                    height: CommonUtils.getInstance(context).getHeight(370),
+                    fit: BoxFit.cover)),
 
-          BlocBuilder<FlashcardHelpPageCubit, FlashcardHelpPageState>(builder:(context, state) {
-            return  AnimatedOpacity(
+            AnimatedOpacity(
               duration: const Duration(milliseconds: Common.DURATION_NORMAL),
-              opacity: state.isShowHelpPage ? 0.0 : 1.0,
+              opacity: isShowHelpPage ? 0.0 : 1.0,
               child: Center(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
@@ -72,11 +64,11 @@ class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
                         child: Column(
                           children: [
                             RobotoBoldText(
-                                text: widget.title,
+                                text: title,
                                 fontSize: CommonUtils.getInstance(context).getWidth(52),
                                 color: AppColors.color_333333),
                             RobotoNormalText(
-                                text: widget.subTitle,
+                                text: subTitle,
                                 fontSize: CommonUtils.getInstance(context).getWidth(42),
                                 color: AppColors.color_333333),
                           ],
@@ -88,11 +80,8 @@ class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
                   ),
                 ),
               ),
-            );
-          }),
-
-          BlocBuilder<FlashcardHelpPageCubit, FlashcardHelpPageState>(builder: (context, state) {
-            return Positioned(
+            ),
+            Positioned(
               left: CommonUtils.getInstance(context).getWidth(30),
               top: CommonUtils.getInstance(context).getHeight(30),
               child:GestureDetector(
@@ -100,109 +89,68 @@ class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
 
                 },
                 child: Opacity(
-                  opacity: state.isShowHelpPage ? 0.0 : 1.0,
+                  opacity: isShowHelpPage ? 0.0 : 1.0,
                   child: Image.asset( 'assets/image/btn_flashcard_sound_on.png',
                       width: CommonUtils.getInstance(context).getWidth(84),
                       height: CommonUtils.getInstance(context).getHeight(90),
                       fit: BoxFit.contain),
                 ),
               ),
-            );
-          }),
-
-          BlocBuilder<FlashcardHelpPageCubit, FlashcardHelpPageState>(builder: (context, state) {
-            return Positioned(
+            ),
+            Positioned(
               left: CommonUtils.getInstance(context).getWidth(30),
               top: CommonUtils.getInstance(context).getHeight(30),
               child:GestureDetector(
                 onTap: () {
-                  widget.factoryController.onHideHelpPage();
+                  factoryController.onHideHelpPage();
                 },
                 child: Opacity(
-                  opacity: state.isShowHelpPage ? 1.0 : 0.0,
+                  opacity: isShowHelpPage ? 1.0 : 0.0,
                   child: Image.asset('assets/image/btn_flashcard_back.png',
                       width: CommonUtils.getInstance(context).getWidth(84),
                       height: CommonUtils.getInstance(context).getHeight(90),
                       fit: BoxFit.contain),
                 ),
               ),
-            );
-          }),
-
-
-          BlocBuilder<FlashcardHelpPageCubit, FlashcardHelpPageState>(builder: (context, state) {
-            return AnimatedPositioned(
+            ),
+            AnimatedPositioned(
                 duration: const Duration(milliseconds: Common.DURATION_NORMAL),
-                left: state.isShowHelpPage ? 0 : -MediaQuery.of(context).size.width,
+                left: isShowHelpPage ? 0 : -MediaQuery.of(context).size.width,
                 top: CommonUtils.getInstance(context).getHeight(200),
                 child: AnimatedOpacity(
                     duration: const Duration(milliseconds: Common.DURATION_NORMAL),
-                    opacity: state.isShowHelpPage ? 1.0 : 0.0,
+                    opacity: isShowHelpPage ? 1.0 : 0.0,
                     child: _buildHelpImageLayout(context)
                 )
-            );
-          }),
-
-         /* Positioned(
-            left: CommonUtils.getInstance(context).getWidth(30),
-            top: CommonUtils.getInstance(context).getHeight(132),
-            child: Container(
-              width: CommonUtils.getInstance(context).getWidth(462),
-              height: CommonUtils.getInstance(context).getHeight(98),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/image/btn_flashcard_sound_off_message_bg.png'),
-                  fit: BoxFit.fill
-                ),
-              ),
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: CommonUtils.getInstance(context).getWidth(15),
-                  top: CommonUtils.getInstance(context).getHeight(20)
-                ),
-                child: RobotoRegularText(
-                  text: getIt<FoxschoolLocalization>().data['message_warning_sound_off'],
-                  fontSize: CommonUtils.getInstance(context).getWidth(36),
-                  color: AppColors.color_ffffff,
-                ),
-              ),
-            )
-          ),*/
-
-          BlocBuilder<FlashcardHelpPageCubit, FlashcardHelpPageState>(builder: (context, state) {
-            return Positioned(
+            ),
+            Positioned(
                 left: 0,
                 bottom: 0,
                 child: AnimatedOpacity(
                     duration: const Duration(milliseconds: Common.DURATION_NORMAL),
-                    opacity: state.isShowHelpPage ? 0.0 : 1.0,
+                    opacity: isShowHelpPage ? 0.0 : 1.0,
                     child: _buildOptionMenuLayout(context))
-            );
-          }),
-
-
-          BlocBuilder<FlashcardHelpPageCubit, FlashcardHelpPageState>(builder: (context, state) {
-            return Positioned(
+            ),
+            Positioned(
               right: CommonUtils.getInstance(context).getWidth(30),
               bottom: CommonUtils.getInstance(context).getHeight(30),
               child: GestureDetector(
                 onTap: () {
-                  widget.factoryController.onShowHelpPage();
+                  factoryController.onShowHelpPage();
                 },
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: Common.DURATION_NORMAL),
-                  opacity: state.isShowHelpPage ? 0.0 : 1.0,
+                  opacity: isShowHelpPage ? 0.0 : 1.0,
                   child: Image.asset('assets/image/btn_flashcard_info.png',
                     width: CommonUtils.getInstance(context).getWidth(84),
                     height: CommonUtils.getInstance(context).getHeight(90),
                     fit: BoxFit.contain,),
                 ),
               ),
-            );
-          }),
-        ],
-      ),
+            ),
+          ],
+        );
+      })
     );
   }
 
@@ -218,7 +166,7 @@ class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
         children: [
           GestureDetector(
             onTap: () {
-              widget.factoryController.onClickDefaultStudyWords();
+              factoryController.onClickDefaultStudyWords();
             },
             child: Container(
               width: CommonUtils.getInstance(context).getWidth(456),
@@ -257,7 +205,7 @@ class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
           ),
           GestureDetector(
             onTap: () {
-              widget.factoryController.onClickDefaultStudyMeans();
+              factoryController.onClickDefaultStudyMeans();
             },
             child: Container(
               width: CommonUtils.getInstance(context).getWidth(456),
@@ -315,8 +263,9 @@ class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
 
   Widget _buildOptionMenuLayout(BuildContext context)
   {
-    return BlocBuilder<FlashcardOptionSelectCubit, FlashcardOptionSelectState>(builder: (context, state)
-    {
+    return Consumer(builder: (context, ref, child) {
+      final isAutoMode = ref.watch(flashcardUINotifierProvider.select((value) => value.isAutoMode));
+      final isShuffleMode = ref.watch(flashcardUINotifierProvider.select((value) => value.isShuffleMode));
       return SizedBox(
         width: MediaQuery
             .of(context)
@@ -328,9 +277,9 @@ class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
           children: [
             GestureDetector(
               onTap: () {
-                widget.factoryController.onCheckAutoPlay();
+                factoryController.onCheckAutoPlay();
               },
-              child: Image.asset(state.isAutoMode ? 'assets/image/flashcard_select_on.png' : 'assets/image/flashcard_select_off.png',
+              child: Image.asset(isAutoMode ? 'assets/image/flashcard_select_on.png' : 'assets/image/flashcard_select_off.png',
                   width: CommonUtils.getInstance(context).getWidth(60),
                   height: CommonUtils.getInstance(context).getHeight(60)),
             ),
@@ -347,9 +296,9 @@ class _FlashcardIntroSubScreenState extends State<FlashcardIntroSubScreen> {
             ),
             GestureDetector(
               onTap: () {
-                widget.factoryController.onCheckRandomPlay();
+               factoryController.onCheckRandomPlay();
               },
-              child: Image.asset(state.isShuffleMode ? 'assets/image/flashcard_select_on.png' : 'assets/image/flashcard_select_off.png',
+              child: Image.asset(isShuffleMode ? 'assets/image/flashcard_select_on.png' : 'assets/image/flashcard_select_off.png',
                   width: CommonUtils.getInstance(context).getWidth(60),
                   height: CommonUtils.getInstance(context).getHeight(60)),
             ),

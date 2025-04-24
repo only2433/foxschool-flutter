@@ -116,7 +116,7 @@ class _GameCrosswordScreenState extends State<GameCrosswordScreen> {
 
   @override
   void dispose() {
-    _webViewController.clearCache();
+    //_webViewController.clearCache();
     super.dispose();
   }
 

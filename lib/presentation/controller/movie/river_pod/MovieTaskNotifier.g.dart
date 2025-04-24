@@ -6,7 +6,7 @@ part of 'MovieTaskNotifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$movieTaskNotifierHash() => r'f0fe1dfd5aafcd109ff1c3c11bbb64d701f8644a';
+String _$movieTaskNotifierHash() => r'6360c0b0e0cbcf25a7877faec8e7800dbc3d532a';
 
 /// See also [MovieTaskNotifier].
 @ProviderFor(MovieTaskNotifier)

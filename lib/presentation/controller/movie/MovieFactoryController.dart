@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/movie/intent_data/PlayerIntentParamsObject.dart';
 import 'package:foxschool/data/model/movie/play_end_data/PlayerEndViewData.dart';
@@ -115,7 +114,7 @@ class MovieFactoryController extends BlocController {
                     await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
                     await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
                   }
-                  Fluttertoast.showToast(msg: message);
+                  //Fluttertoast.showToast(msg: message);
                   Navigator.pushAndRemoveUntil(
                     context,
                     Page.getIntroTransition(context),
@@ -123,7 +122,7 @@ class MovieFactoryController extends BlocController {
                   );
                 },
                 errorState: (message) {
-                  Fluttertoast.showToast(msg: message);
+                  //Fluttertoast.showToast(msg: message);
                   onBackPressed();
                 },
                 orElse: (){}

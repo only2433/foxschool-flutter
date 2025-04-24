@@ -9,19 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/LogCats.dart';
 
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardBookmarkedCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardConstituteWidgetCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardHelpPageCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardOptionSelectCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyCurrentIndexCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyListUpdateCubit.dart';
 import 'package:foxschool/common/CommonHttpOverrides.dart';
 import 'package:foxschool/presentation/view/screen/IntroScreen.dart';
 import 'package:foxschool/di/Dependencies.dart' as Dependencies;
 import 'package:foxschool/common/Preference.dart' as Preference;
 import 'presentation/bloc/base/observer/FoxschoolBlocObserver.dart';
-import 'presentation/bloc/flashcard/api/FlashcardBloc.dart';
-import 'presentation/bloc/flashcard/factory/cubit/FlashcardBookmarkOptionSelectCubit.dart';
+
 import 'common/Common.dart';
 import 'di/Dependencies.dart';
 
@@ -52,7 +45,7 @@ void main() async {
     statusBarIconBrightness: Brightness.light,
   ));
 
-  await Logcats.initialize();
+  //await Logcats.initialize();
 
   runApp(
       const ProviderScope(
@@ -70,20 +63,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return  MultiBlocProvider(providers: [
-
-    BlocProvider(create: (context) => getIt<FlashcardBloc>()),
-    BlocProvider(create: (context) => FlashcardConstituteWidgetCubit()),
-    BlocProvider(create: (context) => FlashcardHelpPageCubit()),
-    BlocProvider(create: (context) => FlashcardOptionSelectCubit()),
-    BlocProvider(create: (context) => FlashcardBookmarkOptionSelectCubit()),
-    BlocProvider(create: (context) => FlashcardBookmarkedCubit()),
-    BlocProvider(create: (context) => FlashcardStudyCurrentIndexCubit()),
-    BlocProvider(create: (context) => FlashcardStudyListUpdateCubit()),
-    ], child: const MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: IntroScreen(),
-    )
     );
 
     /*return MultiBlocProvider(

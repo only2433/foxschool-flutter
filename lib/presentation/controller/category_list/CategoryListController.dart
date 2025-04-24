@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/common/Fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';

@@ -50,7 +50,7 @@ dependencies:
   firebase_messaging: ^14.7.20
   http: ^0.13.5
   intl:
-  flutter_inappwebview: ^5.7.2+3
+
   page_transition: ^2.1.0
   simple_loading_dialog:
   freezed: ^2.4.7
@@ -65,7 +65,7 @@ dependencies:
   transparent_image: ^2.0.1
   infinite_scroll_pagination: ^4.0.0
   permission_handler: ^11.3.1
-  fluttertoast: ^8.2.4
+
   video_player: ^2.8.5
 
   image: ^4.1.7
@@ -74,8 +74,9 @@ dependencies:
   scroll_to_index:
   flutter_riverpod: ^2.6.1
   riverpod_annotation:
-  flutter_widget_from_html_core: ^0.14.9
+  flutter_widget_from_html_core: ^0.15.2
   stack_trace: ^1.11.1
+  flutter_inappwebview: ^5.8.0
 
 dev_dependencies:
   flutter_test:

@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/management/ManagementMyBooksData.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
@@ -80,7 +79,7 @@ class ManagementMyBooksFactoryController extends BlocController
                 },
                 errorState: (message){
                   LoadingDialog.dismiss(context);
-                  Fluttertoast.showToast(msg: message);
+                  //Fluttertoast.showToast(msg: message);
                 },
                 authenticationErrorState: (isAutoRestart, message) async{
                   LoadingDialog.dismiss(context);
@@ -89,7 +88,7 @@ class ManagementMyBooksFactoryController extends BlocController
                     await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
                     await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
                   }
-                  Fluttertoast.showToast(msg: message);
+                  //Fluttertoast.showToast(msg: message);
                   Navigator.pushAndRemoveUntil(
                     context,
                     Page.getIntroTransition(context),
@@ -321,7 +320,7 @@ class ManagementMyBooksFactoryController extends BlocController
       }
     else
       {
-        Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_warning_empty_bookshelf_name']);
+        //Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_warning_empty_bookshelf_name']);
       }
   }
 

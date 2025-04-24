@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
@@ -57,7 +56,7 @@ class IntroFactoryController extends BlocController
                   Logcats.message("Loading State");
                 },
                 errorState: (message) async {
-                  Fluttertoast.showToast(msg: message);
+                  //Fluttertoast.showToast(msg: message);
                   await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
                   await Future.delayed(
                     const Duration(milliseconds: Common.DURATION_LONG), () {
@@ -103,9 +102,6 @@ class IntroFactoryController extends BlocController
     });
   }
 
-
-
-
   void _checkPermission() async
   {
     bool isPermissionDenied = false;
@@ -138,9 +134,9 @@ class IntroFactoryController extends BlocController
             {
               Logcats.message("BUTTON_1_CLICK");
               await Future.delayed(const Duration(milliseconds:  Common.DURATION_SHORT), () {
-                Fluttertoast.showToast(
+/*                Fluttertoast.showToast(
                     msg: getIt<FoxschoolLocalization>().data['message_warning_storage_permission']
-                );
+                );*/
                 SystemNavigator.pop();
               },);
             }

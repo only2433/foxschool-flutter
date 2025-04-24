@@ -2,28 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/LogCats.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/FlashcardFactoryController.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardBookmarkOptionSelectCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyListUpdateCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardBookmarkOptionSelectState.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardStudyListUpdateState.dart';
 import 'package:foxschool/common/CommonUtils.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
+import 'package:foxschool/presentation/controller/flashcard/FlashcardFactoryController.dart';
+import 'package:foxschool/presentation/controller/flashcard/river_pod/FlashcardUINotifier.dart';
 import 'package:foxschool/presentation/view/widget/FlashcardBookmarkItemWidget.dart';
 import 'package:foxschool/presentation/view/widget/RobotoNormalText.dart';
 import 'package:foxschool/di/Dependencies.dart';
 import 'package:foxschool/values/AppColors.dart';
 import 'package:foxschool/presentation/view/widget/HtmlTextWidget.dart';
 
-class FlashcardBookmarkSubScreen extends StatelessWidget {
+class FlashcardBookmarkSubScreen extends ConsumerWidget {
   final FlashcardFactoryController factoryController;
   const FlashcardBookmarkSubScreen({
     super.key,
     required this.factoryController});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -54,7 +52,8 @@ class FlashcardBookmarkSubScreen extends StatelessWidget {
                       fit: BoxFit.fill
                     )
                   ),
-                  child: BlocBuilder<FlashcardStudyListUpdateCubit, FlashcardStudyListUpdateState>(builder: (context, state) {
+                  child: Consumer(builder: (context, ref, child) {
+                    final list = ref.watch(flashcardUINotifierProvider.select((it) => it.flashcardItemList));
                     return Padding(
                       padding: EdgeInsets.all(CommonUtils.getInstance(context).getWidth(20)),
                       child: GridView.builder(
@@ -64,19 +63,19 @@ class FlashcardBookmarkSubScreen extends StatelessWidget {
                             crossAxisSpacing: CommonUtils.getInstance(context).getHeight(10),
                             mainAxisExtent: CommonUtils.getInstance(context).getHeight(178)
                         ),
-                        itemCount: state.list.length,
+                        itemCount: list.length,
                         itemBuilder: (context, index) {
                           return FlashcardBookmarkItemWidget(
-                            wordText: state.list[index].vocabularyDataResult.wordText,
-                            isBookmarked: state.list[index].isBookmark,
+                            wordText: list[index].vocabularyDataResult.wordText,
+                            isBookmarked: list[index].isBookmark,
                             onCheckBookmark: () {
-                              bool isBookmark = !state.list[index].isBookmark;
+                              bool isBookmark = !list[index].isBookmark;
                               Logcats.message("index :$index, isBookmark : $isBookmark");
                               factoryController.onCheckBookmarkItem(index, isBookmark);
-                          },);
+                            },);
                         },),
                     );
-                  }),
+                  })
                 ),
               ),
               SizedBox(
@@ -270,8 +269,9 @@ class FlashcardBookmarkSubScreen extends StatelessWidget {
 
   Widget _buildOptionMenuLayout(BuildContext context)
   {
-    return BlocBuilder<FlashcardBookmarkOptionSelectCubit, FlashcardBookmarkOptionSelectState>(builder: (context, state)
-    {
+    return Consumer(builder: (context, ref, child) {
+      final isAutoMode = ref.watch(flashcardUINotifierProvider.select((it) => it.isAutoMode));
+      final isShuffleMode = ref.watch(flashcardUINotifierProvider.select((it) => it.isShuffleMode));
       return SizedBox(
         width: MediaQuery
             .of(context)
@@ -283,9 +283,9 @@ class FlashcardBookmarkSubScreen extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                factoryController.onCheckBookmarkAutoPlay();
+                factoryController.onCheckAutoPlay();
               },
-              child: Image.asset(state.isAutoMode ? 'assets/image/flashcard_select_on.png' : 'assets/image/flashcard_select_off.png',
+              child: Image.asset(isAutoMode ? 'assets/image/flashcard_select_on.png' : 'assets/image/flashcard_select_off.png',
                   width: CommonUtils.getInstance(context).getWidth(60),
                   height: CommonUtils.getInstance(context).getHeight(60)),
             ),
@@ -302,9 +302,9 @@ class FlashcardBookmarkSubScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                factoryController.onCheckBookmarkRandomPlay();
+                factoryController.onCheckRandomPlay();
               },
-              child: Image.asset(state.isShuffleMode ? 'assets/image/flashcard_select_on.png' : 'assets/image/flashcard_select_off.png',
+              child: Image.asset(isShuffleMode ? 'assets/image/flashcard_select_on.png' : 'assets/image/flashcard_select_off.png',
                   width: CommonUtils.getInstance(context).getWidth(60),
                   height: CommonUtils.getInstance(context).getHeight(60)),
             ),

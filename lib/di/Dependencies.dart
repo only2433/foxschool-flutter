@@ -4,7 +4,6 @@ import 'package:foxschool/di/intercepter/AuthInterceptor.dart';
 import 'package:foxschool/di/intercepter/LoggingInterceptor.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
 import 'package:foxschool/data/repository/FoxSchoolRepositoryImpl.dart';
-import 'package:foxschool/presentation/bloc/flashcard/api/FlashcardBloc.dart';
 import 'package:foxschool/common/FoxschoolLocalization.dart';
 import 'package:foxschool/data/remote/ApiClient.dart';
 import 'package:get_it/get_it.dart';
@@ -24,9 +23,7 @@ Future<void> init() async
 
   final apiClient = ApiClient(getIt<Dio>());
   getIt.registerSingleton(apiClient);
-
   getIt.registerLazySingleton<FoxSchoolRepository>(() => FoxSchoolRepositoryImpl(dio: getIt<Dio>(), apiClient: getIt<ApiClient>()));
-  getIt.registerLazySingleton(() => FlashcardBloc(repository: getIt<FoxSchoolRepository>()));
 }
 
 

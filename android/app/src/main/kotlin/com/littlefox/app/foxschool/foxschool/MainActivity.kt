@@ -1,6 +1,7 @@
 package com.littlefox.app.foxschool.foxschool
 
 import android.util.Log
+import android.widget.Toast
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugin.common.MethodChannel // 이 줄을 추가하세요
@@ -8,7 +9,7 @@ import io.flutter.plugin.common.MethodChannel // 이 줄을 추가하세요
 class MainActivity: FlutterActivity() {
 
 
-    private val CHANNEL = "com.littlefox.app.foxschool/log"
+    private val CHANNEL = "com.littlefox.app.foxschool/event"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine)
     {
@@ -25,7 +26,6 @@ class MainActivity: FlutterActivity() {
                     // 로거 초기화 (필요한 경우)
                     result.success(null)
                 }
-
                 "log" ->
                 {
                     val tag = call.argument<String>("tag") ?: "Flutter"
@@ -43,7 +43,13 @@ class MainActivity: FlutterActivity() {
 
                     result.success(null)
                 }
+                "toast" ->
+                {
+                    val message = call.argument<String>("message") ?: ""
 
+                    Log.e("System.out", message)
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                }
                 else ->
                 {
                     result.notImplemented()

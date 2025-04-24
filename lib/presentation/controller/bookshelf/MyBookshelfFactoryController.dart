@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foxschool/common/Fluttertoast.dart';
 import 'package:foxschool/common/LogCats.dart';
 import 'package:foxschool/data/model/movie/intent_data/PlayerIntentParamsObject.dart';
 import 'package:foxschool/domain/repository/FoxSchoolRepository.dart';
@@ -94,7 +94,7 @@ class MyBookshelfFactoryController extends BlocController
                     await Preference.setBoolean(Common.PARAMS_IS_AUTO_LOGIN_DATA, false);
                     await Preference.setString(Common.PARAMS_ACCESS_TOKEN, "");
                   }
-                  Fluttertoast.showToast(msg: message);
+                  //Fluttertoast.showToast(msg: message);
                   Navigator.pushAndRemoveUntil(
                     context,
                     Page.getIntroTransition(context),
@@ -374,6 +374,7 @@ class MyBookshelfFactoryController extends BlocController
 
   void onClickDeleteMyBookshelfItem()
   {
+
     _deleteDataList = _getSelectedList();
 
     if(_deleteDataList.isNotEmpty)
@@ -390,6 +391,7 @@ class MyBookshelfFactoryController extends BlocController
     }
     else
     {
+      Logcats.message("-");
       Fluttertoast.showToast(msg: getIt<FoxschoolLocalization>().data['message_select_contents_delete_in_bookshelf']);
     }
   }

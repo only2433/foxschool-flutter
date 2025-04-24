@@ -3,15 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/FlashcardFactoryController.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyCurrentIndexCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/cubit/FlashcardStudyListUpdateCubit.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardStudyCurrentIndexState.dart';
-import 'package:foxschool/presentation/bloc/flashcard/factory/state/FlashcardStudyListUpdateState.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foxschool/common/CommonUtils.dart';
+import 'package:foxschool/presentation/controller/flashcard/FlashcardFactoryController.dart';
+import 'package:foxschool/presentation/controller/flashcard/river_pod/FlashcardTaskNotifier.dart';
+import 'package:foxschool/presentation/controller/flashcard/river_pod/FlashcardUINotifier.dart';
 import 'package:foxschool/presentation/view/widget/FlashcardFlipWidget.dart';
 
-class FlashcardStudySubScreen extends StatefulWidget {
+class FlashcardStudySubScreen extends ConsumerStatefulWidget {
   final FlashcardFactoryController factoryController;
 
   const FlashcardStudySubScreen({
@@ -20,10 +19,10 @@ class FlashcardStudySubScreen extends StatefulWidget {
     required this.factoryController});
 
   @override
-  State<FlashcardStudySubScreen> createState() => _FlashcardStudySubScreenState();
+  FlashcardStudySubScreenState createState() => FlashcardStudySubScreenState();
 }
 
-class _FlashcardStudySubScreenState extends State<FlashcardStudySubScreen> {
+class FlashcardStudySubScreenState extends ConsumerState<FlashcardStudySubScreen> {
 
   late PageController _pageController;
 
@@ -51,23 +50,24 @@ class _FlashcardStudySubScreenState extends State<FlashcardStudySubScreen> {
                   width: MediaQuery.of(context).size.width,
                   height: CommonUtils.getInstance(context).getHeight(414),
                   fit: BoxFit.cover)),
-          BlocBuilder<FlashcardStudyListUpdateCubit, FlashcardStudyListUpdateState>(builder: (context, state) {
+          Consumer(builder: (context, ref, child) {
+            final list = ref.watch(flashcardUINotifierProvider.select((value) => value.flashcardItemList));
             return PageView.builder(
-              itemCount: state.list.length,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return FlashcardFlipWidget(
-                    currentCount: state.list[index].cardNumber,
-                    maxCount: state.list.length,
-                    word: state.list[index].vocabularyDataResult.wordText,
-                    example: state.list[index].vocabularyDataResult.exampleText,
-                    mean: state.list[index].vocabularyDataResult.meanText,
-                    isBookmark: state.list[index].isBookmark,
-                    onCheckBookmark: (isBookmarked) {
-                      widget.factoryController.onCheckBookmarkItem(index, isBookmarked);
-                    });
-              },);
+                itemCount: list.length,
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return FlashcardFlipWidget(
+                      currentCount: list[index].cardNumber,
+                      maxCount: list.length,
+                      word: list[index].vocabularyDataResult.wordText,
+                      example: list[index].vocabularyDataResult.exampleText,
+                      mean: list[index].vocabularyDataResult.meanText,
+                      isBookmark: list[index].isBookmark,
+                      onCheckBookmark: (isBookmarked) {
+                        widget.factoryController.onCheckBookmarkItem(index, isBookmarked);
+                      });
+                });
           }),
           Center(
             child: SizedBox(
@@ -75,18 +75,19 @@ class _FlashcardStudySubScreenState extends State<FlashcardStudySubScreen> {
               height: CommonUtils.getInstance(context).getHeight(150),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: CommonUtils.getInstance(context).getWidth(80)),
-                child: BlocBuilder<FlashcardStudyCurrentIndexCubit, FlashcardStudyCurrentIndexState>(builder: (context, state) {
+                child: Consumer(builder: (context, ref, child) {
+                  final state = ref.watch(flashcardTaskNotifierProvider);
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Opacity(
-                        opacity: state.currentIndex == 0 ? 0.2 : 1.0,
+                        opacity: state.currentStudyPage == 0 ? 0.2 : 1.0,
                         child: GestureDetector(
                           onTap: () {
-                            if(state.currentIndex != 0)
-                              {
-                                widget.factoryController.onClickPrevButton();
-                              }
+                            if(state.currentStudyPage != 0)
+                            {
+                              widget.factoryController.onClickPrevButton();
+                            }
                           },
                           child: Image.asset('assets/image/flashcard_prev_arrow.png',
                               width: CommonUtils.getInstance(context).getWidth(54),
@@ -95,7 +96,7 @@ class _FlashcardStudySubScreenState extends State<FlashcardStudySubScreen> {
                         ),
                       ),
                       Opacity(
-                        opacity: 1.0,
+                        opacity: state.currentStudyPage >= state.maxStudyPage - 1 ? 0.2 : 1.0,
                         child: GestureDetector(
                           onTap:(){
                             widget.factoryController.onClickNextButton();
